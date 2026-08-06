@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>About — Résumé Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+Pro:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <span class="wordmark">Résumé Intelligence</span>
+    <span class="case-tag">About Platform</span>
+  </div>
+  <div class="topbar-right" id="statusLine">model ready · 6 role categories</div>
+</header>
+
+<main class="shell">
+  <section class="intake" aria-label="About content">
+    <div class="panel-label">About Résumé Intelligence</div>
+    <p>Résumé Intelligence is an AI-powered recruitment platform designed to streamline the hiring process by automatically analyzing resumes, evaluating candidate skills, and matching applicants with suitable job roles.</p>
+
+    <div class="panel-label spaced">Key Features</div>
+    <ul>
+      <li><strong>Automated Resume Parsing:</strong> Extracts text from PDF, DOCX, and TXT resumes using advanced NLP techniques.</li>
+      <li><strong>Skill Extraction:</strong> Identifies technical and soft skills from resume content using a comprehensive skill dictionary.</li>
+      <li><strong>Role Classification:</strong> Uses machine learning to predict the most suitable job category for each candidate.</li>
+      <li><strong>Job Matching:</strong> Computes similarity scores between resumes and job descriptions using TF-IDF and cosine similarity.</li>
+      <li><strong>Ranked Shortlist:</strong> Provides recruiters with a ranked list of candidates based on match scores.</li>
+      <li><strong>Detailed Candidate Insights:</strong> Offers breakdowns of matched skills, missing skills, and role-fit confidence.</li>
+    </ul>
+
+    <div class="panel-label spaced">Technology Stack</div>
+    <ul>
+      <li><strong>Backend:</strong> Python Flask with scikit-learn for machine learning</li>
+      <li><strong>Frontend:</strong> HTML5, CSS3, vanilla JavaScript</li>
+      <li><strong>NLP Libraries:</strong> spaCy, NLTK, sklearn.feature_extraction.text</li>
+      <li><strong>ML Models:</strong> Random Forest Regressor for match score prediction</li>
+      <li><strong>Styling:</strong> Custom CSS with Playfair Display and Source Sans Pro typography</li>
+    </ul>
+
+    <div class="panel-label spaced">How It Works</div>
+    <ol>
+      <li>Recruiter inputs a job description</li>
+      <li>Resumes are uploaded (PDF/DOCX/TXT) or pasted manually</li>
+      <li>Each resume is processed to extract text and features</li>
+      <li>The AI model predicts role category and computes match score against the job description</li>
+      <li>Candidates are ranked by their match score</li>
+      <li>Recruiter can view detailed insights for each candidate</li>
+    </ol>
+  </section>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

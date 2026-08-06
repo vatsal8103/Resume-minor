@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Settings — Résumé Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+Pro:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <span class="wordmark">Résumé Intelligence</span>
+    <span class="case-tag">Platform Settings</span>
+  </div>
+  <div class="topbar-right" id="statusLine">model ready · 6 role categories</div>
+</header>
+
+<main class="shell">
+  <section class="intake" aria-label="Settings content">
+    <div class="panel-label">Platform Configuration</div>
+    <p>Adjust the settings below to customize how Résumé Intelligence operates for your recruitment needs.</p>
+
+    <div class="panel-label spaced">Matching Algorithm Weights</div>
+    <p>Adjust how different factors contribute to the final match score:</p>
+    <div class="score-breakdown">
+      <div class="score-row"><span>Job Description Similarity</span><span class="val">50%</span></div>
+      <div class="score-row"><span>Skill Overlap</span><span class="val">30%</span></div>
+      <div class="score-row"><span>Role-fit Confidence</span><span class="val">20%</span></div>
+    </div>
+    <p><small>Note: These weights are used in the current scoring model. The new ML model uses a different approach.</small></p>
+
+    <div class="panel-label spaced">Model Thresholds</div>
+    <div class="score-breakdown">
+      <div class="score-row"><span>Minimum Match Score to Show</span><span class="val">30%</span></div>
+      <div class="score-row"><span>High Confidence Threshold</span><span class="val">70%</span></div>
+      <div class="score-row"><span>Low Confidence Threshold</span><span class="val">40%</span></div>
+    </div>
+
+    <div class="panel-label spaced">Feature Toggles</div>
+    <div class="score-breakdown">
+      <div class="score-row"><span>Enable PDF Parsing</span><span class="val">������ On</span></div>
+      <div class="score-row"><span>Enable DOCX Parsing</span><span class="val">������ On</span></div>
+      <div class="score-row"><span>Enable TXT Parsing</span><span class="val">������ On</span></div>
+      <div class="score-row"><span>Show Skill Details</span><span class="val">������ On</span></div>
+      <div class="score-row"><span>Show Education Details</span><span class="val">������ On</span></div>
+      <div class="score-row"><span>Show Experience Details</span><span class="val">������ On</span></div>
+    </div>
+
+    <div class="panel-label spaced">Notifications</div>
+    <div class="score-breakdown">
+      <div class="score-row"><span>Email Alerts for New Matches</span><span class="val">������ Off</span></div>
+      <div class="score-row"><span>Weekly Usage Reports</span><span class="val">������ On</span></div>
+      <div class="score-row"><span>Model Retraining Reminders</span><span class="val">������ On</span></div>
+    </div>
+
+    <div class="panel-label spaced">Data Management</div>
+    <p>Control how your data is handled:</p>
+    <div class="score-breakdown">
+      <div class="score-row"><span>Data Retention Period</span><span class="val">90 days</span></div>
+      <div class="score-row"><span>Auto-delete Processed Files</span><span class="val">������ Off</span></div>
+      <div class="score-row"><span>Allow Resume Storage</span><span class="val">������ On</span></div>
+      <div class="score-row"><span>Enable Analytics Collection</span><span class="val">������ On</span></div>
+    </div>
+
+    <button type="button" class="btn-primary" style="width: auto; margin-top: 22px;">
+      Save Settings
+    </button>
+  </section>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

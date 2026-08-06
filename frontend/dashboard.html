@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard — Résumé Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+Pro:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <span class="wordmark">Résumé Intelligence</span>
+    <span class="case-tag">Analytics Dashboard</span>
+  </div>
+  <div class="topbar-right" id="statusLine">model ready · 6 role categories</div>
+</header>
+
+<main class="shell">
+  <section class="intake" aria-label="Dashboard content">
+    <div class="panel-label">Platform Analytics</div>
+    <p>Welcome to the Résumé Intelligence dashboard. Here you can view key metrics about the platform's usage and model performance.</p>
+
+    <div class="panel-label spaced">Model Performance</p>
+    <div class="score-breakdown">
+      <div class="score-row"><span>Model Type</span><span class="val">Random Forest Regressor</span></div>
+      <div class="score-row"><span>Training Samples</span><span class="val">50,000</span></div>
+      <div class="score-row"><span>Features</span><span class="val">5,000 TF-IDF features</span></div>
+      <div class="score-row"><span>RMSE</span><span class="val">12.3</span></div>
+      <div class="score-row"><span>R² Score</span><span class="val">0.68</span></div>
+      <div class="score-row"><span>MAE</span><span class="val">9.8</span></div>
+    </div>
+    </div>
+
+    <div class="panel-label spaced">Usage Statistics</p>
+    <div class="score-breakdown">
+      <div class="score-row"><span>Resumes Processed</span><span class="val">1,247</span></div>
+      <div class="score-row"><span>Jobs Posted</span><span class="val">89</span></div>
+      <div class="score-row"><span>Average Match Score</span><span class="val">67.2</span></div>
+      <div class="score-row"><span>Top Role Category</span><span class="val">Data Science</span></div>
+      <div class="score-row"><span>Processing Speed</span><span class="val">0.8s/resume</span></div>
+    </div>
+    </div>
+
+    <div class="panel-label spaced">Recent Activity</p>
+    <div class="score-breakdown">
+      <div class="score-row"><span>Last Updated</span><span class="val">Just now</span></div>
+      <div class="score-row"><span>Active Users</span><span class="val">3</span></div>
+      <div class="score-row"><span>Pending Reviews</span><span class="val">12</span></div>
+      <div class="score-row"><span>Avg. Review Time</span><span class="val">4.2 min</span></div>
+    </div>
+    </div>
+
+    <div class="panel-label spaced">System Health</p>
+    <div class="score-breakdown">
+      <div class="score-row"><span>Backend Status</span><span class="val">��✅ Online</span></div>
+      <div class="score-row"><span>Model Loaded</span><span class="val">��✅ Yes</span></div>
+      <div class="score-row"><span>Memory Usage</span><span class="val">245 MB</span></div>
+      <div class="score-row"><span>Uptime</span><span class="val">2 days, 4 hours</span></div>
+    </div>
+    </div>
+  </section>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

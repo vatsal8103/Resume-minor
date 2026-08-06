@@ -53,6 +53,18 @@ MODEL, TFIDF, LE = intel.load_models()
 def index():
     return send_from_directory(FRONTEND_DIR, "index.html")
 
+@app.route("/about")
+def about():
+    return send_from_directory(FRONTEND_DIR, "about.html")
+
+@app.route("/dashboard")
+def dashboard():
+    return send_from_directory(FRONTEND_DIR, "dashboard.html")
+
+@app.route("/settings")
+def settings():
+    return send_from_directory(FRONTEND_DIR, "settings.html")
+
 
 @app.route("/<path:filename>")
 def static_files(filename):
