@@ -7,6 +7,12 @@ Endpoints:
   POST /api/analyze           -> score ONE resume (optionally vs. a JD)
   POST /api/rank              -> score + rank MULTIPLE resumes against one JD
   GET  /api/status            -> whether a trained category model is loaded
+  GET/POST /api/candidates    -> list candidates or create new candidate
+  GET/PUT/DELETE /api/candidates/<id> -> get/update/delete candidate
+  GET/POST /api/jobs          -> list jobs or create new job
+  GET/PUT/DELETE /api/jobs/<id> -> get/update/delete job
+  GET /api/jobs/<id>/applicants -> get applicants for a job
+  POST /api/match             -> match candidates to a job (enhanced ranking)
 
 Run:
   pip install -r requirements.txt
@@ -16,8 +22,8 @@ Run:
 
 import io
 from pathlib import Path
-
 from flask import Flask, request, jsonify, send_from_directory
+from datetime import datetime
 
 try:
     import intelligence as intel
@@ -28,6 +34,28 @@ BASE_DIR = Path(__file__).parent
 FRONTEND_DIR = BASE_DIR.parent / "frontend"
 
 app = Flask(__name__, static_folder=None)
+# Configure SQLite database
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///recruitment.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Import db and models from models
+from models import db, User, Skill, Job, Candidate, Application, Interview, AptitudeTest
+# Initialize db with the app
+db.init_app(app)
+
+# Create tables
+def create_tables():
+    db.create_all()
+    # Create a default admin user if none exists
+    if not User.query.filter_by(username='admin').first():
+        admin = User(username='admin', email='admin@example.com', full_name='Administrator', role='admin')
+        admin.set_password('admin123')  # Change in production
+        db.session.add(admin)
+        db.session.commit()
+
+# Call create_tables when the app starts
+with app.app_context():
+    create_tables()
 
 # ---------------------------------------------------------------------------
 # Bootstrap: train on the bundled seed dataset if no model has been saved yet.
@@ -162,6 +190,363 @@ def rank():
         r["rank"] = i
 
     return jsonify({"jd_text": jd_text, "candidates": ranked})
+
+
+# Candidate Management APIs
+@app.route("/api/candidates", methods=["GET", "POST"])
+def candidates():
+    if request.method == "GET":
+        # Get query parameters for filtering
+        page = request.args.get('page', 1, type=int)
+        per_page = request.args.get('per_page', 10, type=int)
+        search = request.args.get('search', '')
+        status = request.args.get('status', '')
+
+        query = Candidate.query
+
+        if search:
+            query = query.filter(
+                (Candidate.first_name.contains(search)) |
+                (Candidate.last_name.contains(search)) |
+                (Candidate.email.contains(search))
+            )
+        if status:
+            query = query.filter(Candidate.current_status == status)
+
+        candidates = query.paginate(
+            page=page, per_page=per_page, error_out=False
+        )
+
+        return jsonify({
+            'candidates': [{
+                'id': c.id,
+                'first_name': c.first_name,
+                'last_name': c.last_name,
+                'email': c.email,
+                'phone': c.phone,
+                'current_status': c.current_status,
+                'source': c.source,
+                'created_at': c.created_at.isoformat() if c.created_at else None,
+                'full_name': c.full_name
+            } for c in candidates.items],
+            'total': candidates.total,
+            'pages': candidates.pages,
+            'current_page': page
+        })
+
+    elif request.method == "POST":
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "No data provided"}), 400
+
+        candidate = Candidate(
+            first_name=data.get('first_name'),
+            last_name=data.get('last_name'),
+            email=data.get('email'),
+            phone=data.get('phone'),
+            resume_text=data.get('resume_text', ''),
+            parsed_data=data.get('parsed_data'),
+            current_status=data.get('current_status', 'new'),
+            source=data.get('source', 'manual'),
+            notes=data.get('notes')
+        )
+
+        db.session.add(candidate)
+        db.session.commit()
+
+        return jsonify({
+            'id': candidate.id,
+            'message': 'Candidate created successfully'
+        }), 201
+
+
+@app.route("/api/candidates/<int:id>", methods=["GET", "PUT", "DELETE"])
+def candidate_detail(id):
+    candidate = Candidate.query.get_or_404(id)
+
+    if request.method == "GET":
+        # Get candidate with skills and applications
+        skills = [{'id': s.id, 'name': s.name} for s in candidate.skills]
+        applications = [{
+            'id': a.id,
+            'job_id': a.job_id,
+            'job_title': a.job.title if a.job else None,
+            'match_score': a.match_score,
+            'status': a.status,
+            'applied_at': a.applied_at.isoformat() if a.applied_at else None
+        } for a in candidate.applications]
+
+        return jsonify({
+            'id': candidate.id,
+            'first_name': candidate.first_name,
+            'last_name': candidate.last_name,
+            'email': candidate.email,
+            'phone': candidate.phone,
+            'resume_text': candidate.resume_text,
+            'parsed_data': candidate.parsed_data,
+            'current_status': candidate.current_status,
+            'source': candidate.source,
+            'notes': candidate.notes,
+            'skills': skills,
+            'applications': applications,
+            'created_at': candidate.created_at.isoformat() if candidate.created_at else None,
+            'updated_at': candidate.updated_at.isoformat() if candidate.updated_at else None,
+            'full_name': candidate.full_name
+        })
+
+    elif request.method == "PUT":
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "No data provided"}), 400
+
+        candidate.first_name = data.get('first_name', candidate.first_name)
+        candidate.last_name = data.get('last_name', candidate.last_name)
+        candidate.email = data.get('email', candidate.email)
+        candidate.phone = data.get('phone', candidate.phone)
+        candidate.resume_text = data.get('resume_text', candidate.resume_text)
+        candidate.parsed_data = data.get('parsed_data', candidate.parsed_data)
+        candidate.current_status = data.get('current_status', candidate.current_status)
+        candidate.source = data.get('source', candidate.source)
+        candidate.notes = data.get('notes', candidate.notes)
+
+        candidate.updated_at = datetime.utcnow()
+        db.session.commit()
+
+        return jsonify({
+            'id': candidate.id,
+            'message': 'Candidate updated successfully'
+        })
+
+    elif request.method == "DELETE":
+        db.session.delete(candidate)
+        db.session.commit()
+
+        return jsonify({
+            'message': 'Candidate deleted successfully'
+        })
+
+
+# Job Management APIs
+@app.route("/api/jobs", methods=["GET", "POST"])
+def jobs():
+    if request.method == "GET":
+        page = request.args.get('page', 1, type=int)
+        per_page = request.args.get('per_page', 10, type=int)
+        search = request.args.get('search', '')
+        status = request.args.get('status', '')
+
+        query = Job.query
+
+        if search:
+            query = query.filter(Job.title.contains(search))
+        if status:
+            query = query.filter(Job.status == status)
+
+        jobs = query.paginate(
+            page=page, per_page=per_page, error_out=False
+        )
+
+        return jsonify({
+            'jobs': [{
+                'id': j.id,
+                'title': j.title,
+                'description': j.description,
+                'location': j.location,
+                'employment_type': j.employment_type,
+                'status': j.status,
+                'created_at': j.created_at.isoformat() if j.created_at else None,
+                'applicant_count': j.applications.count()
+            } for j in jobs.items],
+            'total': jobs.total,
+            'pages': jobs.pages,
+            'current_page': page
+        })
+
+    elif request.method == "POST":
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "No data provided"}), 400
+
+        job = Job(
+            title=data.get('title'),
+            description=data.get('description'),
+            required_skills=data.get('required_skills'),
+            experience_required=data.get('experience_required'),
+            education_required=data.get('education_required'),
+            location=data.get('location'),
+            employment_type=data.get('employment_type'),
+            salary_min=data.get('salary_min'),
+            salary_max=data.get('salary_max'),
+            requirements=data.get('requirements'),
+            status=data.get('status', 'open'),
+            created_by=data.get('created_by', 1)  # Default to admin user
+        )
+
+        db.session.add(job)
+        db.session.commit()
+
+        return jsonify({
+            'id': job.id,
+            'message': 'Job created successfully'
+        }), 201
+
+
+@app.route("/api/jobs/<int:id>", methods=["GET", "PUT", "DELETE"])
+def job_detail(id):
+    job = Job.query.get_or_404(id)
+
+    if request.method == "GET":
+        # Get job with applicants
+        applicants = [{
+            'id': a.id,
+            'candidate_id': a.candidate_id,
+            'candidate_name': a.candidate.full_name if a.candidate else None,
+            'match_score': a.match_score,
+            'status': a.status,
+            'applied_at': a.applied_at.isoformat() if a.applied_at else None
+        } for a in job.applications]
+
+        return jsonify({
+            'id': job.id,
+            'title': job.title,
+            'description': job.description,
+            'required_skills': job.required_skills,
+            'experience_required': job.experience_required,
+            'education_required': job.education_required,
+            'location': job.location,
+            'employment_type': job.employment_type,
+            'salary_min': job.salary_min,
+            'salary_max': job.salary_max,
+            'requirements': job.requirements,
+            'status': job.status,
+            'created_by': job.created_by,
+            'created_at': job.created_at.isoformat() if job.created_at else None,
+            'updated_at': job.updated_at.isoformat() if job.updated_at else None,
+            'applicants': applicants
+        })
+
+    elif request.method == "PUT":
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "No data provided"}), 400
+
+        job.title = data.get('title', job.title)
+        job.description = data.get('description', job.description)
+        job.required_skills = data.get('required_skills', job.required_skills)
+        job.experience_required = data.get('experience_required', job.experience_required)
+        job.education_required = data.get('education_required', job.education_required)
+        job.location = data.get('location', job.location)
+        job.employment_type = data.get('employment_type', job.employment_type)
+        job.salary_min = data.get('salary_min', job.salary_min)
+        job.salary_max = data.get('salary_max', job.salary_max)
+        job.requirements = data.get('requirements', job.requirements)
+        job.status = data.get('status', job.status)
+        job.updated_at = datetime.utcnow()
+
+        db.session.commit()
+
+        return jsonify({
+            'id': job.id,
+            'message': 'Job updated successfully'
+        })
+
+    elif request.method == "DELETE":
+        db.session.delete(job)
+        db.session.commit()
+
+        return jsonify({
+            'message': 'Job deleted successfully'
+        })
+
+
+@app.route("/api/jobs/<int:id>/applicants", methods=["GET"])
+def job_applicants(id):
+    job = Job.query.get_or_404(id)
+    applicants = [{
+        'id': a.id,
+        'candidate_id': a.candidate_id,
+        'candidate_name': a.candidate.full_name if a.candidate else None,
+        'match_score': a.match_score,
+        'resume_score': a.resume_score,
+        'jd_similarity': a.jd_similarity,
+        'skill_overlap': a.skill_overlap,
+        'role_confidence': a.role_confidence,
+        'status': a.status,
+        'applied_at': a.applied_at.isoformat() if a.applied_at else None,
+        'notes': a.notes
+    } for a in job.applications]
+
+    return jsonify({
+        'job_id': job.id,
+        'job_title': job.title,
+        'applicants': applicants,
+        'total': len(applicants)
+    })
+
+
+# Enhanced Matching API that saves to database
+@app.route("/api/match", methods=["POST"])
+def match():
+    payload = request.get_json(force=True) or {}
+    jd_text = payload.get("jd_text", "")
+    candidate_ids = payload.get("candidate_ids", [])
+    job_id = payload.get("job_id")
+
+    if not jd_text.strip():
+        return jsonify({"error": "jd_text is required for matching"}), 400
+    if not candidate_ids:
+        return jsonify({"error": "candidate_ids list is required"}), 400
+    if not job_id:
+        return jsonify({"error": "job_id is required"}), 400
+
+    job = Job.query.get_or_404(job_id)
+
+    # Get candidates
+    candidates = Candidate.query.filter(Candidate.id.in_(candidate_ids)).all()
+    if not candidates:
+        return jsonify({"error": "No valid candidates found"}), 404
+
+    ranked = []
+    for candidate in candidates:
+        resume_text = candidate.resume_text
+        if not resume_text.strip():
+            continue
+        result = intel.score_resume(resume_text, jd_text, MODEL, TFIDF, LE)
+        result["name"] = candidate.full_name
+        result["candidate_id"] = candidate.id
+        ranked.append(result)
+
+    ranked.sort(key=lambda r: r["final_score"], reverse=True)
+    for i, r in enumerate(ranked, start=1):
+        r["rank"] = i
+
+        # Save or update application record
+        application = Application.query.filter_by(
+            candidate_id=r["candidate_id"],
+            job_id=job_id
+        ).first()
+
+        if not application:
+            application = Application(
+                candidate_id=r["candidate_id"],
+                job_id=job_id
+            )
+            db.session.add(application)
+
+        application.match_score = r["final_score"]
+        application.resume_score = r.get("final_score")  # Simplified
+        application.jd_similarity = r.get("jd_similarity", 0) * 100 if r.get("jd_similarity") is not None else 0
+        application.skill_overlap = r.get("skill_overlap", 0) * 100 if r.get("skill_overlap") is not None else 0
+        application.role_confidence = r.get("category_confidence", 0) * 100 if r.get("category_confidence") is not None else 0
+        application.updated_at = datetime.utcnow()
+
+    db.session.commit()
+
+    return jsonify({
+        "jd_text": jd_text,
+        "candidates": ranked,
+        "job_id": job_id
+    })
 
 
 if __name__ == "__main__":

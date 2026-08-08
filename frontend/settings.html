@@ -10,67 +10,236 @@
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
-<header class="topbar">
-  <div class="topbar-left">
-    <span class="wordmark">Résumé Intelligence</span>
-    <span class="case-tag">Platform Settings</span>
-  </div>
-  <div class="topbar-right" id="statusLine">model ready · 6 role categories</div>
-</header>
-
-<main class="shell">
-  <section class="intake" aria-label="Settings content">
-    <div class="panel-label">Platform Configuration</div>
-    <p>Adjust the settings below to customize how Résumé Intelligence operates for your recruitment needs.</p>
-
-    <div class="panel-label spaced">Matching Algorithm Weights</div>
-    <p>Adjust how different factors contribute to the final match score:</p>
-    <div class="score-breakdown">
-      <div class="score-row"><span>Job Description Similarity</span><span class="val">50%</span></div>
-      <div class="score-row"><span>Skill Overlap</span><span class="val">30%</span></div>
-      <div class="score-row"><span>Role-fit Confidence</span><span class="val">20%</span></div>
+<div id="smooth-scroll">
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="wordmark">Résumé Intelligence</span>
+      <span class="case-tag">Account Settings</span>
     </div>
-    <p><small>Note: These weights are used in the current scoring model. The new ML model uses a different approach.</small></p>
-
-    <div class="panel-label spaced">Model Thresholds</div>
-    <div class="score-breakdown">
-      <div class="score-row"><span>Minimum Match Score to Show</span><span class="val">30%</span></div>
-      <div class="score-row"><span>High Confidence Threshold</span><span class="val">70%</span></div>
-      <div class="score-row"><span>Low Confidence Threshold</span><span class="val">40%</span></div>
+    <div class="topbar-right">
+      <a href="/" class="btn-ghost">← Back to Home</a>
     </div>
+  </header>
 
-    <div class="panel-label spaced">Feature Toggles</div>
-    <div class="score-breakdown">
-      <div class="score-row"><span>Enable PDF Parsing</span><span class="val">������ On</span></div>
-      <div class="score-row"><span>Enable DOCX Parsing</span><span class="val">������ On</span></div>
-      <div class="score-row"><span>Enable TXT Parsing</span><span class="val">������ On</span></div>
-      <div class="score-row"><span>Show Skill Details</span><span class="val">������ On</span></div>
-      <div class="score-row"><span>Show Education Details</span><span class="val">������ On</span></div>
-      <div class="score-row"><span>Show Experience Details</span><span class="val">������ On</span></div>
-    </div>
+  <main class="shell">
+    <section class="section hero-section">
+      <div class="section-content">
+        <h1>Account <span class="text-gradient">Settings</span></h1>
+        <p class="hero-subtitle">Customize your Résumé Intelligence experience</p>
+      </div>
+    </section>
 
-    <div class="panel-label spaced">Notifications</div>
-    <div class="score-breakdown">
-      <div class="score-row"><span>Email Alerts for New Matches</span><span class="val">������ Off</span></div>
-      <div class="score-row"><span>Weekly Usage Reports</span><span class="val">������ On</span></div>
-      <div class="score-row"><span>Model Retraining Reminders</span><span class="val">������ On</span></div>
-    </div>
+    <section class="section">
+      <div class="section-header">
+        <h2>Appearance & Theme</h2>
+        <p>Customize the look and feel of the platform to match your preferences.</p>
+      </div>
+      <div class="section-content">
+        <div class="settings-panel">
+          <h3>Theme Selection</h3>
+          <div class="setting-item">
+            <label>Color Theme</label>
+            <select class="setting-input" id="themeSelect">
+              <option value="light">Light (Default)</option>
+              <option value="dark">Dark</option>
+              <option value="sepia">Sepia Tone</option>
+              <option value="auto">System Default</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label>Accent Color</label>
+            <select class="setting-input" id="accentSelect">
+              <option value="beige">Beige / Earth Tones (Default)</option>
+              <option value="blue">Professional Blue</option>
+              <option value="green">Forest Green</option>
+              <option value="purple">Royal Purple</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label>Font Size</label>
+            <select class="setting-input" id="fontSizeSelect">
+              <option value="small">Small</option>
+              <option value="medium">Medium (Default)</option>
+              <option value="large">Large</option>
+              <option value="xlarge">Extra Large</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <div class="panel-label spaced">Data Management</div>
-    <p>Control how your data is handled:</p>
-    <div class="score-breakdown">
-      <div class="score-row"><span>Data Retention Period</span><span class="val">90 days</span></div>
-      <div class="score-row"><span>Auto-delete Processed Files</span><span class="val">������ Off</span></div>
-      <div class="score-row"><span>Allow Resume Storage</span><span class="val">������ On</span></div>
-      <div class="score-row"><span>Enable Analytics Collection</span><span class="val">������ On</span></div>
-    </div>
+    <section class="section">
+      <div class="section-header">
+        <h2>Notifications & Alerts</h2>
+        <p>Choose how and when you receive updates from the platform.</p>
+      </div>
+      <div class="section-content">
+        <div class="settings-panel">
+          <div class="setting-item">
+            <label>Email Notifications</label>
+            <div class="toggle-switch">
+              <input type="checkbox" id="emailNotifications" checked>
+              <span class="toggle-slider"></span>
+            </div>
+            <p class="setting-desc">Get notified when new candidates match your criteria</p>
+          </div>
+          <div class="setting-item">
+            <label>Weekly Analytics Report</label>
+            <div class="toggle-switch">
+              <input type="checkbox" id="weeklyReport">
+              <span class="toggle-slider"></span>
+            </div>
+            <p class="setting-desc">Receive a weekly summary of your hiring metrics</p>
+          </div>
+          <div class="setting-item">
+            <label>Application Status Updates</label>
+            <div class="toggle-switch">
+              <input type="checkbox" id="statusUpdates" checked>
+              <span class="toggle-slider"></span>
+            </div>
+            <p class="setting-desc">Notify candidates when their application status changes</p>
+          </div>
+          <div class="setting-item">
+            <label>Interview Reminders</label>
+            <div class="toggle-switch">
+              <input type="checkbox" id="interviewReminders" checked>
+              <span class="toggle-slider"></span>
+            </div>
+            <p class="setting-desc">Get reminders for upcoming interviews</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <button type="button" class="btn-primary" style="width: auto; margin-top: 22px;">
-      Save Settings
-    </button>
-  </section>
-</main>
+    <section class="section">
+      <div class="section-header">
+        <h2>AI & Matching Preferences</h2>
+        <p>Fine-tune how the AI analyzes and matches candidates to your job descriptions.</p>
+      </div>
+      <div class="section-content">
+        <div class="settings-panel">
+          <div class="setting-item">
+            <label>Matching Sensitivity</label>
+            <div class="slider-container">
+              <input type="range" min="0" max="100" value="70" class="slider" id="matchingSensitivity">
+              <div class="slider-values">
+                <span>Lenient (More Matches)</span>
+                <span>Strict (Fewer, Higher Quality Matches)</span>
+              </div>
+            </div>
+            <p class="setting-desc">Adjust how strictly the AI matches candidate skills to job requirements</p>
+          </div>
+          <div class="setting-item">
+            <label>Skill Weight Priority</label>
+            <select class="setting-input" id="skillWeight">
+              <option value="balanced">Balanced (Default)</option>
+              <option value="technical">Technical Skills Focus</option>
+              <option value="soft">Soft Skills Focus</option>
+              <option value="experience">Experience Weighted</option>
+              <option value="education">Education & Credentials Focus</option
+            </select>
+          </div>
+          <div class="setting-item">
+            <label>Experience vs. Potential</label>
+            <div class="slider-container">
+              <input type="range" min="0" max="100" value="50" class="slider" id="experiencePotential">
+              <div class="slider-values">
+                <span>Prioritize Experience</span>
+                <span>Prioritize Potential</span>
+              </div>
+            </div>
+            <p class="setting-desc">Balance between valuing years of experience vs. growth potential</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Data & Privacy</h2>
+        <p>Control how your data is stored, used, and shared.</p>
+      </div>
+      <div class="section-content">
+        <div class="settings-panel">
+          <div class="setting-item">
+            <label>Data Retention</label>
+            <select class="setting-input" id="dataRetention">
+              <option value="30days">30 Days</option>
+              <option value="90days">90 Days (Default)</option>
+              <option value="1year">1 Year</option>
+              <option value="indefinite">Indefinitely</option>
+              <option value="deleteafter">Delete After Processing</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label>Analytics Sharing</label>
+            <div class="toggle-switch">
+              <input type="checkbox" id="analyticsSharing">
+              <span class="toggle-slider"></span>
+            </div>
+            <p class="setting-desc">Allow anonymized usage data to improve our AI models</p>
+          </div>
+          <div class="setting-item">
+            <label>GDPR Compliance</label>
+            <div class="toggle-switch">
+              <input type="checkbox" id="gdprCompliance" checked>
+              <span class="toggle-slider"></span>
+            </div>
+            <p class="setting-desc">Enable additional data protection controls for EU users</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Account Information</h2>
+        <p>View and manage your account details.</p>
+      </div>
+      <div class="section-content">
+        <div class="settings-panel">
+          <div class="setting-item">
+            <label>Account Email</label>
+            <input type="email" class="setting-input" value="demo@resumeintelligence.com" disabled>
+          </div>
+          <div class="setting-item">
+            <label>Account Type</label>
+            <input type="text" class="setting-input" value="Free Tier" disabled>
+          </div>
+          <div class="setting-item">
+            <label>Member Since</label>
+            <input type="text" class="setting-input" value="August 2026" disabled>
+          </div>
+          <div class="setting-item">
+            <label>Usage This Month</label>
+            <div class="stat-card">
+              <div class="stat-value">24/100</div>
+              <div class="stat-label">Resume Analyses Used</div>
+            </div>
+          </div>
+          <div class="setting-item">
+            <label>API Access</label>
+            <div class="toggle-switch">
+              <input type="checkbox" id="apiAccess">
+              <span class="toggle-slider"></span>
+            </div>
+            <p class="setting-desc">Enable API access for custom integrations (Paid plans only)</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-content">
+        <div class="settings-panel">
+          <button type="button" class="btn-primary btn-wide" id="saveSettings">Save All Settings</button>
+          <button type="button" class="btn-ghost btn-wide" id="resetSettings">Reset to Defaults</button>
+          <a href="/" class="btn-ghost btn-wide">Return to Dashboard</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
 
 <script src="script.js"></script>
 </body>

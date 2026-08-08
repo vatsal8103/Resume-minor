@@ -3,65 +3,176 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Resume Intelligence — Candidate Review</title>
+<title>Resume Intelligence — AI-Powered Recruitment Platform</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+Pro:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
-<header class="topbar">
-  <div class="topbar-left">
-    <span class="wordmark">Résumé Intelligence</span>
-    <span class="case-tag">Candidate Review Desk</span>
-  </div>
-  <div class="topbar-right" id="statusLine">connecting to model…</div>
-</header>
-
-<main class="shell">
-
-  <!-- INTAKE PANEL -->
-  <section class="intake" aria-label="Job intake">
-    <div class="panel-label">01 — Role brief</div>
-    <label class="field-label" for="jdInput">Job description</label>
-    <textarea id="jdInput" placeholder="Paste the job description here. Skills and requirements mentioned here are matched against each candidate."></textarea>
-
-    <div class="panel-label spaced">02 — Candidates</div>
-    <label class="field-label">Upload resumes</label>
-    <div id="dropzone" class="dropzone">
-      <p>Drop .pdf, .docx, or .txt files here, or click to browse.</p>
-      <input type="file" id="fileInput" multiple accept=".pdf,.docx,.txt" hidden />
+<!-- Smooth scroll container -->
+<div id="smooth-scroll">
+  <!-- Header -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="wordmark">Résumé Intelligence</span>
+      <span class="case-tag">AI-Powered Recruitment</span>
     </div>
-    <ul id="fileList" class="file-list"></ul>
+    <div class="topbar-right" id="statusLine">connecting to model…</div>
+  </header>
 
-    <details class="manual-add">
-      <summary>Or paste a resume manually</summary>
-      <input type="text" id="manualName" placeholder="Candidate name" />
-      <textarea id="manualText" placeholder="Paste resume text…"></textarea>
-      <button type="button" id="addManualBtn" class="btn-ghost">Add candidate</button>
-    </details>
+  <!-- Main Content -->
+  <main class="shell">
 
-    <button type="button" id="analyzeBtn" class="btn-primary" disabled>
-      Review candidates →
-    </button>
-    <p class="hint" id="hint">Add a job description and at least one candidate to begin.</p>
-  </section>
+    <!-- Section 1: Hero / Introduction -->
+    <section class="section hero-section" id="hero">
+      <div class="section-content">
+        <h1>AI-Powered <span class="text-gradient">Recruitment Intelligence</span></h>
+        <p class="hero-subtitle">Transform your hiring process with automated resume analysis, intelligent matching, and data-driven insights</p>
+        <div class="hero-buttons">
+          <a href="explore.html" class="btn-primary btn-animated">Explore Features</a>
+          <a href="tour.html" class="btn-ghost btn-animated">Take Tour</a>
+        </div>
+      </div>
+    </section>
 
-  <!-- RESULTS -->
-  <section class="results" aria-label="Ranked candidates">
-    <div class="results-head">
-      <div class="panel-label">Ranked shortlist</div>
-      <span id="resultsCount" class="results-count"></span>
-    </div>
-    <div id="resultsEmpty" class="empty-state">
-      <p>No candidates reviewed yet.</p>
-      <p class="empty-sub">Once you add a role brief and candidates, each résumé is scored on job-description similarity, skill overlap, and predicted role fit — then ranked here.</p>
-    </div>
-    <div id="candidateList" class="candidate-list"></div>
-  </section>
+    <!-- Section 2: Job Brief -->
+    <section class="section intake-section" id="job-brief">
+      <div class="section-header">
+        <h2>Define Your Role</h2>
+        <p>Start by describing the position you're hiring for. Our AI will analyze key requirements and match them against candidate profiles.</p>
+      </div>
+      <div class="section-content">
 
-</main>
+        <!-- Job Description Input -->
+        <div class="form-group">
+          <label class="field-label" for="jdInput">Job Description</label>
+          <textarea id="jdInput" placeholder="Paste the job description here. Skills, experience requirements, and qualifications mentioned here will be matched against each candidate." rows="8"></textarea>
+        </div>
+
+        <!-- Resume Upload -->
+        <div class="form-group">
+          <label class="field-label">Upload Candidate Resumes</label>
+          <div id="dropzone" class="dropzone">
+            <p>Drop .pdf, .docx, or .txt files here, or click to browse.</p>
+            <p class="dropzone-hint">Supports PDF, DOCX, and TXT formats</p>
+            <input type="file" id="fileInput" multiple accept=".pdf,.docx,.txt" hidden />
+          </div>
+          <ul id="fileList" class="file-list"></ul>
+        </div>
+
+        <!-- Manual Add -->
+        <details class="manual-add">
+          <summary>Or add a candidate manually</summary>
+          <div class="manual-form">
+            <input type="text" id="manualName" placeholder="Candidate name" />
+            <textarea id="manualText" placeholder="Paste resume text…" rows="4"></textarea>
+            <button type="button" id="addManualBtn" class="btn-ghost">Add Candidate</button>
+          </div>
+        </div>
+
+        <!-- Action Button -->
+        <button type="button" id="analyzeBtn" class="btn-primary btn-wide" disabled>
+          Analyze Candidates →
+        </button>
+        <p class="hint" id="hint">Add a job description and at least one candidate to begin analysis.</p>
+      </div>
+    </section>
+
+    <!-- Section 3: Results -->
+    <section class="section results-section" id="results">
+      <div class="section-header">
+        <h2>Ranked Candidate Shortlist</h2>
+        <p>View candidates ranked by their match score to your job description, with detailed skill analysis and role-fit predictions.</p>
+      </div>
+      <div class="section-content">
+        <div class="results-header">
+          <div class="results-left">
+            <div class="panel-label">Ranked Shortlist</div>
+            <span id="resultsCount" class="results-count"></span>
+          </div>
+          <div class="results-right">
+            <a href="settings.html" class="btn-ghost">Appearance Settings</a>
+          </div>
+        </div>
+
+        <div id="resultsEmpty" class="empty-state">
+          <p>No candidates analyzed yet.</p>
+          <p class="empty-sub">Once you provide a job description and upload resumes, each candidate will be scored on multiple dimensions and ranked here.</p>
+        </div>
+
+        <div id="candidateList" class="candidate-list"></div>
+      </div>
+    </section>
+
+    <!-- Section 4: Analytics Dashboard -->
+    <section class="section analytics-section" id="analytics">
+      <div class="section-header">
+        <h2>Recruitment Analytics</h2>
+        <p>Monitor your hiring pipeline with real-time metrics and insights.</p>
+      </div>
+      <div class="section-content">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-value" id="totalCandidates">0</div>
+            <div class="stat-label">Total Candidates</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="totalJobs">0</div>
+            <div class="stat-label">Active Positions</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="avgMatchScore">0%</div>
+            <div class="stat-label">Avg. Match Score</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="topRole">—</div>
+            <div class="stat-label">Top Role Category</div>
+          </div>
+        </div>
+
+        <div class="chart-container">
+          <div class="chart-placeholder">
+            <h3>Hiring Funnel</h3>
+            <p class="chart-subtext">Visual representation of candidate progression through your recruitment pipeline</p>
+            <div class="chart-bar-container">
+              <div class="chart-bar" id="newBar" style="width: 0%;"></div>
+              <div class="chart-bar-label">New</div>
+            </div>
+            <div class="chart-bar-container">
+              <div class="chart-bar" id="screeningBar" style="width: 0%;"></div>
+              <div class="chart-bar-label">Screening</div>
+            </div>
+            <div class="chart-bar-container">
+              <div class="chart-bar" id="shortlistedBar" style="width: 0%;"></div>
+              <div class="chart-bar-label">Shortlisted</div>
+            </div>
+            <div class="chart-bar-container">
+              <div class="chart-bar" id="interviewBar" style="width: 0%;"></div>
+              <div class="chart-bar-label">Interview</div>
+            </div>
+            <div class="chart-bar-container">
+              <div class="chart-bar" id="selectedBar" style="width: 0%;"></div>
+              <div class="chart-bar-label">Selected/Hired</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: Call to Action -->
+    <section class="section cta-section" id="cta">
+      <div class="section-content">
+        <h2>Ready to Transform Your Hiring Process?</h2>
+        <p>Join hundreds of companies using AI to make better hiring decisions faster.</p>
+        <div class="cta-buttons">
+          <a href="get-started.html" class="btn-primary btn-animated">Get Started Free</a>
+          <a href="learn-more.html" class="btn-ghost btn-animated">Learn More →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
 
 <!-- Candidate detail drawer -->
 <div id="drawerOverlay" class="drawer-overlay" hidden>
