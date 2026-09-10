@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Skill Gap Roadmap — Résumé Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+Pro:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="smooth-scroll">
+    <header class="topbar">
+        <div class="topbar-left">
+            <span class="wordmark">Résumé Intelligence</span>
+            <span class="case-tag">Skill Development Roadmap</span>
+        </div>
+        <div class="topbar-right">
+            <a href="/" class="btn-ghost">← Back to Home</a>
+        </div>
+    </header>
+
+    <main class="shell">
+        <section class="section hero-section">
+            <div class="section-content">
+                <h1>Personalized <span class="text-gradient">Skill Gap Roadmap</span></h1>
+                <p class="hero-subtitle">Get a customized learning plan to bridge your skill gaps and become the ideal candidate</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <h2>How It Works</h2>
+                <p>Our AI analyzes your resume against the job description to identify skill gaps, then creates a step-by-step learning path with timelines, projects, and assessments.</p>
+            </div>
+            <div class="section-content">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">4-12</div>
+                        <div class="stat-label">Weeks to Competency</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">85%</div>
+                        <div class="stat-label">Success Rate</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">100+</div>
+                        <div class="stat-label">Skills Covered</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <h2>Your Custom Roadmap</h2>
+                <p>See exactly what you need to learn to close your skill gaps</p>
+            </div>
+            <div class="section-content">
+                <div id="roadmapContainer">
+                    <div class="loading-state">
+                        <p>Generating your personalized skill gap roadmap...</p>
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section cta-section">
+            <div class="section-content">
+                <h2>Ready to Start Your Learning Journey?</h2>
+                <p>Use this roadmap to guide your skill development and become a stronger candidate.</p>
+                <div class="cta-buttons">
+                    <a href="/" class="btn-primary btn-animated">Analyze Another Resume</a>
+                    <a href="explore.html" class="btn-ghost btn-animated">See All Features</a>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Roadmap page specific functionality
+    const urlParams = new URLSearchParams(window.location.search);
+    const resumeText = urlParams.get('resume') || '';
+    const jdText = urlParams.get('jd') || '';
+
+    if (resumeText && jdText) {
+        generateRoadmap(decodeURIComponent(resumeText), decodeURIComponent(jdText));
+    } else {
+        // Show sample roadmap for demo
+        showSampleRoadmap();
+    }
+
+    async function generateRoadmap(resumeText, jdText) {
+        const container = document.getElementById('roadmapContainer');
+        container.innerHTML = `
+            <div class="loading-state">
+                <p>Analyzing skills and generating your personalized roadmap...</p>
+                <div class="spinner"></div>
+            </div>
+        `;
+
+        try {
+            const response = await fetch('/api/roadmap', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ resume_text: resumeText, jd_text: jdText })
+            });
+
+            if (!response.ok) throw new Error('Failed to generate roadmap');
+
+            const data = await response.json();
+            displayRoadmap(data);
+        } catch (error) {
+            container.innerHTML = `
+                <div class="error-state">
+                    <h3>Something went wrong</h3>
+                    <p>${error.message}</p>
+                    <button onclick="window.location.reload()" class="btn-ghost">Try Again</button>
+                </div>
+            `;
+        }
+    }
+
+    function displayRoadmap(data) {
+        const container = document.getElementById('roadmapContainer');
+
+        const missingSkills = data.missing_skills || [];
+        if (missingSkills.length === 0) {
+            container.innerHTML = `
+                <div class="success-state">
+                    <h2>Excellent Match! 🎉</h2>
+                    <p>Your skills align well with the job requirements. No significant skill gaps detected.</p>
+                    <p><strong>Resume Skills:</strong> ${data.resume_skills.join(', ')}</p>
+                    <p><strong>Job Requirements:</strong> ${data.jd_skills.join(', ')}</p>
+                </div>
+            `;
+            return;
+        }
+
+        let html = `
+            <div class="roadmap-header">
+                <h2>Skill Gap Analysis</h2>
+                <div class="skill-summary">
+                    <div class="skill-item">
+                        <h3>${data.resume_skills.length}</h3>
+                        <p>Your Skills</p>
+                    </div>
+                    <div class="skill-item">
+                        <h3>${data.jd_skills.length}</h3>
+                        <p>Job Requirements</p>
+                    </div>
+                    <div class="skill-item">
+                        <h3>${missingSkills.length}</h3>
+                        <p>Skill Gaps</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Learning Path</h3>
+            <div class="timeline-estimate">
+                <p><strong>Estimated Completion Time:</strong> ${data.total_estimated_hours} hours (${data.timeline_weeks[Object.keys(data.timeline_weeks)[0]] || 8} weeks at 10 hours/week)</p>
+            </div>
+        `;
+
+        // Priority skills section
+        if (data.priority_skills && data.priority_skills.length > 0) {
+            html += `
+                <div class="roadmap-section">
+                    <h3>Priority Skills to Focus On</h3>
+                    <div class="skill-tags">
+                        ${data.priority_skills.map(skill => `<span class="skill-tag priority">${escapeHtml(skill)}</span>`).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Detailed learning path for each skill
+        if (data.learning_path) {
+            html += `<div class="roadmap-section"><h3>Detailed Learning Plans</h3>`;
+
+            Object.keys(data.learning_path).forEach(skill => {
+                const plan = data.learning_path[skill];
+                const timelineWeeks = data.timeline_weeks[skill] || 8;
+
+                html += `
+                    <div class="skill-roadmap-card">
+                        <h4>${escapeHtml(skill)}</h4>
+                        <p class="skill-timeline">⏱️ Estimated: ${timelineWeeks} weeks</p>
+
+                        <div class="roadmap-tabs">
+                            <button class="tab-btn active" data-tab="${skill}-beginner">Foundations</button>
+                            <button class="tab-btn" data-tab="${skill}-intermediate">Intermediate</button>
+                            <button class="tab-btn" data-tab="${skill}-advanced">Advanced</button>
+                            <button class="tab-btn" data-tab="${skill}-practice">Practice</button>
+                            <button class="tab-btn" data-tab="${skill}-projects">Projects</button>
+                            <button class="tab-btn" data-tab="${skill}-assessment">Assessment</button>
+                        </div>
+
+                        <div class="tab-content" id="${skill}-beginner">
+                            <h4>Foundational Topics</h4>
+                            <ul>
+                                ${plan.beginner_topics.map(topic => `<li>${escapeHtml(topic)}</li>`).join('')}
+                            </ul>
+                        </div>
+
+                        <div class="tab-content" id="${skill}-intermediate">
+                            <h4>Intermediate Skills</h4>
+                            <ul>
+                                ${plan.intermediate_topics.map(topic => `<li>${escapeHtml(topic)}</li>`).join('')}
+                            </ul>
+                        </div>
+
+                        <div class="tab-content" id="${skill}-advanced">
+                            <h4>Advanced Concepts</h4>
+                            <ul>
+                                ${plan.advanced_topics.map(topic => `<li>${escapeHtml(topic)}</li>`).join('')}
+                            </ul>
+                        </div>
+
+                        <div class="tab-content" id="${skill}-practice">
+                            <h4>Practice Activities</h4>
+                            <ul>
+                                ${plan.practice_activities.map(activity => `<li>${escapeHtml(activity)}</li>`).join('')}
+                            </ul>
+                        </div>
+
+                        <div class="tab-content" id="${skill}-projects">
+                            <h4>Mini Projects</h4>
+                            <ul>
+                                ${plan.mini_projects.map(project => `<li>${escapeHtml(project)}</li>`).join('')}
+                            </ul>
+                        </div>
+
+                        <div class="tab-content" id="${skill}-assessment">
+                            <h4>Assessment & Validation</h4>
+                            <ul>
+                                ${plan.assessments.map(assessment => `<li>${escapeHtml(assessment)}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `</div>`; // Close roadmap-section
+        }
+
+        // Category recommendations
+        if (data.category_recommendations) {
+            html += `
+                <div class="roadmap-section">
+                    <h3>Role-Specific Recommendations</h3>
+                    <p>${Array.isArray(data.category_recommendations) ? data.category_recommendations.join(' ') : data.category_recommendations}</p>
+                </div>
+            `;
+        }
+
+        container.innerHTML = html;
+        activateTabButtons();
+    }
+
+    function showSampleRoadmap() {
+        const container = document.getElementById('roadmapContainer');
+        container.innerHTML = `
+            <div class="sample-roadmap">
+                <h2>Sample Skill Gap Roadmap</h2>
+                <p>See how our AI creates personalized learning paths based on your resume and target job.</p>
+
+                <div class="roadmap-preview">
+                    <h3>Scenario: Junior Developer → Senior Full-Stack Position</h3>
+                    <p><strong>Current Skills:</strong> HTML, CSS, JavaScript, Python</p>
+                    <p><strong>Target Role Requirements:</strong> React, Node.js, AWS, Docker, Kubernetes, REST APIs</p>
+
+                    <div class="skill-gap">
+                        <h4>Identified Skill Gaps:</h4>
+                        <ul>
+                            <li>React (Frontend Framework)</li>
+                            <li>Node.js (Backend Runtime)</li>
+                            <li>AWS (Cloud Platform)</li>
+                            <li>Docker (Containerization)</li>
+                            <li>Kubernetes (Orchestration)</li>
+                            <li>REST API Design</li>
+                        </ul>
+                    </div>
+
+                    <div class="sample-timeline">
+                        <h4>Recommended Learning Path (20-24 weeks):</h4>
+                        <ol>
+                            <li><strong>Weeks 1-4:</strong> Frontend Foundations - React basics, component lifecycle, state management</li>
+                            <li><strong>Weeks 5-8:</strong> Backend Development - Node.js, Express, REST API design</li>
+                            <li><strong>Weeks 9-12:</strong> Cloud & DevOps - AWS services, Docker containers, Kubernetes basics</li>
+                            <li><strong>Weeks 13-16:</strong> Advanced Integration - Microservices, API security, performance optimization</li>
+                            <li><strong>Weeks 17-20:</strong> Capstone Project - Build full-stack application using all learned technologies</li>
+                            <li><strong>Weeks 21-24:</strong> Preparation - Interview practice, resume update, portfolio refinement</li>
+                        </ol>
+                    </div>
+
+                    <div class="sample-outcome">
+                        <h4>Expected Outcome:</h4>
+                        <p>Upon completion, you'll have built a portfolio-worthy full-stack application and be prepared for senior-level interviews targeting the specific job requirements.</p>
+                    </div>
+                </div>
+
+                <div class="cta-buttons">
+                    <a href="/" class="btn-primary btn-animated">Create Your Own Roadmap</a>
+                </div>
+            </div>
+        `;
+    }
+
+    function activateTabButtons() {
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const skill = this.dataset.tab.split('-')[0];
+                const tabType = this.dataset.tab.split('-')[1];
+
+                // Deactivate all tabs for this skill
+                document.querySelectorAll(`.tab-btn[data-tab^="${skill}-"]`).forEach(btn => {
+                    btn.classList.remove('active');
+                });
+
+                // Hide all tab contents for this skill
+                document.querySelectorAll(`.tab-content[id^="${skill}-"]`).forEach(content => {
+                    content.style.display = 'none';
+                });
+
+                // Activate clicked tab
+                this.classList.add('active');
+                document.getElementById(this.dataset.tab).style.display = 'block';
+            });
+        });
+
+        // Activate first tab for each skill by default
+        document.querySelectorAll('.skill-roadmap-card').forEach(card => {
+            const firstTab = card.querySelector('.tab-btn');
+            if (firstTab) {
+                firstTab.click();
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>

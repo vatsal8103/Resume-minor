@@ -142,6 +142,16 @@ def parse_file():
     except Exception as e:
         return jsonify({"error": f"Failed to parse file: {e}"}), 500
 
+    # If no text was extracted, try OCR as a fallback for scanned documents
+    if not text.strip() and OCR_AVAILABLE:
+        try:
+            from backend.intelligence import extract_text_with_ocr
+            ocr_text = extract_text_with_ocr(data, filename)
+            if ocr_text.strip():
+                text = ocr_text
+        except Exception as e:
+            logging.warning(f"OCR fallback failed: {e}")
+
     if not text.strip():
         return jsonify({
             "error": "No extractable text found. This may be a scanned/image resume "
@@ -547,6 +557,120 @@ def match():
         "candidates": ranked,
         "job_id": job_id
     })
+
+
+# Skill Gap Roadmap Generation API
+@app.route("/api/roadmap", methods=["POST"])
+def generate_roadmap():
+    payload = request.get_json(force=True) or {}
+    resume_text = payload.get("resume_text", "")
+    jd_text = payload.get("jd_text", "")
+
+    if not resume_text.strip():
+        return jsonify({"error": "resume_text is required"}), 400
+
+    # Get resume analysis to extract skills
+    resume_result = intel.score_resume(resume_text, "", MODEL, TFIDF, LE)
+    resume_skills = set(resume_result["resume_skills"])
+
+    jd_skills = set()
+    if jd_text.strip():
+        jd_result = intel.score_resume(jd_text, "", MODEL, TFIDF, LE)
+        jd_skills = set(jd_result["resume_skills"])
+
+    missing_skills = jd_skills - resume_skills
+
+    # Generate roadmap
+    roadmap = intel.generate_skill_gap_roadmap(
+        resume_skills,
+        jd_skills,
+        missing_skills,
+        resume_result["predicted_category"]
+    )
+
+    return jsonify({
+        "resume_skills": sorted(list(resume_skills)),
+        "jd_skills": sorted(list(jd_skills)),
+        "missing_skills": sorted(list(missing_skills)),
+        "roadmap": roadmap
+    })
+
+
+# Interview Question Generation API
+@app.route("/api/questions", methods=["POST"])
+def generate_questions():
+    payload = request.get_json(force=True) or {}
+    resume_text = payload.get("resume_text", "")
+    jd_text = payload.get("jd_text", "")
+
+    if not resume_text.strip():
+        return jsonify({"error": "resume_text is required"}), 400
+
+    # Get resume analysis
+    resume_result = intel.score_resume(resume_text, "", MODEL, TFIDF, LE)
+    resume_skills = set(resume_result["resume_skills"])
+
+    jd_skills = set()
+    matched_skills = set()
+    if jd_text.strip():
+        jd_result = intel.score_resume(jd_text, "", MODEL, TFIDF, LE)
+        jd_skills = set(jd_result["resume_skills"])
+        matched_skills = resume_skills & jd_skills
+
+    # Generate interview questions
+    questions = intel.generate_interview_questions(
+        jd_text,
+        resume_skills,
+        matched_skills,
+        jd_skills - resume_skills,
+        resume_result["predicted_category"]
+    )
+
+    return jsonify({
+        "resume_skills": sorted(list(resume_skills)),
+        "jd_skills": sorted(list(jd_skills)),
+        "matched_skills": sorted(list(matched_skills)),
+        "missing_skills": sorted(list(jd_skills - resume_skills)),
+        "questions": questions
+    })
+
+
+# Model Evaluation API (for admin/testing)
+@app.route("/api/evaluate", methods=["POST"])
+def evaluate_model():
+    payload = request.get_json(force=True) or {}
+    test_predictions = payload.get("test_predictions", [])
+    test_actuals = payload.get("test_actuals", [])
+
+    if not test_predictions or not test_actuals:
+        return jsonify({"error": "test_predictions and test_actuals are required"}), 400
+
+    if len(test_predictions) != len(test_actuals):
+        return jsonify({"error": "test_predictions and test_actuals must have the same length"}), 400
+
+    evaluation = intel.evaluate_model_performance(test_predictions, test_actuals)
+    return jsonify(evaluation)
+
+
+# Matching Accuracy API (for admin/testing)
+@app.route("/api/matching_accuracy", methods=["POST"])
+def calculate_matching_accuracy():
+    payload = request.get_json(force=True) or {}
+    resume_texts = payload.get("resume_texts", [])
+    jd_texts = payload.get("jd_texts", [])
+    expected_matches = payload.get("expected_matches", [])
+
+    if not resume_texts:
+        return jsonify({"error": "resume_texts is required"}), 400
+
+    if len(resume_texts) != len(jd_texts):
+        return jsonify({"error": "resume_texts and jd_texts must have the same length"}), 400
+
+    if expected_matches and len(expected_matches) != len(resume_texts):
+        return jsonify({"error": "expected_matches must have the same length as resume_texts"}), 400
+
+    accuracy = intel.calculate_matching_accuracy(resume_texts, jd_texts, expected_matches, MODEL, TFIDF, LE)
+    return jsonify(accuracy)
 
 
 if __name__ == "__main__":

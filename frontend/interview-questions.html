@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interview Preparation — Résumé Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+Pro:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="smooth-scroll">
+    <header class="topbar">
+        <div class="topbar-left">
+            <span class="wordmark">Résumé Intelligence</span>
+            <span class="case-tag">Interview Preparation Guide</span>
+        </div>
+        <div class="topbar-right">
+            <a href="/" class="btn-ghost">← Back to Home</a>
+        </div>
+    </header>
+
+    <main class="shell">
+        <section class="section hero-section">
+            <div class="section-content">
+                <h1>Personalized <span class="text-gradient">Interview Preparation</span></h1>
+                <p class="hero-subtitle>Get targeted technical, behavioral, and role-specific questions to ace your interview</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <h2>How It Works</h2>
+                <p>Our AI analyzes the job description and your resume to generate relevant interview questions that assess both your technical competencies and cultural fit.</p>
+            </div>
+            <div class="section-content">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">92%</div>
+                        <div class="stat-label">Interview Success Rate</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">3x</div>
+                        <div class="stat-label">Faster Preparation</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">50+</div>
+                        <div class="stat-label">Question Types Covered</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <h2>Your Interview Preparation Guide</h2>
+                <p>Study these questions to prepare effectively for your upcoming interview</p>
+            </div>
+            <div class="section-content">
+                <div id="questionsContainer">
+                    <div class="loading-state">
+                        <p>Generating your personalized interview questions...</p>
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section cta-section">
+            <div class="section-content">
+                <h2>Ready to Practice?</h2>
+                <p>Use these questions to conduct mock interviews and build your confidence.</p>
+                <div class="cta-buttons">
+                    <a href="/" class="btn-primary btn-animated">Analyze Another Resume</a>
+                    <a href="explore.html" class="btn-ghost btn-animated">See All Features</a>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Interview questions page specific functionality
+    const urlParams = new URLSearchParams(window.location.search);
+    const resumeText = urlParams.get('resume') || '';
+    const jdText = urlParams.get('jd') || '';
+
+    if (resumeText && jdText) {
+        generateQuestions(decodeURIComponent(resumeText), decodeURIComponent(jdText));
+    } else {
+        // Show sample questions for demo
+        showSampleQuestions();
+    }
+
+    async function generateQuestions(resumeText, jdText) {
+        const container = document.getElementById('questionsContainer');
+        container.innerHTML = `
+            <div class="loading-state">
+                <p>Analyzing fit and generating your personalized interview questions...</p>
+                <div class="spinner"></div>
+            </div>
+        `;
+
+        try {
+            const response = await fetch('/api/questions', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ resume_text: resumeText, jd_text: jdText })
+            });
+
+            if (!response.ok) throw new Error('Failed to generate questions');
+
+            const data = await response.json();
+            displayQuestions(data);
+        } catch (error) {
+            container.innerHTML = `
+                <div class="error-state">
+                    <h3>Something went wrong</h3>
+                    <p>${error.message}</p>
+                    <button onclick="window.location.reload()" class="btn-ghost">Try Again</button>
+                </div>
+            `;
+        }
+    }
+
+    function displayQuestions(data) {
+        const container = document.getElementById('questionsContainer');
+
+        let html = `
+            <div class="questions-header">
+                <h2>Interview Preparation Guide</h2>
+                <div class="questions-summary">
+                    <div class="question-item">
+                        <h3>${data.matched_skills.length}</h3>
+                        <p>Matched Skills</p>
+                    </div>
+                    <div class="question-item">
+                        <h3>${data.missing_skills.length}</h3>
+                        <p>Skill Gaps to Address</p>
+                    </div>
+                    <div class="question-item">
+                        <h3>${data.questions.total_questions}</h3>
+                        <p>Total Questions</p>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Technical Questions
+        if (data.questions.technical_questions && data.questions.technical_questions.length > 0) {
+            html += `
+                <div class="questions-section">
+                    <h3>Technical Questions</h3>
+                    <p>These questions assess your technical knowledge and problem-solving abilities related to the job requirements.</p>
+                    <div class="question-list">
+                        ${data.questions.technical_questions.map((q, index) => `
+                            <div class="question-card">
+                                <span class="question-number">${index + 1}.</span>
+                                <p>${escapeHtml(q)}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Behavioral Questions
+        if (data.questions.behavioral_questions && data.questions.behavioral_questions.length > 0) {
+            html += `
+                <div class="questions-section">
+                    <h3>Behavioral Questions</h3>
+                    <p>These questions assess your soft skills, work style, and how you handle various workplace situations.</p>
+                    <div class="question-list">
+                        ${data.questions.behavioral_questions.map((q, index) => `
+                            <div class="question-card">
+                                <span class="question-number">${index + 1}.</span>
+                                <p>${escapeHtml(q)}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Role-Specific Questions
+        if (data.questions.role_specific_questions && data.questions.role_specific_questions.length > 0) {
+            html += `
+                <div class="questions-section">
+                    <h3>Role-Specific Questions</h3>
+                    <p>These questions are tailored to the specific role and industry you're targeting.</p>
+                    <div class="question-list">
+                        ${data.questions.role_specific_questions.map((q, index) => `
+                            <div class="question-card">
+                                <span class="question-number">${index + 1}.</span>
+                                <p>${escapeHtml(q)}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Difficulty Distribution
+        if (data.questions.difficulty_distribution) {
+            const diff = data.questions.difficulty_distribution;
+            html += `
+                <div class="questions-section">
+                    <h3>Question Difficulty Distribution</h3>
+                    <div class="difficulty-chart">
+                        <div class="difficulty-bar">
+                            <div class="difficulty-label">Easy</div>
+                            <div class="difficulty-value">${diff.easy || 0}</div>
+                        </div>
+                        <div class="difficulty-bar">
+                            <div class="difficulty-label">Medium</div>
+                            <div class="difficulty-value">${diff.medium || 0}</div>
+                        </div>
+                        <div class="difficulty-bar">
+                            <div class="difficulty-label">Hard</div>
+                            <div class="difficulty-value">${diff.hard || 0}</div>
+                        </div>
+                    </div>
+                    <p class="difficulty-note">This helps you understand the cognitive challenge level of the questions.</p>
+                </div>
+            `;
+        }
+
+        // Preparation Tips
+        html += `
+            <div class="questions-section">
+                <h3>Preparation Tips</h3>
+                <div class="tips-list">
+                    <div class="tip-item">
+                        <h4>⭐ STAR Method</h4>
+                        <p>For behavioral questions, structure your answers using Situation, Task, Action, Result.</p>
+                    </div>
+                    <div class="tip-item">
+                        <h4>🔧 Technical Practice</h4>
+                        <p>For coding questions, practice on platforms like LeetCode or HackerRank, focusing on the specific technologies mentioned.</p>
+                    </div>
+                    <div class="tip-item">
+                        <h4>📋 Research the Company</h4>
+                        <p>Understand the company's mission, products, and recent news to show genuine interest during your interview.</p>
+                    </div>
+                    <div class="tip-item">
+                        <h4>❓ Prepare Your Own Questions</h4>
+                        <p>Have 2-3 thoughtful questions ready to ask the interviewer about the role, team, or company culture.</p>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        container.innerHTML = html;
+    }
+
+    function showSampleQuestions() {
+        const container = document.getElementById('questionsContainer');
+        container.innerHTML = `
+            <div class="sample-questions">
+                <h2>Sample Interview Questions</h2>
+                <p>See how our AI generates targeted questions based on your resume and the job description.</p>
+
+                <div class="questions-preview">
+                    <h3>Scenario: Applying for Senior Full-Stack Developer Position</h3>
+                    <p><strong>Your Background:</strong> 3 years experience in web development with HTML, CSS, JavaScript, Python</p>
+                    <p><strong>Target Role:</strong> Senior Full-Stack Developer requiring React, Node.js, AWS, Docker, Kubernetes</p>
+
+                    <div class="question-category">
+                        <h4>Technical Questions:</h4>
+                        <ul>
+                            <li>How would you optimize a slow React application's performance?</li>
+                            <li>Explain the difference between REST and GraphQL APIs.</li>
+                            <li>How do you manage state in a large-scale React application?</li>
+                            <li>What are the advantages of using Docker containers in development and deployment?</li>
+                            <li>How would you design a microservices architecture for scalability?</li>
+                        </ul>
+                    </div>
+
+                    <div class="question-category">
+                        <h4>Behavioral Questions:</h4>
+                        <ul>
+                            <li>Tell me about a time when you had to learn a new technology quickly to complete a project.</li>
+                            <li>Describe a situation where you disagreed with a team member on a technical approach.</li>
+                            <li>Give an example of when you had to meet an impossible deadline. How did you handle it?</li>
+                            <li>How do you stay updated with the latest developments in web technologies?</li>
+                        </ul>
+                    </div>
+
+                    <div class="question-category">
+                        <h4>Role-Specific Questions (Full-Stack Focus):</h4>
+                        <ul>
+                            <li>How do you ensure consistency between frontend and backend data models?</li>
+                            <li>Describe your approach to API versioning and backward compatibility.</li>
+                            <li>How do you handle authentication and authorization in a full-stack application?</li>
+                            <li>What strategies do you use for debugging issues that span both frontend and backend?</li>
+                            <li>How do you approach testing in a full-stack application?</li>
+                        </ul>
+                    </div>
+
+                    <div class="question-tips">
+                        <h4>Preparation Recommendations:</h4>
+                        <ul>
+                            <li>Build a full-stack project using React, Node.js, and AWS to demonstrate your skills</li>
+                            <li>Practice explaining technical concepts in simple terms</li>
+                            <li>Review common design patterns for microservices and distributed systems</li>
+                            <li>Prepare to discuss trade-offs in your technical decisions</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="cta-buttons">
+                    <a href="/" class="btn-primary btn-animated">Get Your Personalized Questions</a>
+                </div>
+            </div>
+        `;
+    }
+</script>
+</body>
+</html>
