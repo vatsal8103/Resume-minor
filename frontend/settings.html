@@ -200,22 +200,15 @@
         <div class="settings-panel">
           <div class="setting-item">
             <label>Account Email</label>
-            <input type="email" class="setting-input" value="demo@resumeintelligence.com" disabled>
+            <input type="email" class="setting-input" id="accountEmailInput" value="Loading..." disabled>
           </div>
           <div class="setting-item">
-            <label>Account Type</label>
-            <input type="text" class="setting-input" value="Free Tier" disabled>
+            <label>Account Role</label>
+            <input type="text" class="setting-input" id="accountRoleInput" value="Loading..." disabled>
           </div>
           <div class="setting-item">
-            <label>Member Since</label>
-            <input type="text" class="setting-input" value="August 2026" disabled>
-          </div>
-          <div class="setting-item">
-            <label>Usage This Month</label>
-            <div class="stat-card">
-              <div class="stat-value">24/100</div>
-              <div class="stat-label">Resume Analyses Used</div>
-            </div>
+            <label>Account Name</label>
+            <input type="text" class="setting-input" id="accountNameInput" value="Loading..." disabled>
           </div>
           <div class="setting-item">
             <label>API Access</label>
@@ -223,7 +216,7 @@
               <input type="checkbox" id="apiAccess">
               <span class="toggle-slider"></span>
             </div>
-            <p class="setting-desc">Enable API access for custom integrations (Paid plans only)</p>
+            <p class="setting-desc">Enable API access for custom integrations</p>
           </div>
         </div>
       </div>
@@ -233,8 +226,7 @@
       <div class="section-content">
         <div class="settings-panel">
           <button type="button" class="btn-primary btn-wide" id="saveSettings">Save All Settings</button>
-          <button type="button" class="btn-ghost btn-wide" id="resetSettings">Reset to Defaults</button>
-          <a href="/" class="btn-ghost btn-wide">Return to Dashboard</a>
+          <a href="#" class="btn-ghost btn-wide" id="returnDashboardBtn">Return to Dashboard</a>
         </div>
       </div>
     </section>
@@ -242,5 +234,42 @@
 </div>
 
 <script src="script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const activeRole = sessionStorage.getItem('active_role') || (localStorage.getItem('role') === 'recruiter' ? 'recruiter' : 'candidate');
+    const user = Auth.getUser(activeRole);
+
+    const emailEl = document.getElementById('accountEmailInput');
+    const roleEl = document.getElementById('accountRoleInput');
+    const nameEl = document.getElementById('accountNameInput');
+    const returnBtn = document.getElementById('returnDashboardBtn');
+    const topbarBack = document.querySelector('.topbar-right a');
+
+    if (user) {
+        if (emailEl) emailEl.value = user.email || 'Registered User';
+        if (roleEl) roleEl.value = (user.role === 'recruiter' || user.role === 'admin') ? 'Recruiter / Hiring Team' : 'Job Candidate';
+        if (nameEl) nameEl.value = user.fullName || user.username || 'User';
+
+        const dashUrl = (user.role === 'recruiter' || user.role === 'admin') ? 'recruiter-dashboard.html' : 'candidate-dashboard.html';
+        if (returnBtn) returnBtn.href = dashUrl;
+        if (topbarBack) {
+            topbarBack.href = dashUrl;
+            topbarBack.textContent = '← Back to Dashboard';
+        }
+    } else {
+        if (emailEl) emailEl.value = 'Not logged in';
+        if (roleEl) roleEl.value = 'Guest';
+        if (nameEl) nameEl.value = 'Guest';
+        if (returnBtn) returnBtn.href = 'index.html';
+    }
+
+    const saveBtn = document.getElementById('saveSettings');
+    if (saveBtn) {
+        saveBtn.addEventListener('click', function() {
+            alert('Settings preferences saved successfully!');
+        });
+    }
+});
+</script>
 </body>
 </html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login — Résumé Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+Pro:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="smooth-scroll">
+    <header class="topbar">
+        <div class="topbar-left">
+            <span class="wordmark">Résumé Intelligence</span>
+            <span class="case-tag">Login</span>
+        </div>
+        <div class="topbar-right">
+            <a href="/" class="btn-ghost">← Back to Home</a>
+        </div>
+    </header>
+
+    <main class="shell">
+        <section class="section hero-section">
+            <div class="section-content">
+                <h1>Welcome Back</h1>
+                <p class="hero-subtitle">Sign in to access your recruitment dashboard</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <h2>Sign In to Your Account</h2>
+                <p>Enter your credentials to access the AI-powered recruitment platform</p>
+            </div>
+            <div class="section-content">
+                <div id="loginAlert" style="display:none; padding: 12px 16px; margin-bottom: 20px; border-radius: 8px; font-size: 0.95rem; font-weight: 500;"></div>
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label class="field-label" for="loginUsername">Username or Email</label>
+                        <input type="text" id="loginUsername" placeholder="Enter your username or email" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="field-label" for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required />
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" id="submitBtn" class="btn-primary btn-wide">Sign In</button>
+                    </div>
+
+                    <div class="form-footer">
+                        <p>Don't have an account? <a href="signup.html" class="auth-link">Create one</a></p>
+                        <p><a href="#" class="auth-link">Forgot password?</a></p>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="script.js"></script>
+<script>
+function showAlert(msg, isError = true) {
+    const alertBox = document.getElementById('loginAlert');
+    if (!msg) {
+        alertBox.style.display = 'none';
+        return;
+    }
+    alertBox.style.display = 'block';
+    if (isError) {
+        alertBox.style.background = 'rgba(239, 68, 68, 0.15)';
+        alertBox.style.border = '1px solid rgba(239, 68, 68, 0.4)';
+        alertBox.style.color = '#fca5a5';
+        alertBox.innerHTML = '⚠️ <strong>Login Failed:</strong> ' + msg;
+    } else {
+        alertBox.style.background = 'rgba(34, 197, 94, 0.15)';
+        alertBox.style.border = '1px solid rgba(34, 197, 94, 0.4)';
+        alertBox.style.color = '#86efac';
+        alertBox.innerHTML = '✅ ' + msg;
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const loginForm = document.getElementById('loginForm');
+
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            const submitBtn = document.getElementById('submitBtn');
+
+            if (!username || !password) {
+                showAlert('Please enter both username/email and password.');
+                return;
+            }
+
+            showAlert('', false);
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Signing in...';
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email: username, password })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Invalid credentials');
+                }
+
+                showAlert('Success! Redirecting to your dashboard...', false);
+
+                // Save session in role-isolated storage
+                Auth.saveSession({
+                    id: data.id,
+                    username: data.username,
+                    full_name: data.full_name,
+                    role: data.role,
+                    email: data.email
+                });
+
+                // Short delay to show success state
+                setTimeout(() => {
+                    if (data.role === 'recruiter' || data.role === 'admin') {
+                        window.location.href = 'recruiter-dashboard.html';
+                    } else {
+                        window.location.href = 'candidate-dashboard.html';
+                    }
+                }, 300);
+            } catch (error) {
+                showAlert(error.message);
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Sign In';
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>

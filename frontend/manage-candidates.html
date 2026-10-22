@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Candidates — Résumé Intelligence</title>
+    <meta name="description" content="Review candidate applications, parse resumes against job descriptions, and manage your hiring pipeline with accept, reject, or hold actions.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+Pro:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        .cred-badge-row {
+            margin: 6px 0 2px 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .cred-badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 20px;
+            line-height: 1.3;
+        }
+        .cred-badge-pill.verified {
+            background: #ecfdf5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+        .cred-badge-pill.forged {
+            background: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+        .cred-badge-pill.unverified {
+            background: #fefce8;
+            color: #854d0e;
+            border: 1px solid #eab308;
+        }
+        .cred-skills-tag {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+<div id="smooth-scroll">
+    <header class="topbar">
+        <div class="topbar-left">
+            <span class="wordmark">Résumé Intelligence</span>
+            <span class="case-tag">Manage Candidates</span>
+        </div>
+        <div class="topbar-right">
+            <div class="user-info">
+                <span id="userFullName">Recruiter</span>
+            </div>
+            <button id="logoutBtn" class="btn-ghost">Logout</button>
+        </div>
+    </header>
+
+    <main class="shell">
+        <nav class="sidebar">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="recruiter-dashboard.html">Overview</a>
+                </li>
+                <li class="nav-item">
+                    <a href="manage-jobs.html">Manage Jobs</a>
+                </li>
+                <li class="nav-item active">
+                    <a href="manage-candidates.html">Candidates</a>
+                </li>
+                <li class="nav-item">
+                    <a href="document-authenticator.html">Audit & Verification</a>
+                </li>
+                <li class="nav-item">
+                    <a href="analytics.html">Analytics</a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html">Settings</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="main-content">
+            <!-- Job Selection Section -->
+            <section class="section" id="jobSelectSection">
+                <div class="section-header">
+                    <h2>Review Candidate Applications</h2>
+                    <p>Select a job to view candidates who applied. Parse their resumes against the JD and manage their status.</p>
+                </div>
+                <div class="section-content">
+                    <!-- Job Selector -->
+                    <div class="job-selector-card">
+                        <h3>Select a Job to Review Applicants</h3>
+                        <div class="form-group">
+                            <label class="field-label" for="jobSelector">Choose a Job Posting</label>
+                            <select id="jobSelector">
+                                <option value="">— Select a job —</option>
+                            </select>
+                        </div>
+                        <div id="selectedJobInfo" class="selected-job-info" style="display:none;">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Candidates Pipeline Section -->
+            <section class="section" id="candidatesSection" style="display:none;">
+                <div class="section-header">
+                    <h2 id="pipelineTitle">Candidate Pipeline</h2>
+                    <p id="pipelineSubtitle">Review and manage applications</p>
+                </div>
+                <div class="section-content">
+                    <!-- Pipeline Stats -->
+                    <div class="pipeline-stats" id="pipelineStats">
+                        <div class="pipeline-stat">
+                            <span class="pipeline-count" id="totalApplicants">0</span>
+                            <span class="pipeline-label">Total</span>
+                        </div>
+                        <div class="pipeline-stat stat-applied">
+                            <span class="pipeline-count" id="appliedCount">0</span>
+                            <span class="pipeline-label">Applied</span>
+                        </div>
+                        <div class="pipeline-stat stat-hold">
+                            <span class="pipeline-count" id="holdCount">0</span>
+                            <span class="pipeline-label">On Hold</span>
+                        </div>
+                        <div class="pipeline-stat stat-accepted">
+                            <span class="pipeline-count" id="acceptedCount">0</span>
+                            <span class="pipeline-label">Accepted</span>
+                        </div>
+                        <div class="pipeline-stat stat-rejected">
+                            <span class="pipeline-count" id="rejectedCount">0</span>
+                            <span class="pipeline-label">Rejected</span>
+                        </div>
+                    </div>
+
+                    <!-- Filter bar -->
+                    <div class="candidates-filter-bar">
+                        <div class="filter-group">
+                            <input type="text" id="candidateSearch" placeholder="Search by name..." />
+                        </div>
+                        <div class="filter-group">
+                            <select id="statusFilter">
+                                <option value="">All Statuses</option>
+                                <option value="applied">Applied</option>
+                                <option value="hold">On Hold</option>
+                                <option value="interview">Interview</option>
+                                <option value="accepted">Accepted</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                        </div>
+                        <button class="btn-primary btn-small" id="parseAllBtn">
+                            🤖 Parse All Resumes Against JD
+                        </button>
+                    </div>
+
+                    <!-- Candidates list -->
+                    <div class="applicants-list" id="applicantsList">
+                        <div class="loading-state">
+                            <div class="spinner"></div>
+                            <p>Loading applicants...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<!-- Resume Detail Modal -->
+<div class="modal-overlay" id="resumeModal" style="display:none;">
+    <div class="modal-content modal-large">
+        <div class="modal-header">
+            <h3 id="resumeModalTitle">Resume Review</h3>
+            <button class="modal-close" id="closeResumeModal">&times;</button>
+        </div>
+        <div class="modal-body" id="resumeModalBody">
+            <!-- Populated dynamically -->
+        </div>
+        <div class="modal-footer" id="resumeModalFooter">
+            <!-- Action buttons populated dynamically -->
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+let currentJobId = null;
+let currentJobData = null;
+let applicantsData = [];
+
+document.addEventListener('DOMContentLoaded', function() {
+    const user = Auth.getUser('recruiter');
+    const fullName = user ? user.fullName : 'Recruiter';
+    if (fullName) {
+        document.getElementById('userFullName').textContent = fullName;
+    }
+
+    // Handle logout (isolated to recruiter)
+    document.getElementById('logoutBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        Auth.logout('recruiter');
+    });
+
+    // Load jobs into selector
+    loadJobsForSelector();
+
+    // Job selector change event
+    document.getElementById('jobSelector').addEventListener('change', onJobSelected);
+
+    // Search & filter events
+    document.getElementById('candidateSearch').addEventListener('input', debounce(renderApplicants, 300));
+    document.getElementById('statusFilter').addEventListener('change', renderApplicants);
+
+    // Parse all resumes button
+    document.getElementById('parseAllBtn').addEventListener('click', parseAllResumes);
+
+    // Resume modal close
+    document.getElementById('closeResumeModal').addEventListener('click', () => {
+        document.getElementById('resumeModal').style.display = 'none';
+    });
+
+    // Close modals on overlay click
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+        overlay.addEventListener('click', function(e) {
+            if (e.target === this) this.style.display = 'none';
+        });
+    });
+});
+
+function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+}
+
+// Load jobs for the dropdown selector
+async function loadJobsForSelector() {
+    try {
+        const response = await fetch('/api/jobs?per_page=100');
+        const data = await response.json();
+        const selector = document.getElementById('jobSelector');
+
+        if (data.jobs && data.jobs.length > 0) {
+            data.jobs.forEach(job => {
+                const option = document.createElement('option');
+                option.value = job.id;
+                option.textContent = `${job.title} (${job.applicant_count || 0} applicants) — ${capitalizeFirst(job.status || 'open')}`;
+                selector.appendChild(option);
+            });
+        }
+    } catch (error) {
+        console.error('Error loading jobs:', error);
+    }
+}
+
+// When a job is selected
+async function onJobSelected() {
+    const jobId = document.getElementById('jobSelector').value;
+    const candidatesSection = document.getElementById('candidatesSection');
+    const jobInfoSection = document.getElementById('selectedJobInfo');
+
+    if (!jobId) {
+        candidatesSection.style.display = 'none';
+        jobInfoSection.style.display = 'none';
+        return;
+    }
+
+    currentJobId = jobId;
+
+    // Load job details
+    try {
+        const response = await fetch(`/api/jobs/${jobId}`);
+        currentJobData = await response.json();
+
+        // Show job info summary
+        jobInfoSection.style.display = 'block';
+        jobInfoSection.innerHTML = `
+            <div class="selected-job-card">
+                <div class="sjob-header">
+                    <h4>${escapeHtml(currentJobData.title)}</h4>
+                    <span class="status-badge status-${currentJobData.status || 'open'}">${capitalizeFirst(currentJobData.status || 'open')}</span>
+                </div>
+                <p class="sjob-desc">${escapeHtml((currentJobData.description || '').substring(0, 200))}...</p>
+                <div class="sjob-meta">
+                    ${currentJobData.location ? `<span>📍 ${escapeHtml(currentJobData.location)}</span>` : ''}
+                    ${currentJobData.required_skills ? `<span>🛠️ ${escapeHtml(currentJobData.required_skills)}</span>` : ''}
+                </div>
+            </div>
+        `;
+
+        // Update pipeline title
+        document.getElementById('pipelineTitle').textContent = `Candidates for: ${currentJobData.title}`;
+        document.getElementById('pipelineSubtitle').textContent = `Review applicants and parse resumes against the job description`;
+
+        // Show candidates section and load applicants
+        candidatesSection.style.display = 'block';
+        await loadApplicants(jobId);
+
+        // Scroll to candidates section
+        candidatesSection.scrollIntoView({ behavior: 'smooth' });
+
+    } catch (error) {
+        console.error('Error loading job data:', error);
+        showToast('Failed to load job details.', 'error');
+    }
+}
+
+// Load applicants for a specific job
+async function loadApplicants(jobId) {
+    try {
+        const response = await fetch(`/api/jobs/${jobId}/applicants`);
+        const data = await response.json();
+        applicantsData = data.applicants || [];
+
+        // Update pipeline stats
+        updatePipelineStats();
+
+        // Render applicants list
+        renderApplicants();
+
+    } catch (error) {
+        console.error('Error loading applicants:', error);
+        document.getElementById('applicantsList').innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">⚠️</div>
+                <p>Unable to load applicants</p>
+                <p class="empty-sub">Please try again.</p>
+            </div>
+        `;
+    }
+}
+
+// Update pipeline stats
+function updatePipelineStats() {
+    const total = applicantsData.length;
+    const applied = applicantsData.filter(a => a.status === 'applied').length;
+    const hold = applicantsData.filter(a => a.status === 'hold').length;
+    const accepted = applicantsData.filter(a => ['interview', 'offered', 'hired', 'accepted'].includes(a.status)).length;
+    const rejected = applicantsData.filter(a => a.status === 'rejected').length;
+
+    document.getElementById('totalApplicants').textContent = total;
+    document.getElementById('appliedCount').textContent = applied;
+    document.getElementById('holdCount').textContent = hold;
+    document.getElementById('acceptedCount').textContent = accepted;
+    document.getElementById('rejectedCount').textContent = rejected;
+}
+
+// Render applicants list with filters
+function renderApplicants() {
+    const searchQuery = document.getElementById('candidateSearch').value.trim().toLowerCase();
+    const statusFilter = document.getElementById('statusFilter').value;
+
+    let filtered = [...applicantsData];
+
+    if (searchQuery) {
+        filtered = filtered.filter(a =>
+            (a.candidate_name || '').toLowerCase().includes(searchQuery)
+        );
+    }
+
+    if (statusFilter) {
+        filtered = filtered.filter(a => a.status === statusFilter);
+    }
+
+    const list = document.getElementById('applicantsList');
+
+    if (filtered.length === 0) {
+        list.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">📭</div>
+                <p>No applicants ${statusFilter ? `with status "${capitalizeFirst(statusFilter)}"` : 'yet'}</p>
+                <p class="empty-sub">${applicantsData.length === 0 ? 'Candidates will appear here once they apply for this job.' : 'Try adjusting your filters.'}</p>
+            </div>
+        `;
+        return;
+    }
+
+    list.innerHTML = '';
+    filtered.forEach((applicant, index) => {
+        const card = createApplicantCard(applicant, index);
+        list.appendChild(card);
+    });
+}
+
+// Create an applicant card
+function createApplicantCard(applicant, index) {
+    const card = document.createElement('div');
+    card.className = `applicant-card animate-fade-in-up`;
+    card.style.animationDelay = `${index * 0.05}s`;
+    card.id = `applicant-${applicant.id}`;
+
+    const statusClass = getStatusClass(applicant.status);
+    const statusLabel = getStatusLabel(applicant.status);
+    const appliedDate = applicant.applied_at ? formatTimeAgo(applicant.applied_at) : 'Unknown';
+    const matchScore = applicant.match_score ? Math.round(applicant.match_score) : null;
+
+    const scoreHtml = matchScore !== null ? `
+        <div class="applicant-score ${matchScore >= 70 ? 'score-high' : matchScore >= 40 ? 'score-mid' : 'score-low'}">
+            <span class="score-value">${matchScore}%</span>
+            <span class="score-label">Match</span>
+        </div>
+    ` : `
+        <div class="applicant-score score-pending">
+            <span class="score-value">—</span>
+            <span class="score-label">Not Parsed</span>
+        </div>
+    `;
+
+    card.innerHTML = `
+        <div class="applicant-top">
+            <div class="applicant-info">
+                <div class="applicant-avatar">${(applicant.candidate_name || 'U').charAt(0).toUpperCase()}</div>
+                <div class="applicant-details">
+                    <h3 class="applicant-name">${escapeHtml(applicant.candidate_name || 'Unknown Candidate')}</h3>
+                    <div class="applicant-meta">
+                        <span class="status-badge ${statusClass}">${statusLabel}</span>
+                        <span class="meta-text">Applied ${appliedDate}</span>
+                    </div>
+                    <div class="cred-badge-row">
+                        ${applicant.credentials_verified ? `
+                            <span class="cred-badge-pill verified">Pre-Verified Authentic</span>
+                            ${(applicant.verified_skills || []).slice(0, 3).map(s => `<span class="cred-skills-tag">${escapeHtml(s)}</span>`).join('')}
+                        ` : applicant.credentials_status === 'FORGED_WARNING' ? `
+                            <span class="cred-badge-pill forged">Tampered Document Flagged</span>
+                        ` : `
+                            <span class="cred-badge-pill unverified">Unverified Claims</span>
+                        `}
+                    </div>
+                </div>
+            </div>
+            ${scoreHtml}
+        </div>
+
+        ${applicant.jd_similarity !== undefined && applicant.jd_similarity > 0 ? `
+        <div class="applicant-scores-row">
+            <div class="mini-score">
+                <span class="mini-label">JD Similarity</span>
+                <div class="mini-bar">
+                    <div class="mini-fill" style="width: ${Math.min(applicant.jd_similarity, 100)}%"></div>
+                </div>
+                <span class="mini-value">${Math.round(applicant.jd_similarity)}%</span>
+            </div>
+            <div class="mini-score">
+                <span class="mini-label">Skill Overlap</span>
+                <div class="mini-bar">
+                    <div class="mini-fill" style="width: ${Math.min(applicant.skill_overlap || 0, 100)}%"></div>
+                </div>
+                <span class="mini-value">${Math.round(applicant.skill_overlap || 0)}%</span>
+            </div>
+            <div class="mini-score">
+                <span class="mini-label">Role Confidence</span>
+                <div class="mini-bar">
+                    <div class="mini-fill" style="width: ${Math.min(applicant.role_confidence || 0, 100)}%"></div>
+                </div>
+                <span class="mini-value">${Math.round(applicant.role_confidence || 0)}%</span>
+            </div>
+        </div>
+        ` : ''}
+
+        <div class="applicant-actions">
+            <button class="btn-ghost btn-small" onclick="viewResume('${applicant.id}', '${applicant.candidate_id}')">
+                View Profile & Resume
+            </button>
+            <button class="btn-ghost btn-small" onclick="parseResume('${applicant.id}', '${applicant.candidate_id}')">
+                Parse vs JD
+            </button>
+            <div class="action-divider"></div>
+            <button class="btn-action btn-accept ${applicant.status === 'accepted' || applicant.status === 'interview' ? 'active' : ''}"
+                    onclick="updateStatus('${applicant.id}', 'accepted')" title="Accept">
+                Accept
+            </button>
+            <button class="btn-action btn-hold ${applicant.status === 'hold' ? 'active' : ''}"
+                    onclick="updateStatus('${applicant.id}', 'hold')" title="Hold">
+                Hold
+            </button>
+            <button class="btn-action btn-reject ${applicant.status === 'rejected' ? 'active' : ''}"
+                    onclick="updateStatus('${applicant.id}', 'rejected')" title="Reject">
+                Reject
+            </button>
+        </div>
+    `;
+
+    return card;
+}
+
+// View resume detail
+async function viewResume(applicationId, candidateId) {
+    if (!candidateId) {
+        showToast('No candidate data available.', 'error');
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/candidates/${candidateId}`);
+        const candidate = await response.json();
+
+        const applicant = applicantsData.find(a => a.id === applicationId) || {};
+        const vInfo = candidate.verification_summary || {
+            is_verified: applicant.credentials_verified,
+            status: applicant.credentials_status,
+            verified_skills: applicant.verified_skills || [],
+            summary: applicant.credentials_summary || ''
+        };
+        const isVerified = applicant.credentials_verified || vInfo.is_verified;
+        const vStatus = applicant.credentials_status || vInfo.status;
+        const vSkills = (applicant.verified_skills && applicant.verified_skills.length) ? applicant.verified_skills : (vInfo.verified_skills || []);
+        const vSummary = applicant.credentials_summary || vInfo.summary;
+
+        const resumeText = candidate.resume_text || 'No resume text available.';
+
+        const edu = applicant.education || candidate.education || {};
+        const exp = applicant.experience || candidate.experience || {};
+        const certs = (applicant.certifications && applicant.certifications.length) ? applicant.certifications : (candidate.certifications || []);
+        const projs = (applicant.projects && applicant.projects.length) ? applicant.projects : (candidate.projects || []);
+        const apt = applicant.aptitude || candidate.aptitude || {};
+        const pers = applicant.personality || candidate.personality || {};
+
+        const eduText = (edu && (edu.degree || edu.degrees)) ? (edu.degree || (edu.degrees || []).join(', ')) : (typeof edu === 'string' ? edu : 'Not specified');
+        const eduInst = (edu && edu.institution) ? edu.institution : '';
+        const expYears = (exp && exp.total_years_estimate) ? `${exp.total_years_estimate} years` : (candidate.experience_years ? `${candidate.experience_years} years` : 'Experienced');
+
+        document.getElementById('resumeModalTitle').textContent = `Candidate Dossier: ${candidate.full_name || 'Applicant'}`;
+
+        document.getElementById('resumeModalBody').innerHTML = `
+            <div class="resume-review-layout">
+                <div class="resume-panel">
+                    <h4>Resume Document</h4>
+                    <div class="resume-text-box">${escapeHtml(resumeText).replace(/\n/g, '<br>')}</div>
+                </div>
+                <div class="resume-sidebar">
+                    <div class="resume-info-card">
+                        <h4>Candidate Information</h4>
+                        <p><strong>Name:</strong> ${escapeHtml(candidate.full_name || 'N/A')}</p>
+                        <p><strong>Email:</strong> ${escapeHtml(candidate.email || 'N/A')}</p>
+                        <p><strong>Phone:</strong> ${escapeHtml(candidate.phone || 'N/A')}</p>
+                        <p><strong>Status:</strong> <span class="status-badge ${getStatusClass(applicant?.status)}">${getStatusLabel(applicant?.status)}</span></p>
+                    </div>
+
+                    <!-- Extracted Academic & Professional Track -->
+                    <div class="resume-info-card">
+                        <h4>Academic & Experience Track</h4>
+                        <p><strong>Education:</strong> ${escapeHtml(eduText)}${eduInst ? ` (${escapeHtml(eduInst)})` : ''}</p>
+                        <p><strong>Experience:</strong> ${escapeHtml(expYears)}</p>
+                        ${certs.length > 0 ? `
+                        <div style="margin-top: 6px;">
+                            <strong style="font-size: 0.82rem; color: var(--slate);">Certifications:</strong>
+                            <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px;">
+                                ${certs.map(c => `<span class="cred-skills-tag">${escapeHtml(c)}</span>`).join('')}
+                            </div>
+                        </div>
+                        ` : ''}
+                        ${projs.length > 0 ? `
+                        <div style="margin-top: 6px;">
+                            <strong style="font-size: 0.82rem; color: var(--slate);">Key Projects:</strong>
+                            <div style="font-size: 0.82rem; color: var(--ink); margin-top: 2px;">
+                                ${projs.slice(0, 2).map(p => escapeHtml(p.title || 'Technical Project')).join(' • ')}
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+
+                    <!-- AI Aptitude & Personality Profile -->
+                    ${apt.overall_aptitude_score || pers.primary_work_style ? `
+                    <div class="resume-info-card" style="background: rgba(139, 115, 85, 0.04); border-left: 3px solid var(--primary);">
+                        <h4>AI Aptitude & Personality Profile</h4>
+                        ${apt.overall_aptitude_score ? `
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <span style="font-size: 0.84rem; font-weight: 600;">Aptitude Benchmark:</span>
+                            <span class="status-badge status-accepted" style="font-size: 0.78rem;">${apt.overall_aptitude_score}% (${apt.percentile || 86}th %ile)</span>
+                        </div>
+                        ` : ''}
+                        ${pers.primary_work_style ? `
+                        <div style="font-size: 0.84rem; margin-top: 4px;">
+                            <strong>Work Style:</strong> <span style="color: var(--primary-dark); font-weight: 600;">${escapeHtml(pers.primary_work_style)}</span>
+                        </div>
+                        ` : ''}
+                        ${pers.summary ? `
+                        <p style="font-size: 0.78rem; color: var(--slate); margin: 6px 0 0 0; line-height: 1.4;">${escapeHtml(pers.summary)}</p>
+                        ` : ''}
+                    </div>
+                    ` : ''}
+
+                    <!-- Pre-Verified Skill & Credential Validity (Documents stay private) -->
+                    <div class="resume-info-card" style="border-left: 4px solid ${isVerified ? '#10b981' : (vStatus === 'FORGED_WARNING' ? '#ef4444' : '#f59e0b')};">
+                        <h4>Resume Skills & Credential Validity</h4>
+                        <div style="margin-bottom: 8px;">
+                            ${isVerified ? `
+                                <span class="cred-badge-pill verified">Valid & Pre-Verified</span>
+                            ` : vStatus === 'FORGED_WARNING' ? `
+                                <span class="cred-badge-pill forged">Tampered Document Flagged</span>
+                            ` : `
+                                <span class="cred-badge-pill unverified">Unverified Claims (No Backing Docs)</span>
+                            `}
+                        </div>
+                        <p style="font-size: 0.84rem; color: var(--ink); margin: 6px 0; line-height: 1.4;">
+                            ${escapeHtml(vSummary || (isVerified ? 'Resume skills verified authentic by candidate-uploaded credentials.' : 'No supporting documents uploaded for resume verification.'))}
+                        </p>
+                        ${vSkills && vSkills.length > 0 ? `
+                        <div style="margin-top: 8px;">
+                            <span style="font-size: 0.74rem; font-weight: 700; color: var(--slate); display: block; margin-bottom: 4px; text-transform: uppercase;">Verified Real Skills:</span>
+                            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                                ${vSkills.map(s => `<span class="cred-skills-tag" style="background:#ecfdf5; border-color:#a7f3d0; color:#065f46; font-size: 0.78rem;">${escapeHtml(s)}</span>`).join('')}
+                            </div>
+                        </div>
+                        ` : ''}
+                        <div style="margin-top: 10px; font-size: 0.74rem; color: var(--slate); background: rgba(0,0,0,0.03); padding: 8px 10px; border-radius: 6px; line-height: 1.4;">
+                            <em>Privacy Notice: Candidate documents are pre-verified upon candidate upload and kept strictly confidential. Original documents are not sent to recruiters; only verified skill validity is confirmed.</em>
+                        </div>
+                    </div>
+
+                    ${applicant && applicant.match_score ? `
+                    <div class="resume-info-card">
+                        <h4>Match Analysis</h4>
+                        <div class="match-summary">
+                            <div class="match-circle ${applicant.match_score >= 70 ? 'match-high' : applicant.match_score >= 40 ? 'match-mid' : 'match-low'}">
+                                <span class="match-pct">${Math.round(applicant.match_score)}%</span>
+                            </div>
+                            <p>Overall Match Score</p>
+                        </div>
+                        <div class="match-details">
+                            <div class="match-detail-row">
+                                <span>JD Similarity</span>
+                                <span>${Math.round(applicant.jd_similarity || 0)}%</span>
+                            </div>
+                            <div class="match-detail-row">
+                                <span>Skill Overlap</span>
+                                <span>${Math.round(applicant.skill_overlap || 0)}%</span>
+                            </div>
+                            <div class="match-detail-row">
+                                <span>Role Confidence</span>
+                                <span>${Math.round(applicant.role_confidence || 0)}%</span>
+                            </div>
+                        </div>
+                    </div>
+                    ` : `
+                    <div class="resume-info-card">
+                        <h4>Match Analysis</h4>
+                        <p class="no-analysis">Not yet parsed. Click "Parse vs JD" to analyze this resume against the job description.</p>
+                    </div>
+                    `}
+                    ${applicant && applicant.notes ? `
+                    <div class="resume-info-card">
+                        <h4>Notes</h4>
+                        <p>${escapeHtml(applicant.notes)}</p>
+                    </div>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+
+        document.getElementById('resumeModalFooter').innerHTML = `
+            <button class="btn-action btn-accept" onclick="updateStatus('${applicationId}', 'accepted'); document.getElementById('resumeModal').style.display='none';">
+                Accept
+            </button>
+            <button class="btn-action btn-hold" onclick="updateStatus('${applicationId}', 'hold'); document.getElementById('resumeModal').style.display='none';">
+                Hold
+            </button>
+            <button class="btn-action btn-reject" onclick="updateStatus('${applicationId}', 'rejected'); document.getElementById('resumeModal').style.display='none';">
+                Reject
+            </button>
+            <button class="btn-ghost btn-small" onclick="parseResume('${applicationId}', '${candidateId}')">
+                Parse vs JD
+            </button>
+            <button class="btn-ghost" onclick="document.getElementById('resumeModal').style.display='none'">Close</button>
+        `;
+
+        document.getElementById('resumeModal').style.display = 'flex';
+
+    } catch (error) {
+        console.error('Error viewing resume:', error);
+        showToast('Failed to load candidate resume.', 'error');
+    }
+}
+
+// Parse a single resume against the job description
+async function parseResume(applicationId, candidateId) {
+    if (!currentJobData || !currentJobData.description) {
+        showToast('No job description available for parsing.', 'error');
+        return;
+    }
+
+    if (!candidateId) {
+        showToast('No candidate data available.', 'error');
+        return;
+    }
+
+    showToast('🤖 Analyzing resume against job description...', 'info');
+
+    try {
+        // Get candidate resume text
+        const candidateResponse = await fetch(`/api/candidates/${candidateId}`);
+        const candidate = await candidateResponse.json();
+
+        if (!candidate.resume_text) {
+            showToast('No resume text found for this candidate.', 'error');
+            return;
+        }
+
+        // Use the match API to score this resume against the job
+        const matchResponse = await fetch('/api/match', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                jd_text: currentJobData.description,
+                candidate_ids: [candidateId],
+                job_id: currentJobId
+            })
+        });
+
+        const matchData = await matchResponse.json();
+
+        if (matchResponse.ok && matchData.candidates && matchData.candidates.length > 0) {
+            const result = matchData.candidates[0];
+            showToast(`✅ Resume parsed! Match score: ${Math.round(result.final_score)}%`, 'success');
+
+            // Reload applicants to show updated scores
+            await loadApplicants(currentJobId);
+
+            // Close resume modal if open
+            document.getElementById('resumeModal').style.display = 'none';
+        } else {
+            showToast(matchData.error || 'Failed to parse resume.', 'error');
+        }
+
+    } catch (error) {
+        console.error('Error parsing resume:', error);
+        showToast('Error analyzing resume. Please try again.', 'error');
+    }
+}
+
+// Parse ALL resumes against JD
+async function parseAllResumes() {
+    if (!currentJobData || !currentJobData.description) {
+        showToast('No job description available for parsing.', 'error');
+        return;
+    }
+
+    const unparsed = applicantsData.filter(a => !a.match_score || a.match_score === 0);
+
+    if (unparsed.length === 0 && applicantsData.length > 0) {
+        // Re-parse all anyway
+        showToast(`🤖 Re-analyzing all ${applicantsData.length} resumes...`, 'info');
+    } else if (applicantsData.length === 0) {
+        showToast('No applicants to parse.', 'error');
+        return;
+    } else {
+        showToast(`🤖 Analyzing ${applicantsData.length} resumes against the JD...`, 'info');
+    }
+
+    const btn = document.getElementById('parseAllBtn');
+    btn.disabled = true;
+    btn.textContent = '⏳ Parsing...';
+
+    // Get all candidate IDs
+    const candidateIds = applicantsData
+        .filter(a => a.candidate_id)
+        .map(a => a.candidate_id);
+
+    if (candidateIds.length === 0) {
+        showToast('No valid candidate data found.', 'error');
+        btn.disabled = false;
+        btn.textContent = '🤖 Parse All Resumes Against JD';
+        return;
+    }
+
+    try {
+        const matchResponse = await fetch('/api/match', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                jd_text: currentJobData.description,
+                candidate_ids: candidateIds,
+                job_id: currentJobId
+            })
+        });
+
+        const matchData = await matchResponse.json();
+
+        if (matchResponse.ok) {
+            showToast(`✅ All resumes analyzed! ${matchData.candidates?.length || 0} candidates scored.`, 'success');
+            await loadApplicants(currentJobId);
+        } else {
+            showToast(matchData.error || 'Failed to parse resumes.', 'error');
+        }
+
+    } catch (error) {
+        console.error('Error parsing all resumes:', error);
+        showToast('Error during bulk analysis. Please try again.', 'error');
+    } finally {
+        btn.disabled = false;
+        btn.textContent = '🤖 Parse All Resumes Against JD';
+    }
+}
+
+// Update application status (accept/hold/reject)
+async function updateStatus(applicationId, newStatus) {
+    try {
+        const response = await fetch(`/api/applications/${applicationId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: newStatus })
+        });
+
+        if (response.ok) {
+            const statusLabel = getStatusLabel(newStatus);
+            if (newStatus === 'rejected') {
+                showToast(`Candidate rejected. ATS scanning report & preparation roadmap shared with candidate.`, 'info');
+            } else {
+                showToast(`Candidate status updated to "${statusLabel}".`, 'success');
+            }
+
+            // Update local data
+            const applicant = applicantsData.find(a => a.id === applicationId);
+            if (applicant) {
+                applicant.status = newStatus;
+                updatePipelineStats();
+                renderApplicants();
+            }
+        } else {
+            const data = await response.json();
+            showToast(data.error || 'Failed to update status.', 'error');
+        }
+
+    } catch (error) {
+        console.error('Error updating status:', error);
+        showToast('Network error. Please try again.', 'error');
+    }
+}
+
+// Status helpers
+function getStatusClass(status) {
+    const map = {
+        'applied': 'status-applied',
+        'hold': 'status-hold',
+        'interview': 'status-accepted',
+        'accepted': 'status-accepted',
+        'offered': 'status-accepted',
+        'hired': 'status-accepted',
+        'rejected': 'status-rejected'
+    };
+    return map[status] || 'status-applied';
+}
+
+function getStatusLabel(status) {
+    const map = {
+        'applied': 'Applied',
+        'hold': 'On Hold',
+        'interview': 'Interview',
+        'accepted': 'Accepted',
+        'offered': 'Offered',
+        'hired': 'Hired',
+        'rejected': 'Rejected'
+    };
+    return map[status] || capitalizeFirst(status || 'Unknown');
+}
+
+// Toast notification
+function showToast(message, type = 'info') {
+    const existing = document.querySelector('.toast');
+    if (existing) existing.remove();
+
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.innerHTML = `
+        <span class="toast-icon">${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span>
+        <span class="toast-message">${message}</span>
+    `;
+    document.body.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add('toast-visible'));
+    setTimeout(() => {
+        toast.classList.remove('toast-visible');
+        setTimeout(() => toast.remove(), 300);
+    }, 4000);
+}
+
+// Utilities
+function escapeHtml(str) {
+    if (!str) return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+function capitalizeFirst(str) {
+    if (!str) return '';
+    return str.charAt(0).toUpperCase() + str.slice(1).replace(/-/g, ' ');
+}
+
+function formatTimeAgo(dateString) {
+    if (!dateString) return 'Just now';
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffMins = Math.round(diffMs / 60000);
+    const diffHours = Math.round(diffMs / 3600000);
+    const diffDays = Math.round(diffMs / 86400000);
+    if (diffDays > 0) return diffDays === 1 ? 'Yesterday' : `${diffDays} days ago`;
+    if (diffHours > 0) return diffHours === 1 ? 'An hour ago' : `${diffHours} hours ago`;
+    if (diffMins > 0) return diffMins === 1 ? 'A minute ago' : `${diffMins} minutes ago`;
+    return 'Just now';
+}
+</script>
+</body>
+</html>

@@ -25,13 +25,13 @@
         <section class="section hero-section">
             <div class="section-content">
                 <h1>Personalized <span class="text-gradient">Interview Preparation</span></h1>
-                <p class="hero-subtitle>Get targeted technical, behavioral, and role-specific questions to ace your interview</p>
+                <p class="hero-subtitle">Targeted technical, behavioral, and role-specific questions with AI multimodal interview evaluation</p>
             </div>
         </section>
 
         <section class="section">
             <div class="section-header">
-                <h2>How It Works</h2>
+                <h2>Preparation Framework</h2>
                 <p>Our AI analyzes the job description and your resume to generate relevant interview questions that assess both your technical competencies and cultural fit.</p>
             </div>
             <div class="section-content">
@@ -54,8 +54,8 @@
 
         <section class="section">
             <div class="section-header">
-                <h2>Your Interview Preparation Guide</h2>
-                <p>Study these questions to prepare effectively for your upcoming interview</p>
+                <h2>Interview Preparation Guide</h2>
+                <p>Study these targeted questions to prepare effectively for your upcoming interview.</p>
             </div>
             <div class="section-content">
                 <div id="questionsContainer">
@@ -67,13 +67,110 @@
             </div>
         </section>
 
+        <!-- Multimodal AI Speech & Video Interview Assessment -->
+        <section class="section" id="multimodalSection">
+            <div class="section-header">
+                <h2>Multimodal Interview AI Evaluation</h2>
+                <p>Simulate voice response pacing and video visual cues to receive an AI-powered holistic interview evaluation.</p>
+            </div>
+            <div class="section-content">
+                <div class="multimodal-eval-card" style="background: var(--paper-raised); border: 1px solid var(--line); border-radius: 12px; padding: 24px;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+                        <!-- Left: Response Input & Voice Recording -->
+                        <div>
+                            <h4 style="margin: 0 0 10px 0; color: var(--ink);">Interview Response & Speech Input</h4>
+                            <p style="font-size: 0.85rem; color: var(--slate); margin-bottom: 12px;">Type or speak your answer to a technical or behavioral question to evaluate clarity and pacing.</p>
+                            
+                            <textarea id="speechResponseText" rows="6" style="width: 100%; border: 1px solid var(--line); border-radius: 8px; padding: 12px; font-family: inherit; font-size: 0.9rem; background: var(--paper); color: var(--ink); box-sizing: border-box;" placeholder="e.g. When architecting scalable systems, I decompose services by domain boundaries, implement asynchronous messaging with Redis or RabbitMQ, and maintain strict latency SLAs..."></textarea>
+                            
+                            <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
+                                <button type="button" id="loadSampleResponseBtn" class="btn-ghost btn-small">Load Sample Answer</button>
+                                <button type="button" id="startMicBtn" class="btn-ghost btn-small">Use Microphone (Web Speech)</button>
+                            </div>
+
+                            <div style="margin-top: 18px;">
+                                <label style="font-size: 0.82rem; font-weight: 600; color: var(--slate); display: block; margin-bottom: 4px;">Spoken Response Duration: <span id="durLabel">45s</span></label>
+                                <input type="range" id="speechDurationRange" min="15" max="180" value="45" style="width: 100%; cursor: pointer;" />
+                            </div>
+                        </div>
+
+                        <!-- Right: Video / Visual Presentation Simulation -->
+                        <div>
+                            <h4 style="margin: 0 0 10px 0; color: var(--ink);">Video Visual Cues & Eye Contact</h4>
+                            <p style="font-size: 0.85rem; color: var(--slate); margin-bottom: 12px;">Simulated webcam cues for eye contact tracking, head pose stability, and facial engagement.</p>
+
+                            <div style="background: var(--paper); border: 1px dashed var(--line); border-radius: 8px; padding: 16px; margin-bottom: 14px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                    <span style="font-size: 0.85rem; font-weight: 600; color: var(--ink);">Eye Contact Ratio</span>
+                                    <span style="font-size: 0.9rem; font-weight: 700; color: var(--primary);" id="eyeContactLabel">88%</span>
+                                </div>
+                                <input type="range" id="eyeContactRange" min="50" max="100" value="88" style="width: 100%; cursor: pointer;" />
+                                <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--slate); margin-top: 4px;">
+                                    <span>Frequent Looking Away</span>
+                                    <span>Consistent Eye Contact</span>
+                                </div>
+                            </div>
+
+                            <div style="background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; margin-bottom: 16px;">
+                                <label style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; cursor: pointer; color: var(--ink);">
+                                    <input type="checkbox" id="gesturesActiveCheck" checked />
+                                    Active Posture & Natural Hand Gestures Detected
+                                </label>
+                            </div>
+
+                            <button type="button" id="evalMultimodalBtn" class="btn-primary" style="width: 100%; padding: 12px; font-weight: 600;">
+                                Run Multimodal AI Evaluation
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Evaluation Results Container -->
+                    <div id="multimodalResultsBox" style="display: none; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+                            <div>
+                                <h3 style="margin: 0; font-size: 1.15rem; color: var(--ink);">AI Multimodal Hiring Recommendation</h3>
+                                <p style="margin: 4px 0 0 0; font-size: 0.84rem; color: var(--slate);">Synthesized from speech pacing, clarity, video eye contact, and technical articulation.</p>
+                            </div>
+                            <span class="status-badge status-accepted" id="mmDecisionBadge" style="font-size: 0.9rem; padding: 6px 14px;">Strong Hire</span>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px;">
+                            <div style="background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 14px;">
+                                <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--slate); font-weight: 600;">Composite Score</div>
+                                <div style="font-size: 1.3rem; font-weight: 700; color: var(--ink); margin-top: 4px;" id="mmCompositeScore">88%</div>
+                                <div style="font-size: 0.78rem; color: var(--slate); margin-top: 4px;">Combined speech & visual metrics</div>
+                            </div>
+
+                            <div style="background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 14px;">
+                                <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--slate); font-weight: 600;">Speech Pacing</div>
+                                <div style="font-size: 1.3rem; font-weight: 700; color: var(--ink); margin-top: 4px;" id="mmPacingVal">135 WPM</div>
+                                <div style="font-size: 0.78rem; color: var(--slate); margin-top: 4px;" id="mmPacingStatus">Optimal conversational tempo</div>
+                            </div>
+
+                            <div style="background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 14px;">
+                                <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--slate); font-weight: 600;">Vocal Confidence</div>
+                                <div style="font-size: 1.3rem; font-weight: 700; color: var(--ink); margin-top: 4px;" id="mmConfidenceVal">92%</div>
+                                <div style="font-size: 0.78rem; color: var(--slate); margin-top: 4px;" id="mmFillersStatus">Low filler word density</div>
+                            </div>
+
+                            <div style="background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 14px;">
+                                <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--slate); font-weight: 600;">Visual Engagement</div>
+                                <div style="font-size: 1.3rem; font-weight: 700; color: var(--ink); margin-top: 4px;" id="mmVisualVal">88%</div>
+                                <div style="font-size: 0.78rem; color: var(--slate); margin-top: 4px;" id="mmVisualStatus">Professional & attentive posture</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section class="section cta-section">
             <div class="section-content">
                 <h2>Ready to Practice?</h2>
                 <p>Use these questions to conduct mock interviews and build your confidence.</p>
                 <div class="cta-buttons">
-                    <a href="/" class="btn-primary btn-animated">Analyze Another Resume</a>
-                    <a href="explore.html" class="btn-ghost btn-animated">See All Features</a>
+                    <a href="resume-checker.html" class="btn-primary">Analyze Another Resume</a>
+                    <a href="explore.html" class="btn-ghost">See All Features</a>
                 </div>
             </div>
         </section>
@@ -312,11 +409,155 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
 
                 <div class="cta-buttons">
-                    <a href="/" class="btn-primary btn-animated">Get Your Personalized Questions</a>
+                    <a href="resume-checker.html" class="btn-primary">Get Your Personalized Questions</a>
                 </div>
             </div>
         `;
     }
+
+    // Multimodal Mock Interview Simulator
+    const durRange = document.getElementById('speechDurationRange');
+    const durLabel = document.getElementById('durLabel');
+    if (durRange && durLabel) {
+        durRange.addEventListener('input', () => {
+            durLabel.textContent = `${durRange.value}s`;
+        });
+    }
+
+    const eyeRange = document.getElementById('eyeContactRange');
+    const eyeLabel = document.getElementById('eyeContactLabel');
+    if (eyeRange && eyeLabel) {
+        eyeRange.addEventListener('input', () => {
+            eyeLabel.textContent = `${eyeRange.value}%`;
+        });
+    }
+
+    const loadSampleBtn = document.getElementById('loadSampleResponseBtn');
+    if (loadSampleBtn) {
+        loadSampleBtn.addEventListener('click', () => {
+            document.getElementById('speechResponseText').value = 
+                "In my last role, when architecting our distributed payment service, I designed a resilient event-driven architecture using Kafka and FastAPI. We handled peak loads of twelve thousand transactions per second with sub-50ms latency. When facing unexpected database connection pool exhaustion during a high-traffic release, I implemented dynamic token-bucket rate limiting and circuit breaking, which immediately stabilized throughput without any transaction loss.";
+            document.getElementById('speechDurationRange').value = 45;
+            if (durLabel) durLabel.textContent = '45s';
+        });
+    }
+
+    const startMicBtn = document.getElementById('startMicBtn');
+    if (startMicBtn) {
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRec();
+            recognition.continuous = false;
+            recognition.interimResults = true;
+
+            recognition.onstart = () => {
+                startMicBtn.textContent = 'Listening... Speak now';
+                startMicBtn.classList.add('btn-primary');
+            };
+
+            recognition.onresult = (event) => {
+                let transcript = '';
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    transcript += event.results[i][0].transcript;
+                }
+                document.getElementById('speechResponseText').value = transcript;
+            };
+
+            recognition.onend = () => {
+                startMicBtn.textContent = 'Use Microphone (Web Speech)';
+                startMicBtn.classList.remove('btn-primary');
+            };
+
+            recognition.onerror = () => {
+                startMicBtn.textContent = 'Use Microphone (Web Speech)';
+                startMicBtn.classList.remove('btn-primary');
+            };
+
+            startMicBtn.addEventListener('click', () => {
+                try {
+                    recognition.start();
+                } catch (e) {
+                    recognition.stop();
+                }
+            });
+        } else {
+            startMicBtn.addEventListener('click', () => {
+                alert('Browser speech recognition is not supported in this browser. Please type or paste your response.');
+            });
+        }
+    }
+
+    const evalBtn = document.getElementById('evalMultimodalBtn');
+    if (evalBtn) {
+        evalBtn.addEventListener('click', async () => {
+            const text = document.getElementById('speechResponseText').value.trim();
+            if (!text) {
+                alert('Please enter or record a response to evaluate.');
+                return;
+            }
+
+            const durSec = parseFloat(durRange ? durRange.value : 45);
+            const eyeContact = parseFloat(eyeRange ? eyeRange.value : 88);
+            const gestures = document.getElementById('gesturesActiveCheck')?.checked ?? true;
+
+            evalBtn.disabled = true;
+            evalBtn.textContent = 'Evaluating Multimodal Cues...';
+
+            try {
+                const totalFaces = 60;
+                const centerFaces = Math.round((eyeContact / 100) * totalFaces);
+
+                const res = await fetch('/api/multimodal-interview-eval', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        speech_text: text,
+                        audio_duration_sec: durSec,
+                        video_duration_sec: durSec,
+                        detected_faces: totalFaces,
+                        face_looking_center_count: centerFaces,
+                        gestures_active: gestures,
+                        words_count: text.split(/\s+/).length
+                    })
+                });
+
+                const data = await res.json();
+                renderMultimodalResults(data);
+            } catch (err) {
+                alert('Evaluation error. Please try again.');
+            } finally {
+                evalBtn.disabled = false;
+                evalBtn.textContent = 'Run Multimodal AI Evaluation';
+            }
+        });
+    }
+
+    function renderMultimodalResults(data) {
+        const box = document.getElementById('multimodalResultsBox');
+        if (!box) return;
+        box.style.display = 'block';
+
+        const badge = document.getElementById('mmDecisionBadge');
+        const rec = data.recommendation || 'HIRE';
+        badge.textContent = data.recommendation_badge || (rec === 'STRONG_HIRE' ? 'Strong Hire' : 'Recommended for Hire');
+        badge.className = `status-badge ${rec === 'STRONG_HIRE' ? 'status-accepted' : rec === 'HIRE' ? 'status-review' : 'status-pending'}`;
+
+        document.getElementById('mmCompositeScore').textContent = `${data.multimodal_composite_score || 85}%`;
+
+        const speech = data.speech_analysis || {};
+        document.getElementById('mmPacingVal').textContent = `${speech.pacing_words_per_minute || 135} WPM`;
+        document.getElementById('mmPacingStatus').textContent = speech.pacing_status || 'Optimal conversational tempo';
+
+        document.getElementById('mmConfidenceVal').textContent = `${speech.vocal_confidence_score || 90}%`;
+        document.getElementById('mmFillersStatus').textContent = `${speech.filler_words_count || 0} filler words detected • ${speech.articulation || 'Fluent'}`;
+
+        const video = data.video_analysis || {};
+        document.getElementById('mmVisualVal').textContent = `${video.eye_contact_percentage || 88}%`;
+        document.getElementById('mmVisualStatus').textContent = `${video.presence || 'Professional & attentive'} • Posture stability ${video.posture_stability_score || 90}%`;
+
+        box.scrollIntoView({ behavior: 'smooth' });
+    }
+});
 </script>
 </body>
 </html>

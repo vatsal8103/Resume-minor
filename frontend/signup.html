@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up — Résumé Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+Pro:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="smooth-scroll">
+    <header class="topbar">
+        <div class="topbar-left">
+            <span class="wordmark">Résumé Intelligence</span>
+            <span class="case-tag">Create Account</span>
+        </div>
+        <div class="topbar-right">
+            <a href="/" class="btn-ghost">← Back to Home</a>
+        </div>
+    </header>
+
+    <main class="shell">
+        <section class="section hero-section">
+            <div class="section-content">
+                <h1>Join the Future of Hiring</h1>
+                <p class="hero-subtitle">Create your account to start using AI-powered recruitment tools</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <h2>Create Your Account</h2>
+                <p>Sign up to access recruitment analytics, candidate management, and AI insights</p>
+            </div>
+            <div class="section-content">
+                <form id="signupForm" class="auth-form">
+                    <div class="form-group">
+                        <label class="field-label" for="signupUsername">Username</label>
+                        <input type="text" id="signupUsername" placeholder="Choose a username" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="field-label" for="signupEmail">Email Address</label>
+                        <input type="email" id="signupEmail" placeholder="Enter your email" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="field-label" for="signupFullName">Full Name</label>
+                        <input type="text" id="signupFullName" placeholder="Enter your full name" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="field-label" for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" placeholder="Create a secure password" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="field-label">Account Type</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="accountType" value="recruiter" id="roleRecruiter" checked />
+                                Recruiter/Hiring Manager
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="accountType" value="candidate" id="roleCandidate" />
+                                Job Seeker/Candidate
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="designationGroup">
+                        <label class="field-label" for="signupDesignation" id="designationLabel">Company / Hiring Role</label>
+                        <input type="text" id="signupDesignation" placeholder="e.g. Talent Acquisition Lead or HR Manager" />
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn-primary btn-wide">Create Account</button>
+                    </div>
+
+                    <div class="form-footer">
+                        <p>Already have an account? <a href="login.html" class="auth-link">Sign in</a></p>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const signupForm = document.getElementById('signupForm');
+    const roleRecruiter = document.getElementById('roleRecruiter');
+    const roleCandidate = document.getElementById('roleCandidate');
+    const designationLabel = document.getElementById('designationLabel');
+    const signupDesignation = document.getElementById('signupDesignation');
+
+    function updateDesignationPrompt() {
+        if (roleCandidate.checked) {
+            designationLabel.textContent = 'Designation / Desired Role';
+            signupDesignation.placeholder = 'e.g. Software Engineer, Data Scientist, UI/UX Designer';
+        } else {
+            designationLabel.textContent = 'Company / Hiring Role';
+            signupDesignation.placeholder = 'e.g. Talent Acquisition Lead or HR Manager';
+        }
+    }
+
+    if (roleRecruiter && roleCandidate) {
+        roleRecruiter.addEventListener('change', updateDesignationPrompt);
+        roleCandidate.addEventListener('change', updateDesignationPrompt);
+    }
+
+    if (signupForm) {
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('signupUsername').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const fullName = document.getElementById('signupFullName').value.trim();
+            const password = document.getElementById('signupPassword').value;
+            const accountType = document.querySelector('input[name="accountType"]:checked').value;
+            const designation = document.getElementById('signupDesignation').value.trim();
+
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username,
+                        email,
+                        full_name: fullName,
+                        password,
+                        role: accountType,
+                        designation: designation
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Registration failed');
+                }
+
+                // Save session in role-isolated storage
+                Auth.saveSession({
+                    id: data.id,
+                    username: data.username,
+                    full_name: data.full_name,
+                    role: data.role,
+                    email: data.email
+                });
+
+                // Redirect based on chosen role
+                if (data.role === 'recruiter' || data.role === 'admin') {
+                    window.location.href = 'recruiter-dashboard.html';
+                } else {
+                    window.location.href = 'candidate-dashboard.html';
+                }
+            } catch (error) {
+                alert('Registration failed: ' + error.message);
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>

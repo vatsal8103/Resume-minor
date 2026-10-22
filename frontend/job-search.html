@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Search — Résumé Intelligence</title>
+    <meta name="description" content="Browse and apply for job openings. Upload your resume and let AI match you with the perfect role.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+Pro:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        .search-hero-card {
+            background: var(--paper-raised);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin-bottom: 24px;
+            transition: var(--transition);
+        }
+        .search-hero-card:hover {
+            box-shadow: 0 14px 36px rgba(139, 115, 85, 0.1);
+        }
+        .search-bar-unified {
+            display: flex;
+            align-items: center;
+            background: #ffffff;
+            border: 2px solid var(--line-strong);
+            border-radius: 14px;
+            padding: 6px;
+            gap: 4px;
+            transition: var(--transition);
+        }
+        .search-bar-unified:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(139, 115, 85, 0.15);
+        }
+        .search-pillar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 14px;
+            position: relative;
+        }
+        .search-pillar-main {
+            flex: 1.6;
+            min-width: 220px;
+        }
+        .search-pillar-loc {
+            flex: 1.2;
+            min-width: 170px;
+        }
+        .search-pillar-type {
+            flex: 1;
+            min-width: 160px;
+        }
+        .pillar-icon {
+            font-size: 1.2rem;
+            opacity: 0.75;
+            user-select: none;
+        }
+        .pillar-input-wrap {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+        .pillar-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--slate);
+            margin-bottom: 2px;
+            line-height: 1;
+        }
+        .pillar-input-wrap input,
+        .pillar-input-wrap select {
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 0.95rem;
+            color: var(--ink);
+            font-family: var(--font-body);
+            padding: 2px 0;
+            width: 100%;
+        }
+        .pillar-input-wrap input::placeholder {
+            color: #9ca3af;
+        }
+        .pillar-divider {
+            width: 1px;
+            height: 34px;
+            background: var(--line);
+            flex-shrink: 0;
+        }
+        .pillar-clear-btn {
+            background: #f3f4f6;
+            border: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+            padding: 0;
+            line-height: 1;
+        }
+        .pillar-clear-btn:hover {
+            background: #e5e7eb;
+            color: #111827;
+        }
+        .search-action-btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            cursor: pointer;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(139, 115, 85, 0.25);
+        }
+        .search-action-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(139, 115, 85, 0.35);
+        }
+
+        /* Filter Chips Section */
+        .quick-filters-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 18px;
+            flex-wrap: wrap;
+        }
+        .quick-filters-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--slate);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .filter-chips-list {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .filter-chip {
+            padding: 6px 14px;
+            border-radius: 20px;
+            background: #f3f4f6;
+            border: 1px solid var(--line);
+            color: var(--ink);
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .filter-chip:hover {
+            background: #e5e7eb;
+            border-color: var(--line-strong);
+            transform: translateY(-1px);
+        }
+        .filter-chip.active {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+            box-shadow: 0 3px 8px rgba(139, 115, 85, 0.3);
+            transform: translateY(-1px);
+        }
+        .filter-chip-reset {
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+            color: #dc2626;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-chip-reset:hover {
+            background: #fecaca;
+        }
+
+        @media (max-width: 900px) {
+            .search-bar-unified {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 10px;
+            }
+            .pillar-divider {
+                width: 100%;
+                height: 1px;
+                margin: 4px 0;
+            }
+            .search-action-btn {
+                width: 100%;
+                justify-content: center;
+                margin-top: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="smooth-scroll">
+    <header class="topbar">
+        <div class="topbar-left">
+            <span class="wordmark">Résumé Intelligence</span>
+            <span class="case-tag">Job Search</span>
+        </div>
+        <div class="topbar-right">
+            <div class="user-info">
+                <span id="userFullName">Candidate</span>
+            </div>
+            <button id="logoutBtn" class="btn-ghost">Logout</button>
+        </div>
+    </header>
+
+    <main class="shell">
+        <nav class="sidebar">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="candidate-dashboard.html">Overview</a>
+                </li>
+                <li class="nav-item">
+                    <a href="my-profile.html">My Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a href="resume-checker.html">Resume Checker</a>
+                </li>
+                <li class="nav-item active">
+                    <a href="job-search.html">Job Search</a>
+                </li>
+                <li class="nav-item">
+                    <a href="my-applications.html">My Applications</a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html">Settings</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="main-content">
+            <!-- Search & Filter Section -->
+            <section class="section" id="searchSection">
+                <div class="search-hero-card">
+                    <div class="section-header" style="margin-bottom: 20px;">
+                        <h2>Find Your Next Opportunity</h2>
+                        <p>Browse open positions posted by recruiters, search by tech stack, and apply with your parsed resume</p>
+                    </div>
+
+                    <div class="search-bar-unified">
+                        <!-- 1. What / Keyword -->
+                        <div class="search-pillar search-pillar-main">
+                            <span class="pillar-icon">🔍</span>
+                            <div class="pillar-input-wrap">
+                                <label class="pillar-label" for="jobSearchInput">What</label>
+                                <input type="text" id="jobSearchInput" placeholder="Job title, keywords, or skills..." autocomplete="off" />
+                            </div>
+                            <button type="button" class="pillar-clear-btn" id="clearKeywordBtn" title="Clear search" style="display: none;">&times;</button>
+                        </div>
+
+                        <div class="pillar-divider"></div>
+
+                        <!-- 2. Where / Location -->
+                        <div class="search-pillar search-pillar-loc">
+                            <span class="pillar-icon">📍</span>
+                            <div class="pillar-input-wrap">
+                                <label class="pillar-label" for="locationFilter">Where</label>
+                                <input type="text" id="locationFilter" placeholder="City, State, or 'Remote'..." autocomplete="off" />
+                            </div>
+                            <button type="button" class="pillar-clear-btn" id="clearLocationBtn" title="Clear location" style="display: none;">&times;</button>
+                        </div>
+
+                        <div class="pillar-divider"></div>
+
+                        <!-- 3. Job Type -->
+                        <div class="search-pillar search-pillar-type">
+                            <span class="pillar-icon">💼</span>
+                            <div class="pillar-input-wrap">
+                                <label class="pillar-label" for="typeFilter">Job Type</label>
+                                <select id="typeFilter">
+                                    <option value="">All Types</option>
+                                    <option value="full-time">Full-time</option>
+                                    <option value="part-time">Part-time</option>
+                                    <option value="contract">Contract</option>
+                                    <option value="internship">Internship</option>
+                                    <option value="remote">Remote</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- 4. Search Action Button -->
+                        <button class="btn-primary search-action-btn" id="searchBtn">
+                            <span class="btn-icon">⚡</span> Find Jobs
+                        </button>
+                    </div>
+
+                    <!-- Quick Filter Chips -->
+                    <div class="quick-filters-row">
+                        <span class="quick-filters-label">Quick Filters:</span>
+                        <div class="filter-chips-list" id="filterChipsList">
+                            <button type="button" class="filter-chip active" data-filter="all">⚡ All Openings</button>
+                            <button type="button" class="filter-chip" data-filter="remote">🌐 Remote Only</button>
+                            <button type="button" class="filter-chip" data-filter="full-time">💼 Full-time</button>
+                            <button type="button" class="filter-chip" data-filter="python">🐍 Python</button>
+                            <button type="button" class="filter-chip" data-filter="frontend">⚛️ React & Frontend</button>
+                            <button type="button" class="filter-chip" data-filter="cloud">☁️ Cloud & DevOps</button>
+                            <button type="button" class="filter-chip" data-filter="ai">🤖 AI & Data</button>
+                            <button type="button" class="filter-chip-reset" id="resetFiltersBtn" style="display: none;">✕ Clear Filters</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Job Listings for Candidates -->
+            <section class="section" id="resultsSection">
+                <div class="section-content">
+                    <div class="results-bar">
+                        <span class="results-count" id="resultsCount">0 jobs found</span>
+                        <select id="sortBy">
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                        </select>
+                    </div>
+
+                    <div class="candidate-job-list" id="candidateJobList">
+                        <div class="loading-state">
+                            <div class="spinner"></div>
+                            <p>Loading available positions...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<!-- Apply Modal -->
+<div class="modal-overlay" id="applyModal" style="display:none;">
+    <div class="modal-content modal-large">
+        <div class="modal-header">
+            <h3 id="applyJobTitle">Apply for Position</h3>
+            <button class="modal-close" id="closeApplyModal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="applyJobId" />
+
+            <div class="apply-job-summary" id="applyJobSummary">
+                <!-- Populated dynamically -->
+            </div>
+
+            <div class="apply-divider"></div>
+
+            <h4 class="apply-section-title">Submit Your Resume</h4>
+            <p class="apply-hint">Upload your resume to apply. It will be forwarded to the recruiter for review against the job description.</p>
+
+            <div class="form-group">
+                <label class="field-label" for="applicantName">Your Full Name *</label>
+                <input type="text" id="applicantName" placeholder="Enter your full name" />
+            </div>
+
+            <div class="form-group">
+                <label class="field-label" for="applicantEmail">Email Address *</label>
+                <input type="text" id="applicantEmail" placeholder="Enter your email address" />
+            </div>
+
+            <!-- Resume Upload -->
+            <div class="form-group">
+                <label class="field-label">Upload Your Resume *</label>
+                <div id="applyDropzone" class="dropzone apply-dropzone">
+                    <div class="dropzone-icon">📄</div>
+                    <p>Drop your resume here or click to browse</p>
+                    <p class="dropzone-hint">Supports PDF, DOCX, and TXT formats</p>
+                    <input type="file" id="applyFileInput" accept=".pdf,.docx,.txt" hidden />
+                </div>
+                <div id="applyFileInfo" class="apply-file-info" style="display:none;">
+                    <span class="file-name" id="applyFileName"></span>
+                    <button class="file-remove-btn" id="removeApplyFile">&times;</button>
+                </div>
+            </div>
+
+            <!-- Or paste resume text -->
+            <details class="manual-add">
+                <summary>Or paste your resume text</summary>
+                <div class="manual-form">
+                    <textarea id="applyResumeText" placeholder="Paste your resume content here..." rows="6"></textarea>
+                </div>
+            </details>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-primary btn-animated" id="submitApplicationBtn">
+                <span class="btn-icon">🚀</span> Submit Application
+            </button>
+            <button class="btn-ghost" id="cancelApplyBtn">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- View Job Detail Modal (Candidate view) -->
+<div class="modal-overlay" id="viewJobModal" style="display:none;">
+    <div class="modal-content modal-large">
+        <div class="modal-header">
+            <h3 id="viewJobTitle">Job Details</h3>
+            <button class="modal-close" id="closeViewModal">&times;</button>
+        </div>
+        <div class="modal-body" id="viewJobBody">
+        </div>
+        <div class="modal-footer">
+            <button class="btn-primary" id="applyFromDetailBtn">Apply Now</button>
+            <button class="btn-ghost" id="closeDetailBtn">Close</button>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+let allJobs = [];
+let parsedResumeText = '';
+
+document.addEventListener('DOMContentLoaded', function() {
+    const user = Auth.getUser('candidate');
+    const userId = user ? user.userId : null;
+    const fullName = user ? user.fullName : '';
+    const email = user ? user.email : '';
+
+    if (fullName) {
+        document.getElementById('userFullName').textContent = fullName;
+        document.getElementById('applicantName').value = fullName;
+    }
+
+    if (email) {
+        document.getElementById('applicantEmail').value = email;
+    }
+
+    // Handle logout (isolated to candidate)
+    document.getElementById('logoutBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        Auth.logout('candidate');
+    });
+
+    // Load jobs
+    loadAvailableJobs();
+
+    // Search events
+    const keywordInput = document.getElementById('jobSearchInput');
+    const locationInput = document.getElementById('locationFilter');
+    const typeSelect = document.getElementById('typeFilter');
+    const clearKeyword = document.getElementById('clearKeywordBtn');
+    const clearLocation = document.getElementById('clearLocationBtn');
+    const resetFilters = document.getElementById('resetFiltersBtn');
+
+    // Live debounced search
+    keywordInput.addEventListener('input', () => {
+        clearKeyword.style.display = keywordInput.value.trim() ? 'flex' : 'none';
+        debounceFilter();
+    });
+    locationInput.addEventListener('input', () => {
+        clearLocation.style.display = locationInput.value.trim() ? 'flex' : 'none';
+        debounceFilter();
+    });
+    typeSelect.addEventListener('change', () => {
+        updateResetButtonState();
+        renderJobList();
+    });
+
+    clearKeyword.addEventListener('click', () => {
+        keywordInput.value = '';
+        clearKeyword.style.display = 'none';
+        keywordInput.focus();
+        updateResetButtonState();
+        renderJobList();
+    });
+
+    clearLocation.addEventListener('click', () => {
+        locationInput.value = '';
+        clearLocation.style.display = 'none';
+        locationInput.focus();
+        updateResetButtonState();
+        renderJobList();
+    });
+
+    document.getElementById('searchBtn').addEventListener('click', renderJobList);
+    keywordInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') renderJobList();
+    });
+    locationInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') renderJobList();
+    });
+    document.getElementById('sortBy').addEventListener('change', renderJobList);
+
+    // Quick filter chips click
+    const chips = document.querySelectorAll('.filter-chip');
+    chips.forEach(chip => {
+        chip.addEventListener('click', function() {
+            chips.forEach(c => c.classList.remove('active'));
+            this.classList.add('active');
+            activeQuickFilter = this.getAttribute('data-filter') || 'all';
+            updateResetButtonState();
+            renderJobList();
+        });
+    });
+
+    // Reset all filters button
+    if (resetFilters) {
+        resetFilters.addEventListener('click', () => {
+            keywordInput.value = '';
+            locationInput.value = '';
+            typeSelect.value = '';
+            clearKeyword.style.display = 'none';
+            clearLocation.style.display = 'none';
+            activeQuickFilter = 'all';
+            chips.forEach(c => c.classList.toggle('active', c.getAttribute('data-filter') === 'all'));
+            resetFilters.style.display = 'none';
+            renderJobList();
+        });
+    }
+
+    // Apply modal events
+    document.getElementById('closeApplyModal').addEventListener('click', closeApplyModal);
+    document.getElementById('cancelApplyBtn').addEventListener('click', closeApplyModal);
+    document.getElementById('submitApplicationBtn').addEventListener('click', submitApplication);
+
+    // View job modal events
+    document.getElementById('closeViewModal').addEventListener('click', () => {
+        document.getElementById('viewJobModal').style.display = 'none';
+    });
+    document.getElementById('closeDetailBtn').addEventListener('click', () => {
+        document.getElementById('viewJobModal').style.display = 'none';
+    });
+
+    // Resume upload handling
+    const dropzone = document.getElementById('applyDropzone');
+    const fileInput = document.getElementById('applyFileInput');
+
+    dropzone.addEventListener('click', () => fileInput.click());
+    dropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropzone.classList.add('dragover');
+    });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+    dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+        if (e.dataTransfer.files.length > 0) handleApplyFile(e.dataTransfer.files[0]);
+    });
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files.length > 0) handleApplyFile(fileInput.files[0]);
+    });
+
+    document.getElementById('removeApplyFile').addEventListener('click', () => {
+        parsedResumeText = '';
+        document.getElementById('applyFileInfo').style.display = 'none';
+        document.getElementById('applyDropzone').style.display = 'block';
+        document.getElementById('applyFileInput').value = '';
+    });
+
+    // Close modals on overlay click
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+        overlay.addEventListener('click', function(e) {
+            if (e.target === this) this.style.display = 'none';
+        });
+    });
+});
+
+let searchDebounceTimer = null;
+let activeQuickFilter = 'all';
+
+function debounceFilter() {
+    clearTimeout(searchDebounceTimer);
+    updateResetButtonState();
+    searchDebounceTimer = setTimeout(renderJobList, 200);
+}
+
+function updateResetButtonState() {
+    const keyword = document.getElementById('jobSearchInput').value.trim();
+    const location = document.getElementById('locationFilter').value.trim();
+    const type = document.getElementById('typeFilter').value;
+    const isFiltered = Boolean(keyword || location || type || (activeQuickFilter && activeQuickFilter !== 'all'));
+    const resetBtn = document.getElementById('resetFiltersBtn');
+    if (resetBtn) resetBtn.style.display = isFiltered ? 'inline-flex' : 'none';
+}
+
+// Handle resume file upload
+async function handleApplyFile(file) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    document.getElementById('applyDropzone').style.display = 'none';
+    document.getElementById('applyFileInfo').style.display = 'flex';
+    document.getElementById('applyFileName').textContent = `${file.name} (parsing...)`;
+
+    try {
+        const response = await fetch('/api/parse-file', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            parsedResumeText = result.text;
+            document.getElementById('applyFileName').textContent = `${file.name} ✅ Parsed successfully`;
+        } else {
+            document.getElementById('applyFileName').textContent = `${file.name} ❌ ${result.error}`;
+            parsedResumeText = '';
+        }
+    } catch (error) {
+        document.getElementById('applyFileName').textContent = `${file.name} ❌ Upload failed`;
+        parsedResumeText = '';
+    }
+}
+
+// Load available jobs from API (only open jobs)
+async function loadAvailableJobs() {
+    const jobList = document.getElementById('candidateJobList');
+
+    try {
+        const response = await fetch('/api/jobs?status=open&per_page=100');
+        const data = await response.json();
+        allJobs = data.jobs || [];
+        renderJobList();
+    } catch (error) {
+        console.error('Error loading jobs:', error);
+        jobList.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">⚠️</div>
+                <p>Unable to load jobs</p>
+                <p class="empty-sub">Please check your connection and try again.</p>
+            </div>
+        `;
+    }
+}
+
+// Render the job list with current filters/sort
+function renderJobList() {
+    const jobList = document.getElementById('candidateJobList');
+    const sortBy = document.getElementById('sortBy').value;
+    const keyword = (document.getElementById('jobSearchInput').value || '').trim().toLowerCase();
+    const location = (document.getElementById('locationFilter').value || '').trim().toLowerCase();
+    const type = (document.getElementById('typeFilter').value || '').trim().toLowerCase();
+
+    let filtered = allJobs.filter(job => {
+        // Keyword search (title, description, skills, requirements)
+        if (keyword) {
+            const haystack = `${job.title || ''} ${job.description || ''} ${job.required_skills || ''} ${job.requirements || ''}`.toLowerCase();
+            if (!haystack.includes(keyword)) return false;
+        }
+
+        // Location search
+        if (location) {
+            const loc = (job.location || '').toLowerCase();
+            if (!loc.includes(location)) {
+                if (location.includes('remote') && !loc.includes('remote')) return false;
+                if (!location.includes('remote')) return false;
+            }
+        }
+
+        // Type filter
+        if (type) {
+            const empType = (job.employment_type || '').toLowerCase();
+            const loc = (job.location || '').toLowerCase();
+            if (type === 'remote') {
+                if (!empType.includes('remote') && !loc.includes('remote')) return false;
+            } else if (!empType.includes(type)) {
+                return false;
+            }
+        }
+
+        // Quick Filter Chip
+        if (activeQuickFilter && activeQuickFilter !== 'all') {
+            const allText = `${job.title || ''} ${job.required_skills || ''} ${job.description || ''} ${job.location || ''} ${job.employment_type || ''}`.toLowerCase();
+            if (activeQuickFilter === 'remote') {
+                if (!allText.includes('remote')) return false;
+            } else if (activeQuickFilter === 'full-time') {
+                if (!allText.includes('full')) return false;
+            } else if (activeQuickFilter === 'python') {
+                if (!allText.includes('python')) return false;
+            } else if (activeQuickFilter === 'frontend') {
+                if (!allText.includes('react') && !allText.includes('frontend') && !allText.includes('javascript') && !allText.includes('web')) return false;
+            } else if (activeQuickFilter === 'cloud') {
+                if (!allText.includes('cloud') && !allText.includes('aws') && !allText.includes('devops') && !allText.includes('docker') && !allText.includes('kubernetes')) return false;
+            } else if (activeQuickFilter === 'ai') {
+                if (!allText.includes('ai') && !allText.includes('ml') && !allText.includes('machine learning') && !allText.includes('data')) return false;
+            }
+        }
+
+        return true;
+    });
+
+    // Sort
+    if (sortBy === 'newest') {
+        filtered.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+    } else {
+        filtered.sort((a, b) => new Date(a.created_at || 0) - new Date(b.created_at || 0));
+    }
+
+    const countText = `${filtered.length} open position${filtered.length !== 1 ? 's' : ''} available`;
+    document.getElementById('resultsCount').textContent = countText;
+
+    if (filtered.length === 0) {
+        jobList.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">🔍</div>
+                <p>No matching positions found</p>
+                <p class="empty-sub">We couldn't find any openings matching your search criteria. Try removing keywords or resetting filters.</p>
+                <button type="button" class="btn-primary btn-small" style="margin-top: 14px;" onclick="document.getElementById('resetFiltersBtn')?.click()">
+                    Reset All Filters
+                </button>
+            </div>
+        `;
+        return;
+    }
+
+    jobList.innerHTML = '';
+    filtered.forEach((job, index) => {
+        const card = createCandidateJobCard(job, index);
+        jobList.appendChild(card);
+    });
+}
+
+// Create a job card for the candidate view
+function createCandidateJobCard(job, index) {
+    const card = document.createElement('div');
+    card.className = 'candidate-job-card animate-fade-in-up';
+    card.style.animationDelay = `${index * 0.06}s`;
+
+    const postedDate = job.created_at ? formatTimeAgo(job.created_at) : 'Recently';
+    const description = (job.description || '').substring(0, 250);
+
+    card.innerHTML = `
+        <div class="cjob-header">
+            <div>
+                <h3 class="cjob-title">${escapeHtml(job.title)}</h3>
+                <div class="cjob-meta">
+                    ${job.location ? `<span>📍 ${escapeHtml(job.location)}</span>` : ''}
+                    ${job.employment_type ? `<span>💼 ${capitalizeFirst(job.employment_type)}</span>` : ''}
+                    <span>📅 Posted ${postedDate}</span>
+                    <span>👥 ${job.applicant_count || 0} applicants</span>
+                </div>
+            </div>
+            <div class="cjob-badge">Open</div>
+        </div>
+        <div class="cjob-body">
+            <p class="cjob-desc">${escapeHtml(description)}${(job.description || '').length > 250 ? '...' : ''}</p>
+        </div>
+        <div class="cjob-footer">
+            <button class="btn-ghost btn-small" onclick="viewJobDetails('${job.id}')">View Full Details</button>
+            <button class="btn-primary btn-small btn-animated" onclick="openApplyModal('${job.id}', '${escapeHtml(job.title).replace(/'/g, "\\'")}')">
+                <span class="btn-icon">🚀</span> Apply Now
+            </button>
+        </div>
+    `;
+
+    return card;
+}
+
+// View job details (candidate)
+async function viewJobDetails(jobId) {
+    try {
+        const response = await fetch(`/api/jobs/${jobId}`);
+        const job = await response.json();
+
+        document.getElementById('viewJobTitle').textContent = job.title;
+
+        const salaryRange = (job.salary_min && job.salary_max)
+            ? `$${Number(job.salary_min).toLocaleString()} – $${Number(job.salary_max).toLocaleString()}`
+            : (job.salary_min ? `From $${Number(job.salary_min).toLocaleString()}` : 'Not specified');
+
+        document.getElementById('viewJobBody').innerHTML = `
+            <div class="job-detail-grid">
+                <div class="job-detail-main">
+                    <div class="detail-field">
+                        <h4>📋 Job Description</h4>
+                        <p class="detail-jd">${escapeHtml(job.description || '').replace(/\n/g, '<br>')}</p>
+                    </div>
+                    ${job.requirements ? `
+                    <div class="detail-field">
+                        <h4>📝 Additional Requirements</h4>
+                        <p>${escapeHtml(job.requirements).replace(/\n/g, '<br>')}</p>
+                    </div>
+                    ` : ''}
+                </div>
+                <div class="job-detail-sidebar">
+                    <div class="detail-field"><h4>📍 Location</h4><p>${escapeHtml(job.location || 'Not specified')}</p></div>
+                    <div class="detail-field"><h4>💼 Type</h4><p>${capitalizeFirst(job.employment_type || 'Not specified')}</p></div>
+                    <div class="detail-field"><h4>🛠️ Required Skills</h4><p>${escapeHtml(job.required_skills || 'Not specified')}</p></div>
+                    <div class="detail-field"><h4>📊 Experience</h4><p>${escapeHtml(job.experience_required || 'Not specified')}</p></div>
+                    <div class="detail-field"><h4>🎓 Education</h4><p>${escapeHtml(job.education_required || 'Not specified')}</p></div>
+                    <div class="detail-field"><h4>💰 Salary Range</h4><p>${salaryRange}</p></div>
+                </div>
+            </div>
+        `;
+
+        // Wire up the "Apply Now" button in detail modal
+        document.getElementById('applyFromDetailBtn').onclick = function() {
+            document.getElementById('viewJobModal').style.display = 'none';
+            openApplyModal(jobId, job.title);
+        };
+
+        document.getElementById('viewJobModal').style.display = 'flex';
+
+    } catch (error) {
+        console.error('Error viewing job details:', error);
+        showToast('Failed to load job details.', 'error');
+    }
+}
+
+// Open apply modal
+async function openApplyModal(jobId, jobTitle) {
+    document.getElementById('applyJobId').value = jobId;
+    document.getElementById('applyJobTitle').textContent = `Apply for: ${jobTitle}`;
+
+    // Reset form
+    parsedResumeText = '';
+    document.getElementById('applyResumeText').value = '';
+    document.getElementById('applyFileInfo').style.display = 'none';
+    document.getElementById('applyDropzone').style.display = 'block';
+    document.getElementById('applyFileInput').value = '';
+
+    // Pre-fill candidate info if logged in
+    const user = Auth.getUser('candidate');
+    const userId = user ? user.userId : null;
+    const fullName = user ? user.fullName : '';
+    const email = user ? user.email : '';
+
+    if (fullName) document.getElementById('applicantName').value = fullName;
+    if (email) document.getElementById('applicantEmail').value = email;
+
+    if (userId) {
+        try {
+            const res = await fetch(`/api/candidates/${userId}`);
+            if (res.ok) {
+                const cand = await res.json();
+                if (cand.full_name && !document.getElementById('applicantName').value) {
+                    document.getElementById('applicantName').value = cand.full_name;
+                }
+                if (cand.email && !document.getElementById('applicantEmail').value) {
+                    document.getElementById('applicantEmail').value = cand.email;
+                }
+                if (cand.resume_text && cand.resume_text.trim()) {
+                    parsedResumeText = cand.resume_text;
+                    document.getElementById('applyResumeText').value = cand.resume_text;
+                    document.getElementById('applyDropzone').style.display = 'none';
+                    document.getElementById('applyFileInfo').style.display = 'flex';
+                    document.getElementById('applyFileName').textContent = `📄 Profile Resume (${cand.resume_text.length} chars)`;
+                }
+            }
+        } catch (e) {
+            console.error('Could not prefill candidate details:', e);
+        }
+    }
+
+    // Load job summary in modal
+    loadJobSummaryForApply(jobId);
+
+    document.getElementById('applyModal').style.display = 'flex';
+}
+
+async function loadJobSummaryForApply(jobId) {
+    try {
+        const response = await fetch(`/api/jobs/${jobId}`);
+        const job = await response.json();
+        document.getElementById('applyJobSummary').innerHTML = `
+            <div class="apply-summary-card">
+                <h4>${escapeHtml(job.title)}</h4>
+                <div class="apply-summary-meta">
+                    ${job.location ? `<span>📍 ${escapeHtml(job.location)}</span>` : ''}
+                    ${job.employment_type ? `<span>💼 ${capitalizeFirst(job.employment_type)}</span>` : ''}
+                </div>
+                <p class="apply-summary-desc">${escapeHtml((job.description || '').substring(0, 300))}...</p>
+            </div>
+        `;
+    } catch (e) {
+        document.getElementById('applyJobSummary').innerHTML = '';
+    }
+}
+
+function closeApplyModal() {
+    document.getElementById('applyModal').style.display = 'none';
+}
+
+// Submit application - this forwards the resume to the recruiter
+async function submitApplication() {
+    const jobId = document.getElementById('applyJobId').value;
+    const name = document.getElementById('applicantName').value.trim();
+    const email = document.getElementById('applicantEmail').value.trim();
+    const resumeText = parsedResumeText || document.getElementById('applyResumeText').value.trim();
+
+    if (!name) {
+        showToast('Please enter your full name.', 'error');
+        return;
+    }
+    if (!email) {
+        showToast('Please enter your email address.', 'error');
+        return;
+    }
+    if (!resumeText) {
+        showToast('Please upload your resume or paste your resume text.', 'error');
+        return;
+    }
+
+    const btn = document.getElementById('submitApplicationBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="btn-icon">⏳</span> Submitting...';
+
+    try {
+        const user = Auth.getUser('candidate');
+        let candidateId = user ? user.userId : null;
+
+        // If no logged in candidate user, create candidate
+        if (!candidateId) {
+            const candidateResponse = await fetch('/api/candidates', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    first_name: name.split(' ')[0],
+                    last_name: name.split(' ').slice(1).join(' ') || '',
+                    email: email,
+                    resume_text: resumeText,
+                    source: 'job_application',
+                    current_status: 'new'
+                })
+            });
+
+            const candidateData = await candidateResponse.json();
+            candidateId = candidateData.id;
+
+            if (!candidateId) {
+                throw new Error('Failed to create candidate record.');
+            }
+            Auth.saveSession({
+                id: candidateId,
+                userId: candidateId,
+                fullName: name,
+                email: email,
+                role: 'candidate'
+            });
+        } else {
+            // Update profile resume
+            await fetch(`/api/candidates/${candidateId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    resume_text: resumeText,
+                    first_name: name.split(' ')[0],
+                    last_name: name.split(' ').slice(1).join(' ') || '',
+                    email: email
+                })
+            });
+        }
+
+        // Submit application to recruiter pipeline
+        const applicationResponse = await fetch('/api/applications', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                candidate_id: candidateId,
+                job_id: jobId,
+                resume_text: resumeText,
+                status: 'applied'
+            })
+        });
+
+        const applicationData = await applicationResponse.json();
+
+        if (applicationResponse.ok) {
+            showToast('🎉 Application submitted! Your resume has been forwarded to the recruiter.', 'success');
+            closeApplyModal();
+            loadAvailableJobs(); // Refresh to update applicant counts
+
+            // Show confirmation toast with link to my-applications
+            setTimeout(() => {
+                showToast('💡 View your application status in <a href="my-applications.html" style="color:#fff; text-decoration:underline;">My Applications</a>', 'info');
+            }, 1500);
+        } else {
+            showToast(applicationData.error || applicationData.message || 'Failed to submit application.', 'error');
+        }
+
+    } catch (error) {
+        console.error('Error submitting application:', error);
+        showToast('Something went wrong. Please try again.', 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span class="btn-icon">🚀</span> Submit Application';
+    }
+}
+
+// Toast notification
+function showToast(message, type = 'info') {
+    const existing = document.querySelector('.toast');
+    if (existing) existing.remove();
+
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.innerHTML = `
+        <span class="toast-icon">${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span>
+        <span class="toast-message">${message}</span>
+    `;
+    document.body.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add('toast-visible'));
+    setTimeout(() => {
+        toast.classList.remove('toast-visible');
+        setTimeout(() => toast.remove(), 300);
+    }, 4000);
+}
+
+// Utilities
+function escapeHtml(str) {
+    if (!str) return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+function capitalizeFirst(str) {
+    if (!str) return '';
+    return str.charAt(0).toUpperCase() + str.slice(1).replace(/-/g, ' ');
+}
+
+function formatTimeAgo(dateString) {
+    if (!dateString) return 'Just now';
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffMins = Math.round(diffMs / 60000);
+    const diffHours = Math.round(diffMs / 3600000);
+    const diffDays = Math.round(diffMs / 86400000);
+    if (diffDays > 0) return diffDays === 1 ? 'Yesterday' : `${diffDays} days ago`;
+    if (diffHours > 0) return diffHours === 1 ? 'An hour ago' : `${diffHours} hours ago`;
+    if (diffMins > 0) return diffMins === 1 ? 'A minute ago' : `${diffMins} minutes ago`;
+    return 'Just now';
+}
+</script>
+</body>
+</html>

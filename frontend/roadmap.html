@@ -83,16 +83,64 @@
 <script src="script.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Roadmap page specific functionality
+    // Back navigation based on persona
+    const user = Auth.getUser('candidate');
+    const backBtn = document.querySelector('.topbar-right a');
+    if (backBtn && user) {
+        backBtn.href = 'my-applications.html';
+        backBtn.textContent = '← Back to Applications';
+    }
+
     const urlParams = new URLSearchParams(window.location.search);
+    const applicationId = urlParams.get('application_id') || urlParams.get('app_id');
     const resumeText = urlParams.get('resume') || '';
     const jdText = urlParams.get('jd') || '';
 
-    if (resumeText && jdText) {
+    if (applicationId) {
+        loadApplicationRoadmap(applicationId);
+    } else if (resumeText && jdText) {
         generateRoadmap(decodeURIComponent(resumeText), decodeURIComponent(jdText));
     } else {
         // Show sample roadmap for demo
         showSampleRoadmap();
+    }
+
+    async function loadApplicationRoadmap(appId) {
+        const container = document.getElementById('roadmapContainer');
+        container.innerHTML = `
+            <div class="loading-state">
+                <p>Retrieving ATS scanning report and generating personalized preparation roadmap...</p>
+                <div class="spinner"></div>
+            </div>
+        `;
+
+        try {
+            const response = await fetch(`/api/applications/${appId}/roadmap`);
+            if (!response.ok) throw new Error('Failed to retrieve application roadmap');
+            const data = await response.json();
+
+            // Update hero title
+            if (data.job_title) {
+                const heroTitle = document.querySelector('.hero-section h1');
+                if (heroTitle) {
+                    heroTitle.innerHTML = `Preparation Roadmap: <span class="text-gradient">${escapeHtml(data.job_title)}</span>`;
+                }
+                const heroSub = document.querySelector('.hero-subtitle');
+                if (heroSub) {
+                    heroSub.textContent = `Master every missing skill identified by the ATS scan to crack this role and similar positions.`;
+                }
+            }
+
+            displayApplicationRoadmap(data);
+        } catch (error) {
+            container.innerHTML = `
+                <div class="error-state">
+                    <h3>Unable to load roadmap</h3>
+                    <p>${error.message}</p>
+                    <a href="my-applications.html" class="btn-ghost" style="margin-top:12px;">Back to Applications</a>
+                </div>
+            `;
+        }
     }
 
     async function generateRoadmap(resumeText, jdText) {
@@ -126,220 +174,440 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function displayRoadmap(data) {
+    function displayApplicationRoadmap(appData) {
         const container = document.getElementById('roadmapContainer');
+        const roadmap = appData.roadmap || {};
+        const missingSkills = appData.missing_skills || roadmap.skill_gaps || [];
+        const matchedSkills = appData.matched_skills || [];
+        const score = Math.round(appData.match_score || 0);
+        const appId = appData.application_id || 'demo';
 
-        const missingSkills = data.missing_skills || [];
         if (missingSkills.length === 0) {
             container.innerHTML = `
                 <div class="success-state">
-                    <h2>Excellent Match! 🎉</h2>
-                    <p>Your skills align well with the job requirements. No significant skill gaps detected.</p>
-                    <p><strong>Resume Skills:</strong> ${data.resume_skills.join(', ')}</p>
-                    <p><strong>Job Requirements:</strong> ${data.jd_skills.join(', ')}</p>
+                    <h2>Exceptional Alignment! 🎉</h2>
+                    <p>Your resume matches all primary technical competencies required by this role. No critical skill gaps were detected.</p>
+                    <div style="margin-top: 16px;">
+                        <span style="font-weight:600; color:var(--primary);">Matched Competencies:</span>
+                        <div class="skill-tags" style="margin-top: 8px;">
+                            ${matchedSkills.map(s => `<span class="skill-tag skill-matched">✅ ${escapeHtml(s)}</span>`).join('')}
+                        </div>
+                    </div>
                 </div>
             `;
             return;
         }
 
+        const learningPath = roadmap.learning_path || {};
+        const skillKeys = Object.keys(learningPath).length > 0 ? Object.keys(learningPath) : missingSkills;
+
         let html = `
-            <div class="roadmap-header">
-                <h2>Skill Gap Analysis</h2>
+            <!-- ATS Scan Transparency Card -->
+            <div class="ats-report-card">
+                <div class="ats-report-header">
+                    <div class="ats-badge-rejected">
+                        <span class="status-dot-red"></span> Application Status: Not Selected
+                    </div>
+                    <div class="ats-score-display">
+                        <span class="score-large">${score}%</span>
+                        <span class="score-subtext">ATS Match Score</span>
+                    </div>
+                </div>
+
+                <div class="ats-report-body">
+                    <div class="ats-feedback-note">
+                        <h4>📢 Recruiter & ATS Assessment Feedback</h4>
+                        <p>${escapeHtml(appData.ats_feedback || appData.rejection_feedback || 'Your resume was parsed and evaluated against the Job Description. Below is the full breakdown of matched skills, missing requirements, and your personalized preparation pathway.')}</p>
+                    </div>
+
+                    <div class="ats-skills-grid">
+                        <div class="ats-skill-col">
+                            <h4>✅ Matched in Your Resume (${matchedSkills.length})</h4>
+                            <div class="skill-tags">
+                                ${matchedSkills.length > 0 ?
+                                    matchedSkills.map(s => `<span class="skill-tag skill-matched">✅ ${escapeHtml(s)}</span>`).join('') :
+                                    '<span style="color:var(--text-muted); font-size:0.88rem;">No direct skill matches detected</span>'
+                                }
+                            </div>
+                        </div>
+
+                        <div class="ats-skill-col">
+                            <h4>⚠️ Missing Skills from Job Description (${missingSkills.length})</h4>
+                            <div class="skill-tags">
+                                ${missingSkills.map(s => `<span class="skill-tag skill-missing">⚠️ ${escapeHtml(s)}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preparation Roadmap Overview -->
+            <div class="roadmap-header" style="margin-top: 36px;">
+                <h2>🎯 Personalized Skill Preparation Pathway</h2>
+                <p style="color: var(--text-muted); margin-bottom: 20px;">
+                    Select any skill below to explore its week-by-week curriculum, hands-on portfolio projects, and technical interview preparation.
+                </p>
                 <div class="skill-summary">
                     <div class="skill-item">
-                        <h3>${data.resume_skills.length}</h3>
-                        <p>Your Skills</p>
-                    </div>
-                    <div class="skill-item">
-                        <h3>${data.jd_skills.length}</h3>
-                        <p>Job Requirements</p>
-                    </div>
-                    <div class="skill-item">
                         <h3>${missingSkills.length}</h3>
-                        <p>Skill Gaps</p>
+                        <p>Skills to Master</p>
+                    </div>
+                    <div class="skill-item">
+                        <h3>${roadmap.total_estimated_hours || (missingSkills.length * 35)} hrs</h3>
+                        <p>Total Study Commitment</p>
+                    </div>
+                    <div class="skill-item">
+                        <h3>${roadmap.overall_weeks || (missingSkills.length * 2)} wks</h3>
+                        <p>Target Timeline</p>
                     </div>
                 </div>
             </div>
 
-            <h3>Learning Path</h3>
-            <div class="timeline-estimate">
-                <p><strong>Estimated Completion Time:</strong> ${data.total_estimated_hours} hours (${data.timeline_weeks[Object.keys(data.timeline_weeks)[0]] || 8} weeks at 10 hours/week)</p>
+            <!-- Interactive Skill Switcher Navigation -->
+            <div class="roadmap-skill-nav-container">
+                <div class="roadmap-skill-nav-title">
+                    <span>⚡ Select Skill to View Learning Path (${skillKeys.length} available):</span>
+                </div>
+                <div class="roadmap-skill-pills" id="roadmapSkillPills">
+                    ${skillKeys.map((skill, index) => {
+                        const plan = learningPath[skill] || {};
+                        const domain = plan.domain || 'Engineering';
+                        const safeId = skill.replace(/[^a-zA-Z0-9]/g, '_');
+                        return `
+                            <button class="skill-nav-btn ${index === 0 ? 'active' : ''}" data-target-skill="${safeId}">
+                                <span>${escapeHtml(skill)}</span>
+                                <span class="pill-badge">${escapeHtml(domain.split(' ')[0])}</span>
+                            </button>
+                        `;
+                    }).join('')}
+                </div>
             </div>
+
+            <!-- Detailed Dynamic Skill Pathways -->
+            <div id="skillDetailsWrapper">
+                ${skillKeys.map((skill, index) => {
+                    const plan = learningPath[skill] || {};
+                    const safeId = skill.replace(/[^a-zA-Z0-9]/g, '_');
+                    const domain = plan.domain || 'Software Engineering';
+                    const diff = plan.difficulty || 'Intermediate';
+                    const weeks = plan.timeline_weeks || (roadmap.timeline_weeks && roadmap.timeline_weeks[skill]) || 4;
+                    const hours = plan.estimated_hours || (weeks * 10);
+                    const summary = plan.summary || `Master ${escapeHtml(skill)} to satisfy the technical requirements of this position.`;
+
+                    // Phases
+                    const beginnerTopics = plan.beginner_topics || ["Foundational concepts & syntax", "Development environment setup", "Core principles"];
+                    const intermediateTopics = plan.intermediate_topics || ["Idiomatic patterns", "Asynchronous operations", "Unit testing & debugging"];
+                    const advancedTopics = plan.advanced_topics || ["Performance profiling", "Production optimization", "Security & scaling"];
+                    const practice = plan.practice_activities || ["Hands-on proof of concept", "Refactor and optimize workflow", "Write automated tests"];
+                    const projects = plan.mini_projects || [];
+                    const assessments = plan.assessments || [];
+                    const resources = plan.resources || [
+                        {"title": `Official ${skill} Documentation`, "type": "Documentation"},
+                        {"title": `${skill} Best Practices & Design Patterns`, "type": "Guide"}
+                    ];
+
+                    const totalCheckpoints = beginnerTopics.length + intermediateTopics.length + advancedTopics.length + practice.length;
+
+                    return `
+                        <div class="skill-detail-container ${index === 0 ? 'active' : ''}" id="skillDetail_${safeId}">
+                            <!-- Skill Header Card -->
+                            <div class="skill-header-card">
+                                <div class="skill-header-top">
+                                    <div class="skill-header-title-group">
+                                        <h3>${escapeHtml(skill)} Mastery Path</h3>
+                                        <div class="skill-meta-chips">
+                                            <span class="meta-chip domain-chip">📁 ${escapeHtml(domain)}</span>
+                                            <span class="meta-chip diff-chip">⚡ ${escapeHtml(diff)}</span>
+                                            <span class="meta-chip time-chip">⏱️ ${weeks} Weeks (~${hours} Hours)</span>
+                                        </div>
+                                    </div>
+                                    <button class="btn-ghost btn-small" onclick="window.print()">🖨️ Print Guide</button>
+                                </div>
+
+                                <p class="skill-summary-text">${escapeHtml(summary)}</p>
+
+                                <!-- Progress Tracker -->
+                                <div class="roadmap-progress-wrap">
+                                    <div class="progress-label-row">
+                                        <span>Interactive Study Checklist Progress</span>
+                                        <span class="progress-pct-text" id="pctText_${safeId}">0% Completed</span>
+                                    </div>
+                                    <div class="progress-track">
+                                        <div class="progress-fill" id="progressFill_${safeId}"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 5-Phase Visual Pathway Stepper -->
+                            <div class="roadmap-pathway-timeline">
+                                <!-- Phase 1 -->
+                                <div class="pathway-phase-card" id="phaseCard_${safeId}_1">
+                                    <div class="phase-node-bullet">1</div>
+                                    <div class="phase-content-box">
+                                        <div class="phase-box-header">
+                                            <div class="phase-title-group">
+                                                <h4>Phase 1: Foundations & Architecture</h4>
+                                            </div>
+                                            <span class="phase-milestone-badge">Week 1 · Core Syntax & Setup</span>
+                                        </div>
+                                        <div class="phase-checklist">
+                                            ${beginnerTopics.map((topic, i) => `
+                                                <div class="checklist-item" data-skill="${safeId}" data-idx="b_${i}">
+                                                    <input type="checkbox" id="chk_${safeId}_b_${i}" onchange="toggleCheck('${safeId}')" />
+                                                    <label for="chk_${safeId}_b_${i}">${escapeHtml(topic)}</label>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Phase 2 -->
+                                <div class="pathway-phase-card" id="phaseCard_${safeId}_2">
+                                    <div class="phase-node-bullet">2</div>
+                                    <div class="phase-content-box">
+                                        <div class="phase-box-header">
+                                            <div class="phase-title-group">
+                                                <h4>Phase 2: Production Engineering & Workflows</h4>
+                                            </div>
+                                            <span class="phase-milestone-badge">Week 2 · Patterns & Integration</span>
+                                        </div>
+                                        <div class="phase-checklist">
+                                            ${intermediateTopics.map((topic, i) => `
+                                                <div class="checklist-item" data-skill="${safeId}" data-idx="i_${i}">
+                                                    <input type="checkbox" id="chk_${safeId}_i_${i}" onchange="toggleCheck('${safeId}')" />
+                                                    <label for="chk_${safeId}_i_${i}">${escapeHtml(topic)}</label>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Phase 3 -->
+                                <div class="pathway-phase-card" id="phaseCard_${safeId}_3">
+                                    <div class="phase-node-bullet">3</div>
+                                    <div class="phase-content-box">
+                                        <div class="phase-box-header">
+                                            <div class="phase-title-group">
+                                                <h4>Phase 3: Advanced Optimization & Scaling</h4>
+                                            </div>
+                                            <span class="phase-milestone-badge">Week 3 · Performance & Security</span>
+                                        </div>
+                                        <div class="phase-checklist">
+                                            ${advancedTopics.map((topic, i) => `
+                                                <div class="checklist-item" data-skill="${safeId}" data-idx="a_${i}">
+                                                    <input type="checkbox" id="chk_${safeId}_a_${i}" onchange="toggleCheck('${safeId}')" />
+                                                    <label for="chk_${safeId}_a_${i}">${escapeHtml(topic)}</label>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Phase 4: Projects & Practice -->
+                                <div class="pathway-phase-card" id="phaseCard_${safeId}_4">
+                                    <div class="phase-node-bullet">4</div>
+                                    <div class="phase-content-box">
+                                        <div class="phase-box-header">
+                                            <div class="phase-title-group">
+                                                <h4>Phase 4: Hands-On Practice & Portfolio Projects</h4>
+                                            </div>
+                                            <span class="phase-milestone-badge">Week 4 · Capstone Deliverables</span>
+                                        </div>
+
+                                        <div style="margin-bottom: 14px;">
+                                            <span style="font-size:0.85rem; font-weight:700; color:var(--ink);">🛠️ Hands-On Practice Challenges:</span>
+                                            <div class="phase-checklist" style="margin-top: 8px;">
+                                                ${practice.map((item, i) => `
+                                                    <div class="checklist-item" data-skill="${safeId}" data-idx="p_${i}">
+                                                        <input type="checkbox" id="chk_${safeId}_p_${i}" onchange="toggleCheck('${safeId}')" />
+                                                        <label for="chk_${safeId}_p_${i}">${escapeHtml(item)}</label>
+                                                    </div>
+                                                `).join('')}
+                                            </div>
+                                        </div>
+
+                                        ${projects.length > 0 ? `
+                                            <span style="font-size:0.85rem; font-weight:700; color:var(--ink);">🚀 Recommended Portfolio Projects:</span>
+                                            <div class="roadmap-projects-grid">
+                                                ${projects.map(proj => {
+                                                    const title = typeof proj === 'object' ? proj.title : proj;
+                                                    const desc = typeof proj === 'object' ? proj.description : 'Build and deploy a fully functional solution implementing this skill.';
+                                                    const deliv = typeof proj === 'object' ? proj.deliverables : 'Production GitHub repository with tests and live demo.';
+                                                    return `
+                                                        <div class="project-box">
+                                                            <h5>💡 ${escapeHtml(title)}</h5>
+                                                            <p>${escapeHtml(desc)}</p>
+                                                            <span class="project-deliverable">📦 Target Deliverable: ${escapeHtml(deliv)}</span>
+                                                        </div>
+                                                    `;
+                                                }).join('')}
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                </div>
+
+                                <!-- Phase 5: Technical Interview Prep -->
+                                <div class="pathway-phase-card" id="phaseCard_${safeId}_5">
+                                    <div class="phase-node-bullet">5</div>
+                                    <div class="phase-content-box">
+                                        <div class="phase-box-header">
+                                            <div class="phase-title-group">
+                                                <h4>Phase 5: Technical Interview & Validation</h4>
+                                            </div>
+                                            <span class="phase-milestone-badge">Hiring Readiness</span>
+                                        </div>
+
+                                        <p style="font-size: 0.88rem; color: var(--slate); margin: 0 0 10px;">
+                                            Practice answering these specific questions commonly asked by recruiters and tech leads for this competency:
+                                        </p>
+
+                                        <div class="interview-accordion-group">
+                                            ${assessments.map((item, i) => {
+                                                const q = typeof item === 'object' ? item.question : item;
+                                                const keyPoints = typeof item === 'object' ? item.key_points : 'Demonstrate hands-on architecture, explain real trade-offs, and cite past production challenges.';
+                                                return `
+                                                    <div class="interview-qa-item" id="qa_${safeId}_${i}">
+                                                        <div class="qa-question-header" onclick="toggleQA('${safeId}', ${i})">
+                                                            <span class="qa-question-text">❓ ${escapeHtml(q)}</span>
+                                                            <span class="qa-toggle-btn">Reveal Key Points ▾</span>
+                                                        </div>
+                                                        <div class="qa-answer-body">
+                                                            <strong>💡 What Recruiters Want to Hear:</strong>
+                                                            <p style="margin: 6px 0 0;">${escapeHtml(keyPoints)}</p>
+                                                        </div>
+                                                    </div>
+                                                `;
+                                            }).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Curated Resources -->
+                            <div style="background: var(--paper-raised); border: 1px solid var(--line); border-radius: 10px; padding: 16px 20px; margin-top: 20px;">
+                                <strong style="font-size: 0.9rem; color: var(--ink);">📚 Curated Official Learning Resources:</strong>
+                                <div class="resources-row">
+                                    ${resources.map(res => {
+                                        const rTitle = typeof res === 'object' ? res.title : res;
+                                        const rType = typeof res === 'object' ? res.type : 'Resource';
+                                        return `<span class="resource-chip">📖 [${escapeHtml(rType)}] ${escapeHtml(rTitle)}</span>`;
+                                    }).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+
+            <!-- Domain Strategy Section -->
+            ${roadmap.category_recommendations ? `
+                <div class="roadmap-section" style="margin-top: 36px;">
+                    <h3>💡 Strategic Preparation Advice for this Domain</h3>
+                    <ul class="roadmap-recs-list">
+                        ${(Array.isArray(roadmap.category_recommendations) ? roadmap.category_recommendations : [roadmap.category_recommendations]).map(r => `<li>${escapeHtml(r)}</li>`).join('')}
+                    </ul>
+                </div>
+            ` : ''}
         `;
-
-        // Priority skills section
-        if (data.priority_skills && data.priority_skills.length > 0) {
-            html += `
-                <div class="roadmap-section">
-                    <h3>Priority Skills to Focus On</h3>
-                    <div class="skill-tags">
-                        ${data.priority_skills.map(skill => `<span class="skill-tag priority">${escapeHtml(skill)}</span>`).join('')}
-                    </div>
-                </div>
-            `;
-        }
-
-        // Detailed learning path for each skill
-        if (data.learning_path) {
-            html += `<div class="roadmap-section"><h3>Detailed Learning Plans</h3>`;
-
-            Object.keys(data.learning_path).forEach(skill => {
-                const plan = data.learning_path[skill];
-                const timelineWeeks = data.timeline_weeks[skill] || 8;
-
-                html += `
-                    <div class="skill-roadmap-card">
-                        <h4>${escapeHtml(skill)}</h4>
-                        <p class="skill-timeline">⏱️ Estimated: ${timelineWeeks} weeks</p>
-
-                        <div class="roadmap-tabs">
-                            <button class="tab-btn active" data-tab="${skill}-beginner">Foundations</button>
-                            <button class="tab-btn" data-tab="${skill}-intermediate">Intermediate</button>
-                            <button class="tab-btn" data-tab="${skill}-advanced">Advanced</button>
-                            <button class="tab-btn" data-tab="${skill}-practice">Practice</button>
-                            <button class="tab-btn" data-tab="${skill}-projects">Projects</button>
-                            <button class="tab-btn" data-tab="${skill}-assessment">Assessment</button>
-                        </div>
-
-                        <div class="tab-content" id="${skill}-beginner">
-                            <h4>Foundational Topics</h4>
-                            <ul>
-                                ${plan.beginner_topics.map(topic => `<li>${escapeHtml(topic)}</li>`).join('')}
-                            </ul>
-                        </div>
-
-                        <div class="tab-content" id="${skill}-intermediate">
-                            <h4>Intermediate Skills</h4>
-                            <ul>
-                                ${plan.intermediate_topics.map(topic => `<li>${escapeHtml(topic)}</li>`).join('')}
-                            </ul>
-                        </div>
-
-                        <div class="tab-content" id="${skill}-advanced">
-                            <h4>Advanced Concepts</h4>
-                            <ul>
-                                ${plan.advanced_topics.map(topic => `<li>${escapeHtml(topic)}</li>`).join('')}
-                            </ul>
-                        </div>
-
-                        <div class="tab-content" id="${skill}-practice">
-                            <h4>Practice Activities</h4>
-                            <ul>
-                                ${plan.practice_activities.map(activity => `<li>${escapeHtml(activity)}</li>`).join('')}
-                            </ul>
-                        </div>
-
-                        <div class="tab-content" id="${skill}-projects">
-                            <h4>Mini Projects</h4>
-                            <ul>
-                                ${plan.mini_projects.map(project => `<li>${escapeHtml(project)}</li>`).join('')}
-                            </ul>
-                        </div>
-
-                        <div class="tab-content" id="${skill}-assessment">
-                            <h4>Assessment & Validation</h4>
-                            <ul>
-                                ${plan.assessments.map(assessment => `<li>${escapeHtml(assessment)}</li>`).join('')}
-                            </ul>
-                        </div>
-                    </div>
-                `;
-            });
-
-            html += `</div>`; // Close roadmap-section
-        }
-
-        // Category recommendations
-        if (data.category_recommendations) {
-            html += `
-                <div class="roadmap-section">
-                    <h3>Role-Specific Recommendations</h3>
-                    <p>${Array.isArray(data.category_recommendations) ? data.category_recommendations.join(' ') : data.category_recommendations}</p>
-                </div>
-            `;
-        }
 
         container.innerHTML = html;
-        activateTabButtons();
+        initRoadmapInteractions();
     }
 
-    function showSampleRoadmap() {
-        const container = document.getElementById('roadmapContainer');
-        container.innerHTML = `
-            <div class="sample-roadmap">
-                <h2>Sample Skill Gap Roadmap</h2>
-                <p>See how our AI creates personalized learning paths based on your resume and target job.</p>
-
-                <div class="roadmap-preview">
-                    <h3>Scenario: Junior Developer → Senior Full-Stack Position</h3>
-                    <p><strong>Current Skills:</strong> HTML, CSS, JavaScript, Python</p>
-                    <p><strong>Target Role Requirements:</strong> React, Node.js, AWS, Docker, Kubernetes, REST APIs</p>
-
-                    <div class="skill-gap">
-                        <h4>Identified Skill Gaps:</h4>
-                        <ul>
-                            <li>React (Frontend Framework)</li>
-                            <li>Node.js (Backend Runtime)</li>
-                            <li>AWS (Cloud Platform)</li>
-                            <li>Docker (Containerization)</li>
-                            <li>Kubernetes (Orchestration)</li>
-                            <li>REST API Design</li>
-                        </ul>
-                    </div>
-
-                    <div class="sample-timeline">
-                        <h4>Recommended Learning Path (20-24 weeks):</h4>
-                        <ol>
-                            <li><strong>Weeks 1-4:</strong> Frontend Foundations - React basics, component lifecycle, state management</li>
-                            <li><strong>Weeks 5-8:</strong> Backend Development - Node.js, Express, REST API design</li>
-                            <li><strong>Weeks 9-12:</strong> Cloud & DevOps - AWS services, Docker containers, Kubernetes basics</li>
-                            <li><strong>Weeks 13-16:</strong> Advanced Integration - Microservices, API security, performance optimization</li>
-                            <li><strong>Weeks 17-20:</strong> Capstone Project - Build full-stack application using all learned technologies</li>
-                            <li><strong>Weeks 21-24:</strong> Preparation - Interview practice, resume update, portfolio refinement</li>
-                        </ol>
-                    </div>
-
-                    <div class="sample-outcome">
-                        <h4>Expected Outcome:</h4>
-                        <p>Upon completion, you'll have built a portfolio-worthy full-stack application and be prepared for senior-level interviews targeting the specific job requirements.</p>
-                    </div>
-                </div>
-
-                <div class="cta-buttons">
-                    <a href="/" class="btn-primary btn-animated">Create Your Own Roadmap</a>
-                </div>
-            </div>
-        `;
-    }
-
-    function activateTabButtons() {
-        document.querySelectorAll('.tab-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const skill = this.dataset.tab.split('-')[0];
-                const tabType = this.dataset.tab.split('-')[1];
-
-                // Deactivate all tabs for this skill
-                document.querySelectorAll(`.tab-btn[data-tab^="${skill}-"]`).forEach(btn => {
-                    btn.classList.remove('active');
-                });
-
-                // Hide all tab contents for this skill
-                document.querySelectorAll(`.tab-content[id^="${skill}-"]`).forEach(content => {
-                    content.style.display = 'none';
-                });
-
-                // Activate clicked tab
+    function initRoadmapInteractions() {
+        // Skill switcher tabs
+        const navBtns = document.querySelectorAll('.skill-nav-btn');
+        navBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                navBtns.forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
-                document.getElementById(this.dataset.tab).style.display = 'block';
+
+                const targetId = this.getAttribute('data-target-skill');
+                document.querySelectorAll('.skill-detail-container').forEach(c => c.classList.remove('active'));
+                const activeContainer = document.getElementById(`skillDetail_${targetId}`);
+                if (activeContainer) {
+                    activeContainer.classList.add('active');
+                }
             });
         });
 
-        // Activate first tab for each skill by default
-        document.querySelectorAll('.skill-roadmap-card').forEach(card => {
-            const firstTab = card.querySelector('.tab-btn');
-            if (firstTab) {
-                firstTab.click();
+        // Restore saved checklist states
+        document.querySelectorAll('.checklist-item').forEach(item => {
+            const skill = item.getAttribute('data-skill');
+            const idx = item.getAttribute('data-idx');
+            const key = `roadmap_chk_${skill}_${idx}`;
+            const isChecked = localStorage.getItem(key) === 'true';
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            if (checkbox && isChecked) {
+                checkbox.checked = true;
+                item.classList.add('checked');
             }
+        });
+
+        // Update all progress bars
+        document.querySelectorAll('.skill-detail-container').forEach(c => {
+            const safeId = c.id.replace('skillDetail_', '');
+            updateSkillProgress(safeId);
+        });
+    }
+
+    window.toggleCheck = function(safeId) {
+        const container = document.getElementById(`skillDetail_${safeId}`);
+        if (!container) return;
+
+        container.querySelectorAll('.checklist-item').forEach(item => {
+            const skill = item.getAttribute('data-skill');
+            const idx = item.getAttribute('data-idx');
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            if (checkbox) {
+                if (checkbox.checked) {
+                    item.classList.add('checked');
+                    localStorage.setItem(`roadmap_chk_${skill}_${idx}`, 'true');
+                } else {
+                    item.classList.remove('checked');
+                    localStorage.removeItem(`roadmap_chk_${skill}_${idx}`);
+                }
+            }
+        });
+
+        updateSkillProgress(safeId);
+    };
+
+    function updateSkillProgress(safeId) {
+        const container = document.getElementById(`skillDetail_${safeId}`);
+        if (!container) return;
+
+        const checkboxes = container.querySelectorAll('.checklist-item input[type="checkbox"]');
+        const checked = container.querySelectorAll('.checklist-item input[type="checkbox"]:checked');
+        const total = checkboxes.length;
+        const count = checked.length;
+        const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+
+        const fill = document.getElementById(`progressFill_${safeId}`);
+        const text = document.getElementById(`pctText_${safeId}`);
+
+        if (fill) fill.style.width = `${pct}%`;
+        if (text) text.textContent = `${count} of ${total} checkpoints done (${pct}%)`;
+    }
+
+    window.toggleQA = function(safeId, index) {
+        const item = document.getElementById(`qa_${safeId}_${index}`);
+        if (!item) return;
+        const isExp = item.classList.contains('expanded');
+        item.classList.toggle('expanded');
+        const btn = item.querySelector('.qa-toggle-btn');
+        if (btn) {
+            btn.textContent = isExp ? 'Reveal Key Points ▾' : 'Hide Key Points ▴';
+        }
+    };
+
+    function displayRoadmap(data) {
+        displayApplicationRoadmap({
+            job_title: 'Target Position',
+            match_score: 50,
+            missing_skills: data.skill_gaps || data.missing_skills || [],
+            matched_skills: data.matched_skills || [],
+            roadmap: data.roadmap || data
         });
     }
 });

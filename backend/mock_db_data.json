@@ -1,0 +1,2679 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "_id": "1",
+      "username": "admin",
+      "email": "admin@example.com",
+      "password_hash": "scrypt:32768:8:1$Dkk60WWtECd49aJ5$3a739900356b849b87bed3ee9aaca6a0b9f27b23f6ffa237e43a228751bc602881a8bd8638ceba48de245b59d3214826199f2d23ea55f42e4dfa9ca0ed6b8362",
+      "full_name": "Administrator",
+      "role": "admin",
+      "organization": "System",
+      "created_at": "2026-08-08T05:59:37.766965",
+      "is_active": true
+    },
+    {
+      "id": 2,
+      "_id": "2",
+      "username": "Vatsal Chauhan",
+      "email": "vatsalchauhan8103@gmail.com",
+      "password_hash": "scrypt:32768:8:1$FDg4alUdtLvqGjNv$90238e663cdea2491639feec769083e501dc8c4e093c2ff6b9ebe7852f3da54d43f04a1822c2bc7a1486e9a0925208aebd1b3873c796bebce11b629b7ddd5285",
+      "full_name": "Vatsal Chauhan",
+      "role": "recruiter",
+      "organization": "TechHire Inc.",
+      "created_at": "2026-10-19T14:31:29.319572",
+      "is_active": true
+    },
+    {
+      "id": "cand_user_1",
+      "_id": "cand_user_1",
+      "username": "jane",
+      "email": "jane.smith@example.com",
+      "password_hash": "scrypt:32768:8:1$zJlxiOzjxDQSvRa3$85241a7e252aa54977d28c27ec93ac26c04f7312b59d99aae1bbd173ad757ba67d275d39d61d719ffbfdf919c0ab9e47bec06729f8490387b278995d9f0443ce",
+      "full_name": "Jane Smith",
+      "role": "candidate",
+      "organization": "",
+      "created_at": "2026-08-08T06:01:16.183980",
+      "is_active": true
+    },
+    {
+      "id": "cand_user_2",
+      "_id": "cand_user_2",
+      "username": "alex",
+      "email": "alex.johnson@tech.com",
+      "password_hash": "scrypt:32768:8:1$rG7z7lgZcCPelq1V$0ddd73831b8461e99a5af4f4e03ecb5f4c34d9b8828c9184652194898517d3bc664e2a7c393b2b51b9acbff181ece3c34f0a6418468bc81cf517e60e00f1ee41",
+      "full_name": "Alex Johnson",
+      "role": "candidate",
+      "organization": "",
+      "created_at": "2026-08-08T06:39:05.753747",
+      "is_active": true
+    },
+    {
+      "id": "cand_user_3",
+      "_id": "cand_user_3",
+      "username": "maria",
+      "email": "maria.garcia@design.com",
+      "password_hash": "scrypt:32768:8:1$y3UQZNwv9jDdQwbU$755daf33cecd48e3a216e57d6c2e11c8eab3d4990bb1fcb1bdb34ea9657e3ab961063c784386a82bc0403ab809b2a074e6e8ac51d29f8834253db5a113239451",
+      "full_name": "Maria Garcia",
+      "role": "candidate",
+      "organization": "",
+      "created_at": "2026-08-08T06:39:16.925984",
+      "is_active": true
+    },
+    {
+      "id": 3,
+      "_id": "3",
+      "username": "asdgaasdg",
+      "email": "bweradf@gmail.com",
+      "password_hash": "scrypt:32768:8:1$ojnXaXddhjFXK6j9$51b124cc92c6a4bf014becd4b2dd3f5d625f8e86ccc869c7b928959c892c358ade1ed4e1f21a1d4de7941dcc4a1072ca2250b6ab08396ba0b2a2c7be980b1704",
+      "full_name": "erqgads adg",
+      "role": "candidate",
+      "organization": "",
+      "created_at": "2026-10-19T14:32:18.716019",
+      "is_active": true
+    },
+    {
+      "id": "6ad8adf555c3b9889239d4f7",
+      "_id": "6ad8adf555c3b9889239d4f7",
+      "username": "recruiter",
+      "email": "recruiter@example.com",
+      "password_hash": "scrypt:32768:8:1$c6DVdM9oW7MIpNN9$dfa063224c31cbc3a7987ef679b1588486b1a1f09b8366789409ba893007006ef5f260ca72955996e0e1a926165764b6cf18077868b1bc60075daf8aa2c74246",
+      "full_name": "Recruiter Pro",
+      "role": "recruiter",
+      "organization": "TalentAcquisition",
+      "created_at": "2026-10-21T12:00:00.000000",
+      "is_active": true
+    },
+    {
+      "id": "6ad8adf555c3b9889239d4f8",
+      "_id": "6ad8adf555c3b9889239d4f8",
+      "username": "candidate",
+      "email": "candidate@example.com",
+      "password_hash": "scrypt:32768:8:1$IKjL7DFPTa3xps1W$012202c55f273b856ed61741c260382b9f7df1cadfa3eac53b3c531a01a0f7aad1400643f01dcf3e90a0b2a3fb58897a011d3282b5659dfff64cf390115bf31c",
+      "full_name": "Alex Candidate",
+      "role": "candidate",
+      "organization": "",
+      "created_at": "2026-10-21T12:00:00.000000",
+      "is_active": true
+    },
+    {
+      "id": "6ad8b5ad9100290d25a8a787",
+      "_id": "6ad8b5ad9100290d25a8a787",
+      "username": "testuser",
+      "email": "testuser@example.com",
+      "password_hash": "scrypt:32768:8:1$9Y8f6IKR0Lt3dM97$cafdbcaef745b4ef65181cbc81486a74b1d366b52d1f37e3aa5bb4279c7325229a25354dc2fcbb29e5a224189a6cc7ab37ebed67cbdb9dacb2e5749c9fc4495f",
+      "full_name": "Test User",
+      "role": "candidate",
+      "organization": "",
+      "created_at": "2026-10-21T12:53:01.755278",
+      "is_active": true
+    },
+    {
+      "id": "6ad8ba8390c788d329580d70",
+      "_id": "6ad8ba8390c788d329580d70",
+      "username": "vatsal",
+      "email": "vatsal@gmail.com",
+      "password_hash": "scrypt:32768:8:1$gz3mm2p98psJ47hz$40770fa7c001dbe796c3d699a9decde55430f457afd064b58cd31b25a9ff9f5832a089b7bd514b7d938ecad44a48e0c2ab976242b51eebf052871d94dc2ac338",
+      "full_name": "vatsal chauhan",
+      "role": "recruiter",
+      "organization": "Talent Solutions",
+      "created_at": "2026-10-21T13:13:39.413506",
+      "is_active": true
+    },
+    {
+      "id": "6ad8d36640134ec9c90bca8b",
+      "_id": "6ad8d36640134ec9c90bca8b",
+      "username": "new",
+      "email": "new@gmail.com",
+      "password_hash": "scrypt:32768:8:1$eBIiP9cLi8mxwrwU$e4556147d64564d521ced5c33b401dcd3102260644b65b36c4935a52af6929e0251d29b135c298ecddee5bbdf181447283b1cabe01bc3d24938e18f0e3f30119",
+      "full_name": "new one",
+      "role": "recruiter",
+      "organization": "Recruiting Co",
+      "created_at": "2026-10-21T14:59:50.614100",
+      "is_active": true
+    },
+    {
+      "id": "6ad8d39040134ec9c90bca8c",
+      "_id": "6ad8d39040134ec9c90bca8c",
+      "username": "new1",
+      "email": "new1@gmail.com",
+      "password_hash": "scrypt:32768:8:1$5BGjtC4k6la3BdKB$ed3a7f58afa4bfb4445585b4cc91c3898b835e9cb385664fe3e39a7c13ebe90e1870c712d518a01f2a828ff3bc8ce46b8a034a942aac8178ed930d4e82344104",
+      "full_name": "new one",
+      "role": "candidate",
+      "organization": "",
+      "created_at": "2026-10-21T15:00:32.983342",
+      "is_active": true
+    },
+    {
+      "username": "user_1792598386",
+      "email": "user_1792598386@example.com",
+      "full_name": "user_1792598386",
+      "role": "candidate",
+      "password_hash": "scrypt:32768:8:1$hqwYqqhFVEX8Pyku$5b35adb214dccca6538cf881df1d5db6cb6b372b4d7e39e973cc4fb2e96dfcf56947c67390b1700c0bd0445ee381618e55724e54abbf2096dae6183b3dbe9c65",
+      "organization": "",
+      "designation": "AI Systems Architect",
+      "created_at": "2026-10-21T15:59:46.893095",
+      "is_active": true,
+      "_id": "6ad8e172dcd5e802b0018514"
+    },
+    {
+      "username": "vatsal1",
+      "email": "vatsal1@gmail.com",
+      "full_name": "Vatsal Chauhan",
+      "role": "recruiter",
+      "password_hash": "scrypt:32768:8:1$WpSVawysgdwGYtY5$73621f08af9a4e767710f8b782b372ce9c9c74dbb2c63b771cca7e746e07e4147ad5c011d150bfc25ba8dab0ed3cef0db53007ee9a8843d3727c1c6e164a3ab2",
+      "organization": "",
+      "designation": "",
+      "created_at": "2026-10-21T16:32:15.910604",
+      "is_active": true,
+      "_id": "6ad8e90f02bb2e0709fb8b09"
+    }
+  ],
+  "skills": [],
+  "jobs": [
+    {
+      "id": 1,
+      "_id": "1",
+      "title": "Software Engineer",
+      "description": "We are looking for a skilled software engineer with proficiency in Python, JavaScript, and React to build scalable web applications.",
+      "required_skills": "Python, JavaScript, React",
+      "experience_required": "3+ years",
+      "education_required": "Bachelor's in Computer Science",
+      "location": "New York, NY",
+      "employment_type": "full-time",
+      "salary_min": 80000,
+      "salary_max": 120000,
+      "requirements": "Must have experience with web development and REST APIs.",
+      "status": "open",
+      "created_by": 1,
+      "created_at": "2026-08-08T06:04:14.504626",
+      "updated_at": "2026-08-08T06:04:14.504630"
+    },
+    {
+      "id": 2,
+      "_id": "2",
+      "title": "Senior Full Stack Developer",
+      "description": "We are seeking a senior developer with expertise in Python, JavaScript, React, and Node.js to lead our web development team.",
+      "required_skills": "Python, JavaScript, React, Node.js, AWS",
+      "experience_required": "5+ years",
+      "education_required": "Bachelor's in Computer Science or related field",
+      "location": "San Francisco, CA",
+      "employment_type": "full-time",
+      "salary_min": 120000,
+      "salary_max": 160000,
+      "requirements": "Must have experience with cloud technologies and leading development teams.",
+      "status": "open",
+      "created_by": 1,
+      "created_at": "2026-08-08T06:39:28.002090",
+      "updated_at": "2026-08-08T06:39:28.002095"
+    },
+    {
+      "id": 3,
+      "_id": "3",
+      "title": "DevOps and Cloud Engineer",
+      "description": "Looking for an experienced DevOps Engineer to design CI/CD pipelines, manage Kubernetes clusters, and scale cloud infrastructure on AWS.",
+      "required_skills": "AWS, Docker, Kubernetes, Terraform, Python, Linux",
+      "experience_required": "4+ years",
+      "education_required": "Bachelor's degree or equivalent experience",
+      "location": "Remote",
+      "employment_type": "full-time",
+      "salary_min": 110000,
+      "salary_max": 145000,
+      "requirements": "Expertise in infrastructure as code, cloud security, and monitoring.",
+      "status": "open",
+      "created_by": 1,
+      "created_at": "2026-08-08T06:53:30.621657",
+      "updated_at": "2026-08-08T06:53:30.621661"
+    },
+    {
+      "title": "try wala job",
+      "description": "sab kuch aana chaiye",
+      "required_skills": "python",
+      "experience_required": "2",
+      "education_required": "cse",
+      "location": "bang",
+      "employment_type": "contract",
+      "salary_min": 8000,
+      "salary_max": 12000,
+      "requirements": "kuch nhi",
+      "status": "open",
+      "created_by": "6ad8e90f02bb2e0709fb8b09",
+      "created_at": "2026-10-21T16:33:41.878881",
+      "updated_at": "2026-10-21T16:33:41.879004",
+      "_id": "6ad8e96502bb2e0709fb8b0a"
+    }
+  ],
+  "candidates": [
+    {
+      "id": "cand_1",
+      "_id": "cand_1",
+      "user_id": "cand_user_1",
+      "first_name": "Jane",
+      "last_name": "Smith",
+      "email": "jane.smith@example.com",
+      "phone": "1234567890",
+      "headline": "Full Stack Developer",
+      "bio": "Experienced software engineer with 4+ years building full-stack web applications in Python and React.",
+      "location": "New York, NY",
+      "experience_years": "4 years",
+      "desired_role": "Software Engineer",
+      "target_salary": "105000",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "React",
+        "HTML/CSS",
+        "PostgreSQL"
+      ],
+      "education": "B.S. in Computer Science",
+      "resume_text": "Jane Smith. Full Stack Software Engineer. Skills: Python, JavaScript, React, RESTful APIs, SQL. 4 years of hands-on experience building web apps.",
+      "current_status": "screening",
+      "source": "direct_application",
+      "created_at": "2026-08-08T06:01:16.183980",
+      "updated_at": "2026-08-08T06:05:16.638955"
+    },
+    {
+      "id": "cand_2",
+      "_id": "cand_2",
+      "user_id": "cand_user_2",
+      "first_name": "Alex",
+      "last_name": "Johnson",
+      "email": "alex.johnson@tech.com",
+      "phone": "555-123-4567",
+      "headline": "Senior Full Stack and Cloud Architect",
+      "bio": "Senior software engineer with 5 years experience in Python, JavaScript, React, and Node.js. Expert in cloud architectures.",
+      "location": "San Francisco, CA",
+      "experience_years": "5 years",
+      "desired_role": "Senior Full Stack Developer",
+      "target_salary": "145000",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "React",
+        "Node.js",
+        "AWS",
+        "Docker",
+        "MongoDB"
+      ],
+      "education": "B.S. in Software Engineering",
+      "resume_text": "Alex Johnson. Senior software engineer with 5 years experience in Python, JavaScript, React, and Node.js. Expert in full-stack web development and cloud technologies.",
+      "current_status": "interview",
+      "source": "direct_application",
+      "created_at": "2026-08-08T06:39:05.753747",
+      "updated_at": "2026-08-08T06:39:05.753751"
+    },
+    {
+      "id": "cand_3",
+      "_id": "cand_3",
+      "user_id": "cand_user_3",
+      "first_name": "Maria",
+      "last_name": "Garcia",
+      "email": "maria.garcia@design.com",
+      "phone": "555-987-6543",
+      "headline": "Product Designer and UI Engineer",
+      "bio": "User experience designer and frontend engineer with expertise in Figma, React, and user research.",
+      "location": "San Francisco, CA",
+      "experience_years": "3 years",
+      "desired_role": "UI/UX Developer",
+      "target_salary": "115000",
+      "skills": [
+        "UI/UX Design",
+        "Figma",
+        "React",
+        "CSS/SCSS",
+        "User Research"
+      ],
+      "education": "B.A. in Interactive Media",
+      "resume_text": "Maria Garcia. User experience designer with expertise in Figma, Adobe Creative Suite, React and user research. 3 years experience creating intuitive interfaces.",
+      "current_status": "applied",
+      "source": "direct_application",
+      "created_at": "2026-08-08T06:39:16.925984",
+      "updated_at": "2026-08-08T06:39:16.925987"
+    },
+    {
+      "id": "3",
+      "_id": "3",
+      "user_id": "3",
+      "first_name": "erqgads",
+      "last_name": "adg",
+      "email": "bweradf@gmail.com",
+      "phone": "555-432-1098",
+      "headline": "Software Developer",
+      "bio": "Passionate developer focusing on web services and data processing.",
+      "location": "Austin, TX",
+      "experience_years": "2 years",
+      "desired_role": "Software Developer",
+      "target_salary": "90000",
+      "skills": [
+        "Python",
+        "JavaScript",
+        "SQL"
+      ],
+      "education": "B.S. in Computer Science",
+      "resume_text": "erqgads adg. Software Developer. Proficient in Python, SQL, REST APIs and web backend services.",
+      "current_status": "active",
+      "source": "signup",
+      "created_at": "2026-10-19T14:32:18.716019",
+      "updated_at": "2026-10-19T14:32:18.716019"
+    },
+    {
+      "id": "6ad8adf555c3b9889239d4f8",
+      "_id": "6ad8adf555c3b9889239d4f8",
+      "user_id": "6ad8adf555c3b9889239d4f8",
+      "first_name": "Alex",
+      "last_name": "Candidate",
+      "email": "candidate@example.com",
+      "phone": "555-019-2834",
+      "headline": "Frontend Engineer",
+      "bio": "Frontend specialist building modern, responsive, and accessible web experiences.",
+      "location": "Seattle, WA",
+      "experience_years": "4 years",
+      "desired_role": "Frontend Engineer",
+      "target_salary": "125000",
+      "skills": [
+        "React",
+        "TypeScript",
+        "Node.js",
+        "CSS/HTML",
+        "GraphQL"
+      ],
+      "education": "B.S. in Computer Science",
+      "resume_text": "Alex Candidate. Frontend Engineer with 4 years of experience building scalable applications using React, TypeScript, and modern web APIs.",
+      "current_status": "active",
+      "source": "signup",
+      "created_at": "2026-10-21T12:00:00.000000",
+      "updated_at": "2026-10-21T12:00:00.000000"
+    },
+    {
+      "id": "6ad8d39040134ec9c90bca8c",
+      "_id": "6ad8d39040134ec9c90bca8c",
+      "user_id": "6ad8d39040134ec9c90bca8c",
+      "first_name": "new",
+      "last_name": "one",
+      "email": "new1@gmail.com",
+      "phone": "",
+      "headline": "Junior Developer",
+      "bio": "",
+      "location": "",
+      "experience_years": "1 year",
+      "desired_role": "Junior Developer",
+      "target_salary": "",
+      "skills": [
+        "Python",
+        "HTML/CSS"
+      ],
+      "education": "",
+      "resume_text": "",
+      "current_status": "active",
+      "source": "signup",
+      "created_at": "2026-10-21T15:00:33.057484",
+      "updated_at": "2026-10-21T15:00:33.057484"
+    },
+    {
+      "id": "6ad8b5ad9100290d25a8a787",
+      "_id": "6ad8b5ad9100290d25a8a787",
+      "user_id": "6ad8b5ad9100290d25a8a787",
+      "first_name": "Test",
+      "last_name": "User",
+      "email": "testuser@example.com",
+      "phone": "",
+      "headline": "Software Engineer",
+      "bio": "",
+      "location": "",
+      "experience_years": "2 years",
+      "desired_role": "Software Engineer",
+      "target_salary": "",
+      "skills": [
+        "Python",
+        "Django"
+      ],
+      "education": "",
+      "resume_text": "",
+      "current_status": "active",
+      "source": "signup",
+      "created_at": "2026-10-21T12:53:01.755278",
+      "updated_at": "2026-10-21T12:53:01.755278"
+    },
+    {
+      "_id": "6ad8e172dcd5e802b0018514",
+      "id": "6ad8e172dcd5e802b0018514",
+      "user_id": "6ad8e172dcd5e802b0018514",
+      "first_name": "user_1792598386",
+      "last_name": "",
+      "email": "user_1792598386@example.com",
+      "phone": "",
+      "headline": "AI Systems Architect",
+      "bio": "",
+      "location": "",
+      "skills": [],
+      "experience_years": "",
+      "desired_role": "AI Systems Architect",
+      "target_salary": "",
+      "education": "",
+      "resume_text": "",
+      "current_status": "active",
+      "source": "signup",
+      "created_at": "2026-10-21T15:59:46.894851",
+      "updated_at": "2026-10-21T15:59:46.894859"
+    }
+  ],
+  "applications": [
+    {
+      "id": 1,
+      "_id": "1",
+      "candidate_id": "cand_1",
+      "user_id": "cand_user_1",
+      "job_id": 1,
+      "applied_at": "2026-08-08T06:04:52.679742",
+      "status": "screening",
+      "match_score": 78.5,
+      "resume_score": 78.5,
+      "jd_similarity": 75.0,
+      "skill_overlap": 82.0,
+      "role_confidence": 79.0,
+      "matched_skills": [
+        "Python",
+        "JavaScript",
+        "React"
+      ],
+      "missing_skills": [],
+      "notes": "Promising candidate for Software Engineer role."
+    },
+    {
+      "id": 2,
+      "_id": "2",
+      "candidate_id": "cand_2",
+      "user_id": "cand_user_2",
+      "job_id": 2,
+      "applied_at": "2026-08-08T06:39:35.032101",
+      "status": "interview",
+      "match_score": 92.4,
+      "resume_score": 92.4,
+      "jd_similarity": 91.0,
+      "skill_overlap": 100.0,
+      "role_confidence": 88.0,
+      "matched_skills": [
+        "Python",
+        "JavaScript",
+        "React",
+        "Node.js",
+        "AWS"
+      ],
+      "missing_skills": [],
+      "notes": "Strong technical match. Scheduled for round 1 technical interview."
+    },
+    {
+      "id": 3,
+      "_id": "3",
+      "candidate_id": "cand_3",
+      "user_id": "cand_user_3",
+      "job_id": 2,
+      "applied_at": "2026-08-08T06:39:35.033194",
+      "status": "applied",
+      "match_score": 68.2,
+      "resume_score": 68.2,
+      "jd_similarity": 64.0,
+      "skill_overlap": 60.0,
+      "role_confidence": 72.0,
+      "matched_skills": [
+        "React"
+      ],
+      "missing_skills": [
+        "Python",
+        "Node.js",
+        "AWS"
+      ],
+      "notes": "UI/UX strengths, needs backend assessment."
+    },
+    {
+      "candidate_id": "cand_1",
+      "user_id": "cand_user_1",
+      "job_id": "6ad8e96502bb2e0709fb8b0a",
+      "match_score": 20.8,
+      "resume_score": 20.8,
+      "jd_similarity": 28.4,
+      "skill_overlap": 0.0,
+      "role_confidence": 32.9,
+      "matched_skills": [],
+      "missing_skills": [],
+      "status": "rejected",
+      "applied_at": "2026-10-21T16:34:52.718358",
+      "updated_at": "2026-10-21T16:35:36.783028",
+      "notes": "",
+      "_id": "6ad8e9ac02bb2e0709fb8b0b",
+      "roadmap": {
+        "skill_gaps": [],
+        "priority_skills": [],
+        "learning_path": {},
+        "timeline_weeks": {},
+        "total_estimated_hours": 0,
+        "overall_weeks": 0,
+        "skills_detailed": [],
+        "category_recommendations": [
+          "Ensure full mastery of responsive, accessible design (WCAG) and modern state management.",
+          "Write robust automated tests (unit, integration, and E2E with Playwright/Cypress).",
+          "Optimize Core Web Vitals (LCP, FID, CLS) for high performance across all mobile devices."
+        ]
+      },
+      "ats_feedback": "ATS Scanning Feedback: Match score was 21%. Missing 0 key skill(s) required by JD: None. A personalized preparation roadmap has been generated to help you prepare and crack this job.",
+      "rejection_feedback": "ATS Scanning Feedback: Match score was 21%. Missing 0 key skill(s) required by JD: None. A personalized preparation roadmap has been generated to help you prepare and crack this job."
+    },
+    {
+      "candidate_id": "cand_1",
+      "user_id": "cand_user_1",
+      "job_id": "3",
+      "match_score": 27.8,
+      "resume_score": 19.1,
+      "jd_similarity": 38.9,
+      "skill_overlap": 0.0,
+      "role_confidence": 41.9,
+      "matched_skills": [],
+      "missing_skills": [
+        "aws",
+        "devops",
+        "kubernetes"
+      ],
+      "status": "accepted",
+      "applied_at": "2026-10-21T16:40:41.258329",
+      "updated_at": "2026-10-22T08:49:01.302013",
+      "notes": "",
+      "_id": "6ad8eb0902bb2e0709fb8b0d",
+      "roadmap": {
+        "skill_gaps": [
+          "aws",
+          "devops",
+          "kubernetes"
+        ],
+        "priority_skills": [
+          "aws",
+          "kubernetes",
+          "devops"
+        ],
+        "learning_path": {
+          "aws": {
+            "beginner_topics": [
+              "Core architecture, runtime ecosystem, and foundational concepts of aws",
+              "Configuring local development environment, tooling, and basic syntax/CLI commands for aws",
+              "Fundamental building blocks, modular design, and error handling in aws"
+            ],
+            "intermediate_topics": [
+              "Intermediate implementation patterns, asynchronous operations, and integration workflows with aws",
+              "State management, data flow, and standard design patterns utilized in production aws",
+              "Writing automated unit tests, mocking dependencies, and debugging complex issues in aws"
+            ],
+            "advanced_topics": [
+              "Advanced performance profiling, concurrency optimization, and memory efficiency in aws",
+              "Production security hardening, access controls, and vulnerability mitigation for aws",
+              "Enterprise scalability, fault tolerance, and CI/CD deployment pipelines incorporating aws"
+            ],
+            "practice_activities": [
+              "Implement a hands-on proof-of-concept utilizing core aws capabilities",
+              "Diagnose and optimize a bottlenecked workflow or query in a aws project",
+              "Build and publish a reusable utility or module with full test coverage for aws"
+            ],
+            "mini_projects": [
+              {
+                "title": "Production-Grade Application Powered by aws",
+                "description": "Architect and deploy a full-featured real-world system utilizing aws to solve domain-specific workflows.",
+                "deliverables": "Well-documented GitHub repository with clean architecture, CI/CD pipeline, and deployed demo."
+              },
+              {
+                "title": "Enterprise Integration & Microservice Benchmark using aws",
+                "description": "Construct an automated integration service demonstrating high-throughput performance with aws.",
+                "deliverables": "Containerized service with automated unit/integration tests and benchmark report."
+              }
+            ],
+            "assessments": [
+              {
+                "question": "Explain the core architectural trade-offs of aws compared to legacy alternatives.",
+                "key_points": "Highlight performance gains, developer experience, scalability limits, and maintainability considerations."
+              },
+              {
+                "question": "How do you troubleshoot and resolve high memory usage or performance bottlenecks in aws?",
+                "key_points": "Describe profiling tools, telemetry metrics, logging strategies, and concrete optimization patterns."
+              },
+              {
+                "question": "What are the critical security and concurrency pitfalls developers encounter when implementing aws?",
+                "key_points": "Detail input sanitization, authentication/authorization boundaries, and thread-safety / async management."
+              }
+            ],
+            "domain": "Cloud Infrastructure & DevOps",
+            "difficulty": "Advanced",
+            "summary": "Master aws core architecture, real-world patterns, and industry best practices required for Web Development roles.",
+            "timeline_weeks": 4,
+            "estimated_hours": 35,
+            "resources": [
+              {
+                "title": "Official aws Documentation & Getting Started Guide",
+                "type": "Official Docs"
+              },
+              {
+                "title": "Modern aws Architecture & Design Patterns",
+                "type": "Best Practices Guide"
+              },
+              {
+                "title": "Real-World aws Open Source Codebases & Examples",
+                "type": "GitHub Practice"
+              }
+            ],
+            "phases": [
+              {
+                "phase_num": 1,
+                "title": "Foundations & Architecture",
+                "milestone": "Week 1: Core Syntax & Setup",
+                "topics": [
+                  "Core architecture, runtime ecosystem, and foundational concepts of aws",
+                  "Configuring local development environment, tooling, and basic syntax/CLI commands for aws",
+                  "Fundamental building blocks, modular design, and error handling in aws"
+                ],
+                "badge": "Phase 1 \u00b7 Week 1"
+              },
+              {
+                "phase_num": 2,
+                "title": "Engineering Patterns & Implementation",
+                "milestone": "Week 2: Idiomatic Workflows",
+                "topics": [
+                  "Intermediate implementation patterns, asynchronous operations, and integration workflows with aws",
+                  "State management, data flow, and standard design patterns utilized in production aws",
+                  "Writing automated unit tests, mocking dependencies, and debugging complex issues in aws"
+                ],
+                "badge": "Phase 2 \u00b7 Week 2"
+              },
+              {
+                "phase_num": 3,
+                "title": "Production Mastery & Optimization",
+                "milestone": "Week 3: Concurrency & Performance",
+                "topics": [
+                  "Advanced performance profiling, concurrency optimization, and memory efficiency in aws",
+                  "Production security hardening, access controls, and vulnerability mitigation for aws",
+                  "Enterprise scalability, fault tolerance, and CI/CD deployment pipelines incorporating aws"
+                ],
+                "badge": "Phase 3 \u00b7 Week 3"
+              },
+              {
+                "phase_num": 4,
+                "title": "Hands-On Practice & Capstone Projects",
+                "milestone": "Week 4: Portfolio Building",
+                "practice": [
+                  "Implement a hands-on proof-of-concept utilizing core aws capabilities",
+                  "Diagnose and optimize a bottlenecked workflow or query in a aws project",
+                  "Build and publish a reusable utility or module with full test coverage for aws"
+                ],
+                "projects": [
+                  {
+                    "title": "Production-Grade Application Powered by aws",
+                    "description": "Architect and deploy a full-featured real-world system utilizing aws to solve domain-specific workflows.",
+                    "deliverables": "Well-documented GitHub repository with clean architecture, CI/CD pipeline, and deployed demo."
+                  },
+                  {
+                    "title": "Enterprise Integration & Microservice Benchmark using aws",
+                    "description": "Construct an automated integration service demonstrating high-throughput performance with aws.",
+                    "deliverables": "Containerized service with automated unit/integration tests and benchmark report."
+                  }
+                ],
+                "badge": "Phase 4 \u00b7 Week 4"
+              },
+              {
+                "phase_num": 5,
+                "title": "Technical Interview & Certification",
+                "milestone": "Week 5: Hiring Readiness",
+                "assessments": [
+                  {
+                    "question": "Explain the core architectural trade-offs of aws compared to legacy alternatives.",
+                    "key_points": "Highlight performance gains, developer experience, scalability limits, and maintainability considerations."
+                  },
+                  {
+                    "question": "How do you troubleshoot and resolve high memory usage or performance bottlenecks in aws?",
+                    "key_points": "Describe profiling tools, telemetry metrics, logging strategies, and concrete optimization patterns."
+                  },
+                  {
+                    "question": "What are the critical security and concurrency pitfalls developers encounter when implementing aws?",
+                    "key_points": "Detail input sanitization, authentication/authorization boundaries, and thread-safety / async management."
+                  }
+                ],
+                "badge": "Phase 5 \u00b7 Validation"
+              }
+            ]
+          },
+          "devops": {
+            "beginner_topics": [
+              "Core architecture, runtime ecosystem, and foundational concepts of devops",
+              "Configuring local development environment, tooling, and basic syntax/CLI commands for devops",
+              "Fundamental building blocks, modular design, and error handling in devops"
+            ],
+            "intermediate_topics": [
+              "Intermediate implementation patterns, asynchronous operations, and integration workflows with devops",
+              "State management, data flow, and standard design patterns utilized in production devops",
+              "Writing automated unit tests, mocking dependencies, and debugging complex issues in devops"
+            ],
+            "advanced_topics": [
+              "Advanced performance profiling, concurrency optimization, and memory efficiency in devops",
+              "Production security hardening, access controls, and vulnerability mitigation for devops",
+              "Enterprise scalability, fault tolerance, and CI/CD deployment pipelines incorporating devops"
+            ],
+            "practice_activities": [
+              "Implement a hands-on proof-of-concept utilizing core devops capabilities",
+              "Diagnose and optimize a bottlenecked workflow or query in a devops project",
+              "Build and publish a reusable utility or module with full test coverage for devops"
+            ],
+            "mini_projects": [
+              {
+                "title": "Production-Grade Application Powered by devops",
+                "description": "Architect and deploy a full-featured real-world system utilizing devops to solve domain-specific workflows.",
+                "deliverables": "Well-documented GitHub repository with clean architecture, CI/CD pipeline, and deployed demo."
+              },
+              {
+                "title": "Enterprise Integration & Microservice Benchmark using devops",
+                "description": "Construct an automated integration service demonstrating high-throughput performance with devops.",
+                "deliverables": "Containerized service with automated unit/integration tests and benchmark report."
+              }
+            ],
+            "assessments": [
+              {
+                "question": "Explain the core architectural trade-offs of devops compared to legacy alternatives.",
+                "key_points": "Highlight performance gains, developer experience, scalability limits, and maintainability considerations."
+              },
+              {
+                "question": "How do you troubleshoot and resolve high memory usage or performance bottlenecks in devops?",
+                "key_points": "Describe profiling tools, telemetry metrics, logging strategies, and concrete optimization patterns."
+              },
+              {
+                "question": "What are the critical security and concurrency pitfalls developers encounter when implementing devops?",
+                "key_points": "Detail input sanitization, authentication/authorization boundaries, and thread-safety / async management."
+              }
+            ],
+            "domain": "Cloud Infrastructure & DevOps",
+            "difficulty": "Advanced",
+            "summary": "Master devops core architecture, real-world patterns, and industry best practices required for Web Development roles.",
+            "timeline_weeks": 4,
+            "estimated_hours": 35,
+            "resources": [
+              {
+                "title": "Official devops Documentation & Getting Started Guide",
+                "type": "Official Docs"
+              },
+              {
+                "title": "Modern devops Architecture & Design Patterns",
+                "type": "Best Practices Guide"
+              },
+              {
+                "title": "Real-World devops Open Source Codebases & Examples",
+                "type": "GitHub Practice"
+              }
+            ],
+            "phases": [
+              {
+                "phase_num": 1,
+                "title": "Foundations & Architecture",
+                "milestone": "Week 1: Core Syntax & Setup",
+                "topics": [
+                  "Core architecture, runtime ecosystem, and foundational concepts of devops",
+                  "Configuring local development environment, tooling, and basic syntax/CLI commands for devops",
+                  "Fundamental building blocks, modular design, and error handling in devops"
+                ],
+                "badge": "Phase 1 \u00b7 Week 1"
+              },
+              {
+                "phase_num": 2,
+                "title": "Engineering Patterns & Implementation",
+                "milestone": "Week 2: Idiomatic Workflows",
+                "topics": [
+                  "Intermediate implementation patterns, asynchronous operations, and integration workflows with devops",
+                  "State management, data flow, and standard design patterns utilized in production devops",
+                  "Writing automated unit tests, mocking dependencies, and debugging complex issues in devops"
+                ],
+                "badge": "Phase 2 \u00b7 Week 2"
+              },
+              {
+                "phase_num": 3,
+                "title": "Production Mastery & Optimization",
+                "milestone": "Week 3: Concurrency & Performance",
+                "topics": [
+                  "Advanced performance profiling, concurrency optimization, and memory efficiency in devops",
+                  "Production security hardening, access controls, and vulnerability mitigation for devops",
+                  "Enterprise scalability, fault tolerance, and CI/CD deployment pipelines incorporating devops"
+                ],
+                "badge": "Phase 3 \u00b7 Week 3"
+              },
+              {
+                "phase_num": 4,
+                "title": "Hands-On Practice & Capstone Projects",
+                "milestone": "Week 4: Portfolio Building",
+                "practice": [
+                  "Implement a hands-on proof-of-concept utilizing core devops capabilities",
+                  "Diagnose and optimize a bottlenecked workflow or query in a devops project",
+                  "Build and publish a reusable utility or module with full test coverage for devops"
+                ],
+                "projects": [
+                  {
+                    "title": "Production-Grade Application Powered by devops",
+                    "description": "Architect and deploy a full-featured real-world system utilizing devops to solve domain-specific workflows.",
+                    "deliverables": "Well-documented GitHub repository with clean architecture, CI/CD pipeline, and deployed demo."
+                  },
+                  {
+                    "title": "Enterprise Integration & Microservice Benchmark using devops",
+                    "description": "Construct an automated integration service demonstrating high-throughput performance with devops.",
+                    "deliverables": "Containerized service with automated unit/integration tests and benchmark report."
+                  }
+                ],
+                "badge": "Phase 4 \u00b7 Week 4"
+              },
+              {
+                "phase_num": 5,
+                "title": "Technical Interview & Certification",
+                "milestone": "Week 5: Hiring Readiness",
+                "assessments": [
+                  {
+                    "question": "Explain the core architectural trade-offs of devops compared to legacy alternatives.",
+                    "key_points": "Highlight performance gains, developer experience, scalability limits, and maintainability considerations."
+                  },
+                  {
+                    "question": "How do you troubleshoot and resolve high memory usage or performance bottlenecks in devops?",
+                    "key_points": "Describe profiling tools, telemetry metrics, logging strategies, and concrete optimization patterns."
+                  },
+                  {
+                    "question": "What are the critical security and concurrency pitfalls developers encounter when implementing devops?",
+                    "key_points": "Detail input sanitization, authentication/authorization boundaries, and thread-safety / async management."
+                  }
+                ],
+                "badge": "Phase 5 \u00b7 Validation"
+              }
+            ]
+          },
+          "kubernetes": {
+            "beginner_topics": [
+              "Cluster architecture: Control plane (API Server, etcd, Scheduler) vs Worker nodes (kubelet, kube-proxy)",
+              "Basic primitives: Pods, ReplicaSets, and Deployments",
+              "kubectl CLI commands: apply, get, describe, logs, and port-forward"
+            ],
+            "intermediate_topics": [
+              "Service types: ClusterIP, NodePort, and LoadBalancer with Ingress Controllers",
+              "Configuration management using ConfigMaps, Secrets, and downward API",
+              "Persistent storage: StorageClasses, PersistentVolumes (PV), and PersistentVolumeClaims (PVC)"
+            ],
+            "advanced_topics": [
+              "Horizontal Pod Autoscaling (HPA) based on CPU/Memory and custom Prometheus metrics",
+              "Deployment strategies: Rolling Updates, Canary, and Blue/Green with ArgoCD (GitOps)",
+              "NetworkPolicies, RBAC security, and Helm chart authoring for multi-tier apps"
+            ],
+            "practice_activities": [
+              "Spin up a local Minikube/Kind cluster and deploy a containerized full-stack application",
+              "Create a Helm chart that packages frontend, backend, and PostgreSQL with customizable values",
+              "Simulate a node failure and observe automated pod self-healing and rescheduling"
+            ],
+            "mini_projects": [
+              {
+                "title": "Production-Ready Microservices Cluster with Ingress & Monitoring",
+                "description": "Deploy a multi-service architecture with Nginx Ingress, TLS certificates (cert-manager), and Prometheus/Grafana monitoring.",
+                "deliverables": "GitOps repository with Helm charts and automated ArgoCD pipeline manifests."
+              }
+            ],
+            "assessments": [
+              {
+                "question": "What is the difference between a Liveness Probe and a Readiness Probe in Kubernetes?",
+                "key_points": "Liveness probe determines if a container needs restarting; readiness probe determines if a container is ready to accept user traffic."
+              }
+            ],
+            "domain": "Cloud & DevOps",
+            "difficulty": "Advanced",
+            "summary": "Deploy, scale, and orchestrate containerized microservices in production clusters with automated self-healing and service mesh networking.",
+            "timeline_weeks": 5,
+            "estimated_hours": 45,
+            "resources": [
+              {
+                "title": "Kubernetes Official Documentation (kubernetes.io)",
+                "type": "Documentation"
+              },
+              {
+                "title": "Certified Kubernetes Administrator (CKA) Hands-on Labs",
+                "type": "Certification Guide"
+              }
+            ],
+            "phases": [
+              {
+                "phase_num": 1,
+                "title": "Foundations & Architecture",
+                "milestone": "Week 1: Core Syntax & Setup",
+                "topics": [
+                  "Cluster architecture: Control plane (API Server, etcd, Scheduler) vs Worker nodes (kubelet, kube-proxy)",
+                  "Basic primitives: Pods, ReplicaSets, and Deployments",
+                  "kubectl CLI commands: apply, get, describe, logs, and port-forward"
+                ],
+                "badge": "Phase 1 \u00b7 Week 1"
+              },
+              {
+                "phase_num": 2,
+                "title": "Engineering Patterns & Implementation",
+                "milestone": "Week 2: Idiomatic Workflows",
+                "topics": [
+                  "Service types: ClusterIP, NodePort, and LoadBalancer with Ingress Controllers",
+                  "Configuration management using ConfigMaps, Secrets, and downward API",
+                  "Persistent storage: StorageClasses, PersistentVolumes (PV), and PersistentVolumeClaims (PVC)"
+                ],
+                "badge": "Phase 2 \u00b7 Week 2"
+              },
+              {
+                "phase_num": 3,
+                "title": "Production Mastery & Optimization",
+                "milestone": "Week 3: Concurrency & Performance",
+                "topics": [
+                  "Horizontal Pod Autoscaling (HPA) based on CPU/Memory and custom Prometheus metrics",
+                  "Deployment strategies: Rolling Updates, Canary, and Blue/Green with ArgoCD (GitOps)",
+                  "NetworkPolicies, RBAC security, and Helm chart authoring for multi-tier apps"
+                ],
+                "badge": "Phase 3 \u00b7 Week 3"
+              },
+              {
+                "phase_num": 4,
+                "title": "Hands-On Practice & Capstone Projects",
+                "milestone": "Week 4: Portfolio Building",
+                "practice": [
+                  "Spin up a local Minikube/Kind cluster and deploy a containerized full-stack application",
+                  "Create a Helm chart that packages frontend, backend, and PostgreSQL with customizable values",
+                  "Simulate a node failure and observe automated pod self-healing and rescheduling"
+                ],
+                "projects": [
+                  {
+                    "title": "Production-Ready Microservices Cluster with Ingress & Monitoring",
+                    "description": "Deploy a multi-service architecture with Nginx Ingress, TLS certificates (cert-manager), and Prometheus/Grafana monitoring.",
+                    "deliverables": "GitOps repository with Helm charts and automated ArgoCD pipeline manifests."
+                  }
+                ],
+                "badge": "Phase 4 \u00b7 Week 4"
+              },
+              {
+                "phase_num": 5,
+                "title": "Technical Interview & Certification",
+                "milestone": "Week 5: Hiring Readiness",
+                "assessments": [
+                  {
+                    "question": "What is the difference between a Liveness Probe and a Readiness Probe in Kubernetes?",
+                    "key_points": "Liveness probe determines if a container needs restarting; readiness probe determines if a container is ready to accept user traffic."
+                  }
+                ],
+                "badge": "Phase 5 \u00b7 Validation"
+              }
+            ]
+          }
+        },
+        "timeline_weeks": {
+          "aws": 4,
+          "devops": 4,
+          "kubernetes": 5
+        },
+        "total_estimated_hours": 115,
+        "overall_weeks": 6,
+        "skills_detailed": [
+          {
+            "name": "aws",
+            "domain": "Cloud Infrastructure & DevOps",
+            "difficulty": "Advanced",
+            "weeks": 4,
+            "hours": 35,
+            "summary": "Master aws core architecture, real-world patterns, and industry best practices required for Web Development roles."
+          },
+          {
+            "name": "devops",
+            "domain": "Cloud Infrastructure & DevOps",
+            "difficulty": "Advanced",
+            "weeks": 4,
+            "hours": 35,
+            "summary": "Master devops core architecture, real-world patterns, and industry best practices required for Web Development roles."
+          },
+          {
+            "name": "kubernetes",
+            "domain": "Cloud & DevOps",
+            "difficulty": "Advanced",
+            "weeks": 5,
+            "hours": 45,
+            "summary": "Deploy, scale, and orchestrate containerized microservices in production clusters with automated self-healing and service mesh networking."
+          }
+        ],
+        "category_recommendations": [
+          "Ensure full mastery of responsive, accessible design (WCAG) and modern state management.",
+          "Write robust automated tests (unit, integration, and E2E with Playwright/Cypress).",
+          "Optimize Core Web Vitals (LCP, FID, CLS) for high performance across all mobile devices."
+        ]
+      },
+      "ats_feedback": "ATS Scanning Feedback: Match score was 19%. Missing 3 key skill(s) required by JD: aws, devops, kubernetes. A personalized preparation roadmap has been generated to help you prepare and crack this job.",
+      "rejection_feedback": "ATS Scanning Feedback: Match score was 19%. Missing 3 key skill(s) required by JD: aws, devops, kubernetes. A personalized preparation roadmap has been generated to help you prepare and crack this job."
+    }
+  ],
+  "interviews": [],
+  "aptitude_tests": [],
+  "document_verifications": [
+    {
+      "filename": "AWS_Solutions_Architect_Certificate.pdf",
+      "document_type": "certification",
+      "candidate_id": null,
+      "candidate_name": "Alexander Vance",
+      "trust_score": 99,
+      "verdict": "VERIFIED_AUTHENTIC",
+      "verdict_badge": "Verified Authentic",
+      "headline": "Authentic credential from Amazon Web Services (AWS); recipient and online registry confirmed.",
+      "extracted_entities": {
+        "detected_issuer": "Amazon Web Services (AWS)",
+        "issuer_category": "Official Cloud Vendor Certification",
+        "issuer_domain": "aws.amazon.com",
+        "detected_candidate": "Alexander Vance",
+        "credential_id": "AWS-7894-3291-B7C9",
+        "verification_url": "https://aws.amazon.com/verification",
+        "issue_date": null,
+        "credential_title": "AWS Certified Solutions Architect - Associate",
+        "hf_classification": "Official Cloud Vendor Certification or Professional Credential",
+        "hf_confidence": "96%"
+      },
+      "concrete_findings": [
+        {
+          "badge": "ACC_PASS",
+          "title": "Authorized Issuer",
+          "detail": "Amazon Web Services (AWS) (aws.amazon.com)"
+        },
+        {
+          "badge": "NET_PASS",
+          "title": "Online Verification",
+          "detail": "Live ping to aws.amazon.com returned HTTP 200 (SSL Secured)"
+        },
+        {
+          "badge": "ID_PASS",
+          "title": "Unique Credential ID",
+          "detail": "Serial: AWS-7894-3291-B7C9"
+        },
+        {
+          "badge": "FOR_PASS",
+          "title": "Container Integrity",
+          "detail": "Clean vector container parsed via Direct Vector Stream"
+        }
+      ],
+      "anomalies": [],
+      "network_verification": {
+        "performed": true,
+        "target": "https://aws.amazon.com/verification",
+        "domain": "aws.amazon.com",
+        "http_status": 200,
+        "is_live": true,
+        "ssl_secured": true,
+        "server": "Verified Cloud Infrastructure (Active)",
+        "status_badge": "Verified Live (HTTP 200)",
+        "message": "Online authority registry for aws.amazon.com confirmed active."
+      },
+      "engine_used": "Direct Vector Stream",
+      "file_size_kb": 0.4,
+      "page_count": 1,
+      "timestamp": "2026-10-21T17:12:48.698128",
+      "_id": "6ad8f29021c9e99608148e5a"
+    },
+    {
+      "filename": "1748616352821.jpg",
+      "document_type": "certification",
+      "candidate_id": null,
+      "candidate_name": "Vatsal Chauhan",
+      "trust_score": 55,
+      "verdict": "FLAGGED_ANOMALY",
+      "verdict_badge": "Tamper Risk / Flagged",
+      "headline": "Critical discrepancies detected between document text and candidate credentials.",
+      "extracted_entities": {
+        "detected_issuer": null,
+        "issuer_category": null,
+        "issuer_domain": null,
+        "detected_candidate": "Vatsal Chauhan",
+        "credential_id": null,
+        "verification_url": null,
+        "issue_date": null,
+        "credential_title": null,
+        "hf_classification": "Professional Software Engineering Course Specialization Certificate",
+        "hf_confidence": "94%"
+      },
+      "concrete_findings": [
+        {
+          "badge": "FOR_PASS",
+          "title": "Container Integrity",
+          "detail": "Clean vector container parsed via EasyOCR (Confidence: 57%)"
+        }
+      ],
+      "anomalies": [
+        {
+          "type": "WARNING",
+          "message": "Issuing institution was not matched to a recognized global accreditation registry."
+        }
+      ],
+      "network_verification": {
+        "performed": false,
+        "target": null,
+        "status_badge": "Offline / Internal",
+        "message": "No external verification URL needed"
+      },
+      "engine_used": "EasyOCR (Confidence: 57%)",
+      "file_size_kb": 46.5,
+      "page_count": 1,
+      "timestamp": "2026-10-22T04:56:21.817479",
+      "_id": "6ad997755d23e453e5bb84d7"
+    }
+  ],
+  "candidate_documents": [
+    {
+      "candidate_id": "cand_2",
+      "candidate_name": "Alexander Vance",
+      "filename": "AWS_Solutions_Architect_Certificate.pdf",
+      "document_type": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+      "raw_text": "Amazon Web Services (AWS)\nCERTIFICATE OF COMPLETION\nThis is to certify that\nAlexander Vance\nPhone: +1 (555) 019-2834, Email: a.vance@cloudtech.com\nAddress: 450 Serra Mall, Stanford, CA\nhas successfully completed all requirements and is recognized as an\nAWS Certified Solutions Architect - Associate\nCredential ID: AWS-7894-3291-B7C9\nIssued on: October 14, 2025\nVerify at: https://aws.amazon.com/verification\nAuthorized Signature: Vice President, AWS Global Training & Certification",
+      "masked_text": "Amazon Web Services (AWS)\nCERTIFICATE OF COMPLETION\nThis is to certify that\nAlexander Vance\nPhone: [REDACTED PHONE NUMBER], Email: [REDACTED EMAIL]\nAddress: 450 Serra Mall, Stanford, CA\nhas successfully completed all requirements and is recognized as an\nAWS Certified Solutions Architect - Associate\nCredential ID: AWS--****-****-B7C9\nIssued on: October 14, 2025\nVerify at: https://aws.amazon.com/verification\nAuthorized Signature: Vice President, AWS Global Training & Certification",
+      "masked_preview_html": "<p class=\"masked-cert-line\">Amazon Web Services (AWS)</p>\n<p class=\"masked-cert-line\">CERTIFICATE OF COMPLETION</p>\n<p class=\"masked-cert-line\">This is to certify that</p>\n<p class=\"masked-cert-line\">Alexander Vance</p>\n<p class=\"masked-cert-line\">Phone: <span class=\"pii-mask-badge\">\ud83d\udd12 [REDACTED PHONE NUMBER]</span>, Email: <span class=\"pii-mask-badge\">\ud83d\udd12 [REDACTED EMAIL]</span></p>\n<p class=\"masked-cert-line\">Address: 450 Serra Mall, Stanford, CA</p>\n<p class=\"masked-cert-line\">has successfully completed all requirements and is recognized as an</p>\n<p class=\"masked-cert-line\">AWS Certified Solutions Architect - Associate</p>\n<p class=\"masked-cert-line\">Credential ID: AWS--****-****-B7C9</p>\n<p class=\"masked-cert-line\">Issued on: October 14, 2025</p>\n<p class=\"masked-cert-line\">Verify at: https://aws.amazon.com/verification</p>\n<p class=\"masked-cert-line\">Authorized Signature: Vice President, AWS Global Training &amp; Certification</p>",
+      "redacted_fields": [
+        "Phone Number",
+        "Serial ID Hash (Partial)",
+        "Personal Email"
+      ],
+      "verdict": "REAL",
+      "verdict_badge": "REAL / AUTHENTIC CREDENTIAL",
+      "verdict_color": "#10b981",
+      "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+      "model_confidence": 55.3,
+      "model_explanation": "The AI model verified this document as REAL and authentic (Official Cloud Vendor Certification (AWS, Azure, GCP)). It was officially issued by Amazon Web Services (AWS), verified at aws.amazon.com, and container integrity is clean with zero tampering.",
+      "class_probabilities": [
+        {
+          "category": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+          "probability": 55.3,
+          "cosine_similarity": 0.5155
+        },
+        {
+          "category": "Professional Software Engineering Course Specialization Certificate",
+          "probability": 19.9,
+          "cosine_similarity": 0.3928
+        },
+        {
+          "category": "Accredited University Degree, Academic Transcript or Diploma",
+          "probability": 14.3,
+          "cosine_similarity": 0.3532
+        },
+        {
+          "category": "Government Identification Document or Passport",
+          "probability": 5.8,
+          "cosine_similarity": 0.244
+        },
+        {
+          "category": "Corporate Employment Verification or Experience Relieving Letter",
+          "probability": 4.7,
+          "cosine_similarity": 0.2208
+        }
+      ],
+      "authenticity_indicators": [
+        "Official Accredited Issuer: Amazon Web Services (AWS) (aws.amazon.com)",
+        "Active Online Registry: aws.amazon.com returned HTTP 200 (SSL Secured)",
+        "Candidate Identity Match: Recipient on document 'Alexander Vance' matches 'Alexander Vance'.",
+        "Verifiable Serial / ID: Cryptographic code AWS-7894-3291-B7C9 present.",
+        "Container Integrity: Clean vector stream parsed via Vector Stream Extractor"
+      ],
+      "forgery_indicators": [],
+      "network_verification": {
+        "performed": true,
+        "target": "https://aws.amazon.com/verification",
+        "domain": "aws.amazon.com",
+        "http_status": 200,
+        "is_live": true,
+        "ssl_secured": true,
+        "server": "Verified Cloud Infrastructure (Active)",
+        "status_badge": "Verified Live (HTTP 200)",
+        "message": "Online authority registry for aws.amazon.com confirmed active."
+      },
+      "extracted_entities": {
+        "detected_issuer": "Amazon Web Services (AWS)",
+        "issuer_category": "Official Cloud Vendor Certification",
+        "issuer_domain": "aws.amazon.com",
+        "detected_candidate": "Alexander Vance",
+        "credential_id": "AWS-7894-3291-B7C9",
+        "verification_url": "https://aws.amazon.com/verification",
+        "issue_date": null,
+        "credential_title": "AWS Certified Solutions Architect - Associate",
+        "hf_classification": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+        "hf_confidence": "55.3%",
+        "class_probabilities": [
+          {
+            "category": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+            "probability": 55.3,
+            "cosine_similarity": 0.5155
+          },
+          {
+            "category": "Professional Software Engineering Course Specialization Certificate",
+            "probability": 19.9,
+            "cosine_similarity": 0.3928
+          },
+          {
+            "category": "Accredited University Degree, Academic Transcript or Diploma",
+            "probability": 14.3,
+            "cosine_similarity": 0.3532
+          },
+          {
+            "category": "Government Identification Document or Passport",
+            "probability": 5.8,
+            "cosine_similarity": 0.244
+          },
+          {
+            "category": "Corporate Employment Verification or Experience Relieving Letter",
+            "probability": 4.7,
+            "cosine_similarity": 0.2208
+          }
+        ],
+        "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+        "model_type": "Hugging Face Neural Semantic Classifier"
+      },
+      "metadata": {},
+      "uploaded_at": "2026-10-22T08:40:39.410467",
+      "_id": "6ad9cc072fe5722d1407af95",
+      "extracted_skills": [
+        "AWS",
+        "Cloud Architecture"
+      ]
+    },
+    {
+      "candidate_id": "cand_1",
+      "candidate_name": "Sarah Jenkins",
+      "filename": "Stanford_University_Diploma.pdf",
+      "document_type": "Accredited University Degree, Academic Transcript or Diploma",
+      "raw_text": "Stanford University\nBy the authority of the Board of Trustees\nconferred upon\nSarah Jenkins\nStudent ID: STU-99281-2024, Email: sarah.j@alumni.stanford.edu\nthe degree of\nBachelor of Science in Computer Science\nwith all the rights, honors, and privileges thereunto appertaining.\nGiven at Stanford, California on June 15, 2024\nSerial No: SU-CS-2024-99812\nAuthenticity Verification: https://stanford.edu",
+      "masked_text": "Stanford University\nBy the authority of the Board of Trustees\nconferred upon\nSarah Jenkins\nStudent ID: STU-99281-2024, Email: [REDACTED EMAIL]\nthe degree of\nBachelor of Science in Computer Science\nwith all the rights, honors, and privileges thereunto appertaining.\nGiven at Stanford, California on June 15, 2024\nSerial No: SU-C-****-****-9812\nAuthenticity Verification: https://stanford.edu",
+      "masked_preview_html": "<p class=\"masked-cert-line\">Stanford University</p>\n<p class=\"masked-cert-line\">By the authority of the Board of Trustees</p>\n<p class=\"masked-cert-line\">conferred upon</p>\n<p class=\"masked-cert-line\">Sarah Jenkins</p>\n<p class=\"masked-cert-line\">Student ID: STU-99281-2024, Email: <span class=\"pii-mask-badge\">\ud83d\udd12 [REDACTED EMAIL]</span></p>\n<p class=\"masked-cert-line\">the degree of</p>\n<p class=\"masked-cert-line\">Bachelor of Science in Computer Science</p>\n<p class=\"masked-cert-line\">with all the rights, honors, and privileges thereunto appertaining.</p>\n<p class=\"masked-cert-line\">Given at Stanford, California on June 15, 2024</p>\n<p class=\"masked-cert-line\">Serial No: SU-<span class=\"serial-mask-badge\">\ud83d\udd11 C-****-****-9812</span></p>\n<p class=\"masked-cert-line\">Authenticity Verification: https://stanford.edu</p>",
+      "redacted_fields": [
+        "Personal Email",
+        "Serial ID Hash (Partial)"
+      ],
+      "verdict": "REAL",
+      "verdict_badge": "REAL / AUTHENTIC CREDENTIAL",
+      "verdict_color": "#10b981",
+      "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+      "model_confidence": 54.2,
+      "model_explanation": "The AI model verified this document as REAL and authentic (Accredited University Degree, Academic Transcript or Diploma). It was officially issued by Stanford University, verified at stanford.edu, and container integrity is clean with zero tampering.",
+      "class_probabilities": [
+        {
+          "category": "Accredited University Degree, Academic Transcript or Diploma",
+          "probability": 54.2,
+          "cosine_similarity": 0.4527
+        },
+        {
+          "category": "Professional Software Engineering Course Specialization Certificate",
+          "probability": 28.5,
+          "cosine_similarity": 0.3756
+        },
+        {
+          "category": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+          "probability": 7.5,
+          "cosine_similarity": 0.2154
+        },
+        {
+          "category": "Government Identification Document or Passport",
+          "probability": 6.4,
+          "cosine_similarity": 0.197
+        },
+        {
+          "category": "Corporate Employment Verification or Experience Relieving Letter",
+          "probability": 3.3,
+          "cosine_similarity": 0.1159
+        }
+      ],
+      "authenticity_indicators": [
+        "Official Accredited Issuer: Stanford University (stanford.edu)",
+        "Active Online Registry: stanford.edu returned HTTP 200 (SSL Secured)",
+        "Candidate Identity Match: Recipient on document 'Sarah Jenkins' matches 'Sarah Jenkins'.",
+        "Verifiable Serial / ID: Cryptographic code SU-CS-2024-99812 present.",
+        "Container Integrity: Clean vector stream parsed via Vector Stream Extractor"
+      ],
+      "forgery_indicators": [],
+      "network_verification": {
+        "performed": true,
+        "target": "https://stanford.edu",
+        "domain": "stanford.edu",
+        "http_status": 200,
+        "is_live": true,
+        "ssl_secured": true,
+        "server": "Verified Cloud Infrastructure (Active)",
+        "status_badge": "Verified Live (HTTP 200)",
+        "message": "Online authority registry for stanford.edu confirmed active."
+      },
+      "extracted_entities": {
+        "detected_issuer": "Stanford University",
+        "issuer_category": "Accredited University Degree",
+        "issuer_domain": "stanford.edu",
+        "detected_candidate": "Sarah Jenkins",
+        "credential_id": "SU-CS-2024-99812",
+        "verification_url": "https://stanford.edu",
+        "issue_date": null,
+        "credential_title": "Bachelor of Science in Computer Science",
+        "hf_classification": "Accredited University Degree, Academic Transcript or Diploma",
+        "hf_confidence": "54.2%",
+        "class_probabilities": [
+          {
+            "category": "Accredited University Degree, Academic Transcript or Diploma",
+            "probability": 54.2,
+            "cosine_similarity": 0.4527
+          },
+          {
+            "category": "Professional Software Engineering Course Specialization Certificate",
+            "probability": 28.5,
+            "cosine_similarity": 0.3756
+          },
+          {
+            "category": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+            "probability": 7.5,
+            "cosine_similarity": 0.2154
+          },
+          {
+            "category": "Government Identification Document or Passport",
+            "probability": 6.4,
+            "cosine_similarity": 0.197
+          },
+          {
+            "category": "Corporate Employment Verification or Experience Relieving Letter",
+            "probability": 3.3,
+            "cosine_similarity": 0.1159
+          }
+        ],
+        "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+        "model_type": "Hugging Face Neural Semantic Classifier"
+      },
+      "metadata": {},
+      "uploaded_at": "2026-10-22T08:40:39.519711",
+      "_id": "6ad9cc072fe5722d1407af96",
+      "extracted_skills": [
+        "Computer Science"
+      ]
+    },
+    {
+      "candidate_id": "cand_3",
+      "candidate_name": "Michael Stone",
+      "filename": "Suspect_Cloud_Certificate.pdf",
+      "document_type": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+      "raw_text": "Certificate of Achievement\nAwarded to Johnathan Miller\nPhone: +1 555-432-1098\nfor successful participation in Advanced Cloud Systems\nIssued on: July 20, 2029\nCreated via Canva Online Graphic Design Suite",
+      "masked_text": "Certificate of Achievement\nAwarded to Johnathan Miller\nPhone: [REDACTED PHONE NUMBER]\nfor successful participation in Advanced Cloud Systems\nIssued on: July 20, 2029\nCreated via Canva Online Graphic Design Suite",
+      "masked_preview_html": "<p class=\"masked-cert-line\">Certificate of Achievement</p>\n<p class=\"masked-cert-line\">Awarded to Johnathan Miller</p>\n<p class=\"masked-cert-line\">Phone: <span class=\"pii-mask-badge\">\ud83d\udd12 [REDACTED PHONE NUMBER]</span></p>\n<p class=\"masked-cert-line\">for successful participation in Advanced Cloud Systems</p>\n<p class=\"masked-cert-line\">Issued on: July 20, 2029</p>\n<p class=\"masked-cert-line\">Created via Canva Online Graphic Design Suite</p>",
+      "redacted_fields": [
+        "Phone Number"
+      ],
+      "verdict": "FORGED",
+      "verdict_badge": "FORGED / TAMPERED CREDENTIAL",
+      "verdict_color": "#ef4444",
+      "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+      "model_confidence": 59.0,
+      "model_explanation": "The AI model determined this document is FORGED. Critical tampering detected: Unrecognized Issuer: Issuing body is not in the accredited institutional registry.; Missing Unique Serial / Hash: No cryptographic serial code found on document..",
+      "class_probabilities": [
+        {
+          "category": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+          "probability": 59.0,
+          "cosine_similarity": 0.4648
+        },
+        {
+          "category": "Professional Software Engineering Course Specialization Certificate",
+          "probability": 13.8,
+          "cosine_similarity": 0.2907
+        },
+        {
+          "category": "Accredited University Degree, Academic Transcript or Diploma",
+          "probability": 12.2,
+          "cosine_similarity": 0.2761
+        },
+        {
+          "category": "Government Identification Document or Passport",
+          "probability": 8.3,
+          "cosine_similarity": 0.2302
+        },
+        {
+          "category": "Corporate Employment Verification or Experience Relieving Letter",
+          "probability": 6.6,
+          "cosine_similarity": 0.2028
+        }
+      ],
+      "authenticity_indicators": [],
+      "forgery_indicators": [
+        "Unrecognized Issuer: Issuing body is not in the accredited institutional registry.",
+        "Missing Unique Serial / Hash: No cryptographic serial code found on document.",
+        "Graphic editor metadata detected: Document was generated or modified using Canva / Photoshop design suite."
+      ],
+      "network_verification": {
+        "performed": false,
+        "target": null,
+        "status_badge": "Offline / Internal",
+        "message": "No external verification URL needed"
+      },
+      "extracted_entities": {
+        "detected_issuer": null,
+        "issuer_category": null,
+        "issuer_domain": null,
+        "detected_candidate": null,
+        "credential_id": null,
+        "verification_url": null,
+        "issue_date": null,
+        "credential_title": null,
+        "hf_classification": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+        "hf_confidence": "59.0%",
+        "class_probabilities": [
+          {
+            "category": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+            "probability": 59.0,
+            "cosine_similarity": 0.4648
+          },
+          {
+            "category": "Professional Software Engineering Course Specialization Certificate",
+            "probability": 13.8,
+            "cosine_similarity": 0.2907
+          },
+          {
+            "category": "Accredited University Degree, Academic Transcript or Diploma",
+            "probability": 12.2,
+            "cosine_similarity": 0.2761
+          },
+          {
+            "category": "Government Identification Document or Passport",
+            "probability": 8.3,
+            "cosine_similarity": 0.2302
+          },
+          {
+            "category": "Corporate Employment Verification or Experience Relieving Letter",
+            "probability": 6.6,
+            "cosine_similarity": 0.2028
+          }
+        ],
+        "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+        "model_type": "Hugging Face Neural Semantic Classifier"
+      },
+      "metadata": {
+        "Producer": "Canva Graphic Design Suite"
+      },
+      "uploaded_at": "2026-10-22T08:40:39.606306",
+      "_id": "6ad9cc072fe5722d1407af97"
+    },
+    {
+      "candidate_id": "cand_user_2",
+      "candidate_name": "Alex Johnson",
+      "filename": "1748616352821.jpg",
+      "document_type": "Professional Software Engineering Course Specialization Certificate",
+      "raw_text": "Infosys\"\nNavigate your next\nCOURSE COMPLETION CERTIFICATE\ncertificate is awarded to\nVatsal Chauhan\nfor successfully completing the course\nAl-first Software Engineering\non May 26,2025\nInfosys | Springbuard\nCongratulations! You make uS proud!\nThlrumala Arohi\nExecutive Vice President and Glabal Head\nIssucd on: Friday Kay J0,2025\nEoucatlog  Trainino\nAauletnt IMA\nventy scanthc Oacodeathitnv Wvcrity ncxino Danenn\nInlos$ Lmte di\nThe '\nAa-4",
+      "masked_text": "Infosys\"\nNavigate your next\nCOURSE COMPLETION CERTIFICATE\ncertificate is awarded to\nVatsal Chauhan\nfor successfully completing the course\nAl-first Software Engineering\non May 26,2025\nInfosys | Springbuard\nCongratulations! You make uS proud!\nThlrumala Arohi\nExecutive Vice President and Glabal Head\nIssucd on: Friday Kay J0,2025\nEoucatlog  Trainino\nAauletnt IMA\nventy scanthc Oacodeathitnv Wvcrity ncxino Danenn\nInlos$ Lmte di\nThe '\nAa-4",
+      "masked_preview_html": "<p class=\"masked-cert-line\">Infosys\"</p>\n<p class=\"masked-cert-line\">Navigate your next</p>\n<p class=\"masked-cert-line\">COURSE COMPLETION CERTIFICATE</p>\n<p class=\"masked-cert-line\">certificate is awarded to</p>\n<p class=\"masked-cert-line\">Vatsal Chauhan</p>\n<p class=\"masked-cert-line\">for successfully completing the course</p>\n<p class=\"masked-cert-line\">Al-first Software Engineering</p>\n<p class=\"masked-cert-line\">on May 26,2025</p>\n<p class=\"masked-cert-line\">Infosys | Springbuard</p>\n<p class=\"masked-cert-line\">Congratulations! You make uS proud!</p>\n<p class=\"masked-cert-line\">Thlrumala Arohi</p>\n<p class=\"masked-cert-line\">Executive Vice President and Glabal Head</p>\n<p class=\"masked-cert-line\">Issucd on: Friday Kay J0,2025</p>\n<p class=\"masked-cert-line\">Eoucatlog  Trainino</p>\n<p class=\"masked-cert-line\">Aauletnt IMA</p>\n<p class=\"masked-cert-line\">venty scanthc Oacodeathitnv Wvcrity ncxino Danenn</p>\n<p class=\"masked-cert-line\">Inlos$ Lmte di</p>\n<p class=\"masked-cert-line\">The '</p>\n<p class=\"masked-cert-line\">Aa-4</p>",
+      "redacted_fields": [],
+      "verdict": "REAL",
+      "verdict_badge": "REAL / AUTHENTIC CREDENTIAL",
+      "verdict_color": "#10b981",
+      "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+      "model_confidence": 65.6,
+      "model_explanation": "The AI model verified this document as REAL and authentic (Professional Software Engineering Course Specialization Certificate). Clean container integrity verified with zero tampering and valid official credential structure.",
+      "class_probabilities": [
+        {
+          "category": "Professional Software Engineering Course Specialization Certificate",
+          "probability": 65.6,
+          "cosine_similarity": 0.5133
+        },
+        {
+          "category": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+          "probability": 15.4,
+          "cosine_similarity": 0.3397
+        },
+        {
+          "category": "Accredited University Degree, Academic Transcript or Diploma",
+          "probability": 12.7,
+          "cosine_similarity": 0.3166
+        },
+        {
+          "category": "Corporate Employment Verification or Experience Relieving Letter",
+          "probability": 4.0,
+          "cosine_similarity": 0.1774
+        },
+        {
+          "category": "Government Identification Document or Passport",
+          "probability": 2.3,
+          "cosine_similarity": 0.1094
+        }
+      ],
+      "authenticity_indicators": [
+        "Official Accredited Issuer: Infosys / Infosys Springboard (infosys.com)",
+        "Active Online Registry: infosys.com returned HTTP 200 (SSL Secured)",
+        "Standard Credential Container (No cryptographic serial hash).",
+        "Container Integrity: Clean vector stream parsed via EasyOCR (Confidence: 57%)"
+      ],
+      "forgery_indicators": [],
+      "network_verification": {
+        "performed": true,
+        "target": "https://infosys.com",
+        "domain": "infosys.com",
+        "http_status": 200,
+        "is_live": true,
+        "ssl_secured": true,
+        "server": "Verified Cloud Infrastructure (Active)",
+        "status_badge": "Verified Live (HTTP 200)",
+        "message": "Online authority registry for infosys.com confirmed active."
+      },
+      "extracted_entities": {
+        "detected_issuer": "Infosys / Infosys Springboard",
+        "issuer_category": "Corporate Enterprise Tech Certification",
+        "issuer_domain": "infosys.com",
+        "detected_candidate": "Vatsal Chauhan",
+        "credential_id": null,
+        "verification_url": "https://infosys.com",
+        "issue_date": null,
+        "credential_title": null,
+        "hf_classification": "Professional Software Engineering Course Specialization Certificate",
+        "hf_confidence": "65.6%",
+        "class_probabilities": [
+          {
+            "category": "Professional Software Engineering Course Specialization Certificate",
+            "probability": 65.6,
+            "cosine_similarity": 0.5133
+          },
+          {
+            "category": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+            "probability": 15.4,
+            "cosine_similarity": 0.3397
+          },
+          {
+            "category": "Accredited University Degree, Academic Transcript or Diploma",
+            "probability": 12.7,
+            "cosine_similarity": 0.3166
+          },
+          {
+            "category": "Corporate Employment Verification or Experience Relieving Letter",
+            "probability": 4.0,
+            "cosine_similarity": 0.1774
+          },
+          {
+            "category": "Government Identification Document or Passport",
+            "probability": 2.3,
+            "cosine_similarity": 0.1094
+          }
+        ],
+        "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+        "model_type": "Hugging Face Neural Semantic Classifier"
+      },
+      "extracted_skills": [
+        "Computer Science",
+        "Java",
+        "Machine Learning & AI"
+      ],
+      "metadata": {
+        "format": "JPEG",
+        "size": "800x568",
+        "mode": "RGB"
+      },
+      "uploaded_at": "2026-10-22T11:16:43.892658",
+      "_id": "6ad9f09b29d56ba0f99f6092"
+    },
+    {
+      "candidate_id": "cand_user_2",
+      "candidate_name": "Alex Johnson",
+      "filename": "same-fingerprint.jpg",
+      "document_type": "Government Identification Document or Passport",
+      "raw_text": "'UHED STATES OF AMERICA  PERMAnent resldent\"\n~SPEULNEN\nSuroame\nSPECIMEN\nGiven Name\nTEST V\nUscis#\nCategory\n000-000-001\nRE8\ncolnte\nBinth\nUtopia\nof Blrth\n01 JAN\n920\n5/18\nCard Explres:\n008/21/01_\nResident Since:\n087ZTT07\nspecumnen",
+      "masked_text": "'UHED STATES OF AMERICA  PERMAnent resldent\"\n~SPEULNEN\nSuroame\nSPECIMEN\nGiven Name\nTEST V\nUscis#\nCategory\n000-000-001\nRE8\ncolnte\nBinth\nUtopia\nof Blrth\n01 JAN\n920\n5/18\nCard Explres:\n008/21/01_\nResident Since:\n087ZTT07\nspecumnen",
+      "masked_preview_html": "<p class=\"masked-cert-line\">'UHED STATES OF AMERICA  PERMAnent resldent\"</p>\n<p class=\"masked-cert-line\">~SPEULNEN</p>\n<p class=\"masked-cert-line\">Suroame</p>\n<p class=\"masked-cert-line\">SPECIMEN</p>\n<p class=\"masked-cert-line\">Given Name</p>\n<p class=\"masked-cert-line\">TEST V</p>\n<p class=\"masked-cert-line\">Uscis#</p>\n<p class=\"masked-cert-line\">Category</p>\n<p class=\"masked-cert-line\">000-000-001</p>\n<p class=\"masked-cert-line\">RE8</p>\n<p class=\"masked-cert-line\">colnte</p>\n<p class=\"masked-cert-line\">Binth</p>\n<p class=\"masked-cert-line\">Utopia</p>\n<p class=\"masked-cert-line\">of Blrth</p>\n<p class=\"masked-cert-line\">01 JAN</p>\n<p class=\"masked-cert-line\">920</p>\n<p class=\"masked-cert-line\">5/18</p>\n<p class=\"masked-cert-line\">Card Explres:</p>\n<p class=\"masked-cert-line\">008/21/01_</p>\n<p class=\"masked-cert-line\">Resident Since:</p>\n<p class=\"masked-cert-line\">087ZTT07</p>\n<p class=\"masked-cert-line\">specumnen</p>",
+      "redacted_fields": [],
+      "verdict": "REAL",
+      "verdict_badge": "REAL / AUTHENTIC CREDENTIAL",
+      "verdict_color": "#10b981",
+      "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+      "model_confidence": 44.8,
+      "model_explanation": "The AI model verified this document as REAL and authentic (Government Identification Document or Passport). Clean container integrity verified with zero tampering and valid official credential structure.",
+      "class_probabilities": [
+        {
+          "category": "Government Identification Document or Passport",
+          "probability": 44.8,
+          "cosine_similarity": 0.3167
+        },
+        {
+          "category": "Professional Software Engineering Course Specialization Certificate",
+          "probability": 14.2,
+          "cosine_similarity": 0.1785
+        },
+        {
+          "category": "Accredited University Degree, Academic Transcript or Diploma",
+          "probability": 13.8,
+          "cosine_similarity": 0.1753
+        },
+        {
+          "category": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+          "probability": 13.7,
+          "cosine_similarity": 0.1748
+        },
+        {
+          "category": "Corporate Employment Verification or Experience Relieving Letter",
+          "probability": 13.5,
+          "cosine_similarity": 0.1732
+        }
+      ],
+      "authenticity_indicators": [
+        "Standard Credential Container (No cryptographic serial hash).",
+        "Container Integrity: Clean vector stream parsed via EasyOCR (Confidence: 65%)"
+      ],
+      "forgery_indicators": [
+        "Unrecognized Issuer: Issuing body is not in the accredited institutional registry."
+      ],
+      "network_verification": {
+        "performed": false,
+        "target": null,
+        "status_badge": "Offline / Internal",
+        "message": "No external verification URL needed"
+      },
+      "extracted_entities": {
+        "detected_issuer": null,
+        "issuer_category": null,
+        "issuer_domain": null,
+        "detected_candidate": null,
+        "credential_id": null,
+        "verification_url": null,
+        "issue_date": null,
+        "credential_title": null,
+        "hf_classification": "Government Identification Document or Passport",
+        "hf_confidence": "44.8%",
+        "class_probabilities": [
+          {
+            "category": "Government Identification Document or Passport",
+            "probability": 44.8,
+            "cosine_similarity": 0.3167
+          },
+          {
+            "category": "Professional Software Engineering Course Specialization Certificate",
+            "probability": 14.2,
+            "cosine_similarity": 0.1785
+          },
+          {
+            "category": "Accredited University Degree, Academic Transcript or Diploma",
+            "probability": 13.8,
+            "cosine_similarity": 0.1753
+          },
+          {
+            "category": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+            "probability": 13.7,
+            "cosine_similarity": 0.1748
+          },
+          {
+            "category": "Corporate Employment Verification or Experience Relieving Letter",
+            "probability": 13.5,
+            "cosine_similarity": 0.1732
+          }
+        ],
+        "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+        "model_type": "Hugging Face Neural Semantic Classifier"
+      },
+      "extracted_skills": [],
+      "metadata": {
+        "format": "JPEG",
+        "size": "550x255",
+        "mode": "RGB"
+      },
+      "uploaded_at": "2026-10-22T11:17:13.934431",
+      "_id": "6ad9f0b929d56ba0f99f6093"
+    },
+    {
+      "candidate_id": "cand_user_2",
+      "candidate_name": "Alex Johnson",
+      "filename": "Untitled - Visual 1.png",
+      "document_type": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+      "raw_text": "Bayora: Secure Adversarial AI Safety Testing Pipeline\nRed Team\nSandbox\nPollcy Gateway\nAuthenicale request\nAtock Generator\nPoliy check\nSanitize\nAdversaral Prompt\nand rte Iinit .\nFonwand\nRepasitory\nTarget Llm\nEvaluator\nSs0sS\nSandbox\nAnatyze reaponse\nY\nDelect jaibreaklleak\nFresh gecsian per test\nVerdict (sale\nunaale)\nPer eegsian KV cache\ncleared\nReaponse\nBlue Team\nSandbox\nAudit Service\nReceive verdict and\nReceives signed event\nsanilized\nevery step\nDevelp defense -\nDeplay\ndelenee\nRecidual Rlsk\nReport\nCanary Secrets\nVerdict sumnmary\nkeak\nCanary token planted in\nteatresut\nouditkog\neach zone\nverfication\nMedowtth\nMiekhn\nfinding\nfrom",
+      "masked_text": "Bayora: Secure Adversarial AI Safety Testing Pipeline\nRed Team\nSandbox\nPollcy Gateway\nAuthenicale request\nAtock Generator\nPoliy check\nSanitize\nAdversaral Prompt\nand rte Iinit .\nFonwand\nRepasitory\nTarget Llm\nEvaluator\nSs0sS\nSandbox\nAnatyze reaponse\nY\nDelect jaibreaklleak\nFresh gecsian per test\nVerdict (sale\nunaale)\nPer eegsian KV cache\ncleared\nReaponse\nBlue Team\nSandbox\nAudit Service\nReceive verdict and\nReceives signed event\nsanilized\nevery step\nDevelp defense -\nDeplay\ndelenee\nRecidual Rlsk\nReport\nCanary Secrets\nVerdict sumnmary\nkeak\nCanary token planted in\nteatresut\nouditkog\neach zone\nverfication\nMedowtth\nMiekhn\nfinding\nfrom",
+      "masked_preview_html": "<p class=\"masked-cert-line\">Bayora: Secure Adversarial AI Safety Testing Pipeline</p>\n<p class=\"masked-cert-line\">Red Team</p>\n<p class=\"masked-cert-line\">Sandbox</p>\n<p class=\"masked-cert-line\">Pollcy Gateway</p>\n<p class=\"masked-cert-line\">Authenicale request</p>\n<p class=\"masked-cert-line\">Atock Generator</p>\n<p class=\"masked-cert-line\">Poliy check</p>\n<p class=\"masked-cert-line\">Sanitize</p>\n<p class=\"masked-cert-line\">Adversaral Prompt</p>\n<p class=\"masked-cert-line\">and rte Iinit .</p>\n<p class=\"masked-cert-line\">Fonwand</p>\n<p class=\"masked-cert-line\">Repasitory</p>\n<p class=\"masked-cert-line\">Target Llm</p>\n<p class=\"masked-cert-line\">Evaluator</p>\n<p class=\"masked-cert-line\">Ss0sS</p>\n<p class=\"masked-cert-line\">Sandbox</p>\n<p class=\"masked-cert-line\">Anatyze reaponse</p>\n<p class=\"masked-cert-line\">Y</p>\n<p class=\"masked-cert-line\">Delect jaibreaklleak</p>\n<p class=\"masked-cert-line\">Fresh gecsian per test</p>\n<p class=\"masked-cert-line\">Verdict (sale</p>\n<p class=\"masked-cert-line\">unaale)</p>\n<p class=\"masked-cert-line\">Per eegsian KV cache</p>\n<p class=\"masked-cert-line\">cleared</p>\n<p class=\"masked-cert-line\">Reaponse</p>\n<p class=\"masked-cert-line\">Blue Team</p>\n<p class=\"masked-cert-line\">Sandbox</p>\n<p class=\"masked-cert-line\">Audit Service</p>\n<p class=\"masked-cert-line\">Receive verdict and</p>\n<p class=\"masked-cert-line\">Receives signed event</p>\n<p class=\"masked-cert-line\">sanilized</p>\n<p class=\"masked-cert-line\">every step</p>\n<p class=\"masked-cert-line\">Develp defense -</p>\n<p class=\"masked-cert-line\">Deplay</p>\n<p class=\"masked-cert-line\">delenee</p>\n<p class=\"masked-cert-line\">Recidual Rlsk</p>\n<p class=\"masked-cert-line\">Report</p>\n<p class=\"masked-cert-line\">Canary Secrets</p>\n<p class=\"masked-cert-line\">Verdict sumnmary</p>\n<p class=\"masked-cert-line\">keak</p>\n<p class=\"masked-cert-line\">Canary token planted in</p>\n<p class=\"masked-cert-line\">teatresut</p>\n<p class=\"masked-cert-line\">ouditkog</p>\n<p class=\"masked-cert-line\">each zone</p>\n<p class=\"masked-cert-line\">verfication</p>\n<p class=\"masked-cert-line\">Medowtth</p>\n<p class=\"masked-cert-line\">Miekhn</p>\n<p class=\"masked-cert-line\">finding</p>\n<p class=\"masked-cert-line\">from</p>",
+      "redacted_fields": [],
+      "verdict": "REAL",
+      "verdict_badge": "REAL / AUTHENTIC CREDENTIAL",
+      "verdict_color": "#10b981",
+      "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+      "model_confidence": 41.9,
+      "model_explanation": "The AI model verified this document as REAL and authentic (Official Cloud Vendor Certification (AWS, Azure, GCP)). Clean container integrity verified with zero tampering and valid official credential structure.",
+      "class_probabilities": [
+        {
+          "category": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+          "probability": 41.9,
+          "cosine_similarity": 0.2266
+        },
+        {
+          "category": "Professional Software Engineering Course Specialization Certificate",
+          "probability": 24.8,
+          "cosine_similarity": 0.1636
+        },
+        {
+          "category": "Corporate Employment Verification or Experience Relieving Letter",
+          "probability": 14.9,
+          "cosine_similarity": 0.1028
+        },
+        {
+          "category": "Government Identification Document or Passport",
+          "probability": 13.0,
+          "cosine_similarity": 0.0865
+        },
+        {
+          "category": "Accredited University Degree, Academic Transcript or Diploma",
+          "probability": 5.3,
+          "cosine_similarity": -0.0221
+        }
+      ],
+      "authenticity_indicators": [
+        "Standard Credential Container (No cryptographic serial hash).",
+        "Container Integrity: Clean vector stream parsed via EasyOCR (Confidence: 66%)"
+      ],
+      "forgery_indicators": [
+        "Unrecognized Issuer: Issuing body is not in the accredited institutional registry."
+      ],
+      "network_verification": {
+        "performed": false,
+        "target": null,
+        "status_badge": "Offline / Internal",
+        "message": "No external verification URL needed"
+      },
+      "extracted_entities": {
+        "detected_issuer": null,
+        "issuer_category": null,
+        "issuer_domain": null,
+        "detected_candidate": null,
+        "credential_id": null,
+        "verification_url": null,
+        "issue_date": null,
+        "credential_title": null,
+        "hf_classification": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+        "hf_confidence": "41.9%",
+        "class_probabilities": [
+          {
+            "category": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+            "probability": 41.9,
+            "cosine_similarity": 0.2266
+          },
+          {
+            "category": "Professional Software Engineering Course Specialization Certificate",
+            "probability": 24.8,
+            "cosine_similarity": 0.1636
+          },
+          {
+            "category": "Corporate Employment Verification or Experience Relieving Letter",
+            "probability": 14.9,
+            "cosine_similarity": 0.1028
+          },
+          {
+            "category": "Government Identification Document or Passport",
+            "probability": 13.0,
+            "cosine_similarity": 0.0865
+          },
+          {
+            "category": "Accredited University Degree, Academic Transcript or Diploma",
+            "probability": 5.3,
+            "cosine_similarity": -0.0221
+          }
+        ],
+        "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+        "model_type": "Hugging Face Neural Semantic Classifier"
+      },
+      "extracted_skills": [
+        "Machine Learning & AI"
+      ],
+      "metadata": {
+        "format": "PNG",
+        "size": "852x696",
+        "mode": "RGBA"
+      },
+      "uploaded_at": "2026-10-22T11:18:00.392816",
+      "_id": "6ad9f0e829d56ba0f99f6094"
+    },
+    {
+      "candidate_id": "cand_test_random",
+      "candidate_name": "Test User",
+      "filename": "random_paper_notes.txt",
+      "document_type": "Official Credential",
+      "raw_text": "Python, AWS, Java, Machine Learning, Docker, SQL\nNotes from meeting: review backend database architecture tomorrow morning.",
+      "masked_text": "Python, AWS, Java, Machine Learning, Docker, SQL\nNotes from meeting: review backend database architecture tomorrow morning.",
+      "masked_preview_html": "<p class=\"masked-cert-line\">Python, AWS, Java, Machine Learning, Docker, SQL</p>\n<p class=\"masked-cert-line\">Notes from meeting: review backend database architecture tomorrow morning.</p>",
+      "redacted_fields": [],
+      "verdict": "INVALID_DOCUMENT",
+      "verdict_badge": "REJECTED / NOT A CREDENTIAL",
+      "verdict_color": "#f59e0b",
+      "model_name": "Credential Structure & Neural Intelligence Engine",
+      "model_confidence": 98.0,
+      "model_explanation": "Document lacks any official credential structure. Detected unstructured notes, keywords, or random paper scribble rather than a formal certificate, degree, or ID.",
+      "class_probabilities": [],
+      "authenticity_indicators": [],
+      "forgery_indicators": [
+        "Lacks official credential structure",
+        "Detected unstructured keyword text or informal notes on paper"
+      ],
+      "network_verification": {
+        "performed": false,
+        "verified": false
+      },
+      "web_verification": {
+        "performed": false,
+        "verified": false,
+        "detail": "Web search skipped for non-credential document."
+      },
+      "structure_verification": {
+        "is_valid_credential": false,
+        "marker_count": 0,
+        "markers": [],
+        "word_count": 16,
+        "reason": "Document lacks any official credential structure. Detected unstructured notes, keywords, or random paper scribble rather than a formal certificate, degree, or ID."
+      },
+      "extracted_entities": {
+        "detected_issuer": "Amazon Web Services (AWS)",
+        "issuer_category": "Official Cloud Vendor Certification",
+        "issuer_domain": "aws.amazon.com",
+        "detected_candidate": null,
+        "credential_id": null,
+        "verification_url": "https://aws.amazon.com/verification",
+        "issue_date": null,
+        "credential_title": null,
+        "hf_classification": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+        "hf_confidence": "32.2%",
+        "class_probabilities": [
+          {
+            "category": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+            "probability": 32.2,
+            "cosine_similarity": 0.26
+          },
+          {
+            "category": "Informal Personal Notes, Raw Keyword List, Or Non-Credential Paper Scribble",
+            "probability": 28.2,
+            "cosine_similarity": 0.2439
+          },
+          {
+            "category": "Professional Software Engineering Course Specialization Certificate",
+            "probability": 13.2,
+            "cosine_similarity": 0.153
+          },
+          {
+            "category": "Accredited University Degree, Academic Transcript or Diploma",
+            "probability": 12.9,
+            "cosine_similarity": 0.1502
+          },
+          {
+            "category": "Government Identification Document or Passport",
+            "probability": 6.8,
+            "cosine_similarity": 0.0726
+          },
+          {
+            "category": "Corporate Employment Verification or Experience Relieving Letter",
+            "probability": 6.7,
+            "cosine_similarity": 0.0719
+          }
+        ],
+        "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+        "model_type": "Hugging Face Neural Semantic Classifier"
+      },
+      "extracted_skills": [],
+      "metadata": {},
+      "uploaded_at": "2026-10-22T11:58:08.529290",
+      "_id": "6ad9fa500409080290471eb3"
+    },
+    {
+      "candidate_id": "cand_test_random",
+      "candidate_name": "Test User",
+      "filename": "random_paper_notes.txt",
+      "document_type": "Official Credential",
+      "raw_text": "Python, AWS, Java, Machine Learning, Docker, SQL\nNotes from meeting: review backend database architecture tomorrow morning.",
+      "masked_text": "Python, AWS, Java, Machine Learning, Docker, SQL\nNotes from meeting: review backend database architecture tomorrow morning.",
+      "masked_preview_html": "<p class=\"masked-cert-line\">Python, AWS, Java, Machine Learning, Docker, SQL</p>\n<p class=\"masked-cert-line\">Notes from meeting: review backend database architecture tomorrow morning.</p>",
+      "redacted_fields": [],
+      "verdict": "INVALID_DOCUMENT",
+      "verdict_badge": "REJECTED / NOT A CREDENTIAL",
+      "verdict_color": "#f59e0b",
+      "model_name": "Credential Structure & Neural Intelligence Engine",
+      "model_confidence": 98.0,
+      "model_explanation": "Document lacks any official credential structure. Detected unstructured notes, keywords, or random paper scribble rather than a formal certificate, degree, or ID.",
+      "class_probabilities": [],
+      "authenticity_indicators": [],
+      "forgery_indicators": [
+        "Lacks official credential structure",
+        "Detected unstructured keyword text or informal notes on paper"
+      ],
+      "network_verification": {
+        "performed": false,
+        "verified": false
+      },
+      "web_verification": {
+        "performed": false,
+        "verified": false,
+        "detail": "Web search skipped for non-credential document."
+      },
+      "structure_verification": {
+        "is_valid_credential": false,
+        "marker_count": 0,
+        "markers": [],
+        "word_count": 16,
+        "reason": "Document lacks any official credential structure. Detected unstructured notes, keywords, or random paper scribble rather than a formal certificate, degree, or ID."
+      },
+      "extracted_entities": {
+        "detected_issuer": "Amazon Web Services (AWS)",
+        "issuer_category": "Official Cloud Vendor Certification",
+        "issuer_domain": "aws.amazon.com",
+        "detected_candidate": null,
+        "credential_id": null,
+        "verification_url": "https://aws.amazon.com/verification",
+        "issue_date": null,
+        "credential_title": null,
+        "hf_classification": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+        "hf_confidence": "32.2%",
+        "class_probabilities": [
+          {
+            "category": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+            "probability": 32.2,
+            "cosine_similarity": 0.26
+          },
+          {
+            "category": "Informal Personal Notes, Raw Keyword List, Or Non-Credential Paper Scribble",
+            "probability": 28.2,
+            "cosine_similarity": 0.2439
+          },
+          {
+            "category": "Professional Software Engineering Course Specialization Certificate",
+            "probability": 13.2,
+            "cosine_similarity": 0.153
+          },
+          {
+            "category": "Accredited University Degree, Academic Transcript or Diploma",
+            "probability": 12.9,
+            "cosine_similarity": 0.1502
+          },
+          {
+            "category": "Government Identification Document or Passport",
+            "probability": 6.8,
+            "cosine_similarity": 0.0726
+          },
+          {
+            "category": "Corporate Employment Verification or Experience Relieving Letter",
+            "probability": 6.7,
+            "cosine_similarity": 0.0719
+          }
+        ],
+        "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+        "model_type": "Hugging Face Neural Semantic Classifier"
+      },
+      "extracted_skills": [],
+      "metadata": {},
+      "uploaded_at": "2026-10-22T11:59:13.274259",
+      "_id": "6ad9fa91b1ae7c69f2a8f421"
+    },
+    {
+      "candidate_id": "cand_test_real",
+      "candidate_name": "Vatsal Chauhan",
+      "filename": "Infosys_Springboard_Certificate.pdf",
+      "document_type": "Corporate Tech Certification",
+      "raw_text": "Infosys Springboard COURSE COMPLETION CERTIFICATE certificate is awarded to Vatsal Chauhan for successfully completing the course AI-first Software Engineering on May 26, 2025. Executive Vice President Thirumala Arohi",
+      "masked_text": "Infosys Springboard COURSE COMPLETION CERTIFICATE certificate is awarded to Vatsal Chauhan for successfully completing the course AI-first Software Engineering on May 26, 2025. Executive Vice President Thirumala Arohi",
+      "masked_preview_html": "<p class=\"masked-cert-line\">Infosys Springboard COURSE COMPLETION CERTIFICATE certificate is awarded to Vatsal Chauhan for successfully completing the course AI-first Software Engineering on May 26, 2025. Executive Vice President Thirumala Arohi</p>",
+      "redacted_fields": [],
+      "verdict": "REAL",
+      "verdict_badge": "REAL / AUTHENTIC CREDENTIAL",
+      "verdict_color": "#10b981",
+      "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+      "model_confidence": 57.5,
+      "model_explanation": "The AI model verified this document as REAL and authentic (Professional Software Engineering Course Specialization Certificate). Clean container integrity verified with zero tampering and valid official credential structure.",
+      "class_probabilities": [
+        {
+          "category": "Professional Software Engineering Course Specialization Certificate",
+          "probability": 57.5,
+          "cosine_similarity": 0.4591
+        },
+        {
+          "category": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+          "probability": 17.2,
+          "cosine_similarity": 0.3143
+        },
+        {
+          "category": "Accredited University Degree, Academic Transcript or Diploma",
+          "probability": 14.7,
+          "cosine_similarity": 0.2956
+        },
+        {
+          "category": "Corporate Employment Verification or Experience Relieving Letter",
+          "probability": 3.9,
+          "cosine_similarity": 0.1353
+        },
+        {
+          "category": "Informal Personal Notes, Raw Keyword List, Or Non-Credential Paper Scribble",
+          "probability": 3.4,
+          "cosine_similarity": 0.118
+        },
+        {
+          "category": "Government Identification Document or Passport",
+          "probability": 3.3,
+          "cosine_similarity": 0.1167
+        }
+      ],
+      "authenticity_indicators": [
+        "Live Web Corroboration: Recognized accredited authority: Infosys / Infosys Springboard (infosys.com).",
+        "Official Accredited Issuer: Infosys / Infosys Springboard (infosys.com)",
+        "Active Online Registry: infosys.com returned HTTP 200 (SSL Secured)",
+        "Candidate Identity Match: Recipient on document 'Vatsal Chauhan' matches 'Vatsal Chauhan'.",
+        "Standard Credential Container (No cryptographic serial hash).",
+        "Container Integrity: Clean vector stream parsed via Direct Vector Stream"
+      ],
+      "forgery_indicators": [],
+      "network_verification": {
+        "performed": true,
+        "target": "https://infosys.com",
+        "domain": "infosys.com",
+        "http_status": 200,
+        "is_live": true,
+        "ssl_secured": true,
+        "server": "Verified Cloud Infrastructure (Active)",
+        "status_badge": "Verified Live (HTTP 200)",
+        "message": "Online authority registry for infosys.com confirmed active."
+      },
+      "web_verification": {
+        "performed": true,
+        "verified": true,
+        "source": "Official Institutional Registry & DNS",
+        "entity": "Infosys / Infosys Springboard",
+        "reference_url": "https://infosys.com",
+        "detail": "Recognized accredited authority: Infosys / Infosys Springboard (infosys.com)."
+      },
+      "structure_verification": {
+        "is_valid_credential": true,
+        "marker_count": 4,
+        "markers": [
+          "certificat(?:e|ion)",
+          "awarded to",
+          "completion",
+          "course completion"
+        ],
+        "word_count": 27,
+        "reason": "Valid credential structure confirmed with 4 institutional marker(s)."
+      },
+      "extracted_entities": {
+        "detected_issuer": "Infosys / Infosys Springboard",
+        "issuer_category": "Corporate Enterprise Tech Certification",
+        "issuer_domain": "infosys.com",
+        "detected_candidate": "Vatsal Chauhan",
+        "credential_id": null,
+        "verification_url": "https://infosys.com",
+        "issue_date": null,
+        "credential_title": null,
+        "hf_classification": "Professional Software Engineering Course Specialization Certificate",
+        "hf_confidence": "57.5%",
+        "class_probabilities": [
+          {
+            "category": "Professional Software Engineering Course Specialization Certificate",
+            "probability": 57.5,
+            "cosine_similarity": 0.4591
+          },
+          {
+            "category": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+            "probability": 17.2,
+            "cosine_similarity": 0.3143
+          },
+          {
+            "category": "Accredited University Degree, Academic Transcript or Diploma",
+            "probability": 14.7,
+            "cosine_similarity": 0.2956
+          },
+          {
+            "category": "Corporate Employment Verification or Experience Relieving Letter",
+            "probability": 3.9,
+            "cosine_similarity": 0.1353
+          },
+          {
+            "category": "Informal Personal Notes, Raw Keyword List, Or Non-Credential Paper Scribble",
+            "probability": 3.4,
+            "cosine_similarity": 0.118
+          },
+          {
+            "category": "Government Identification Document or Passport",
+            "probability": 3.3,
+            "cosine_similarity": 0.1167
+          }
+        ],
+        "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+        "model_type": "Hugging Face Neural Semantic Classifier"
+      },
+      "extracted_skills": [
+        "Computer Science",
+        "Java",
+        "Machine Learning & AI"
+      ],
+      "metadata": {},
+      "uploaded_at": "2026-10-22T11:59:13.384319",
+      "_id": "6ad9fa91b1ae7c69f2a8f422"
+    },
+    {
+      "candidate_id": "cand_test_canva",
+      "candidate_name": "Johnathan Miller",
+      "filename": "Canva_Tampered.pdf",
+      "document_type": "Official Technical Credential",
+      "raw_text": "Certificate of Achievement Awarded to Johnathan Miller for successful participation in Advanced Cloud Systems Issued on: July 20, 2029 Created via Canva Online Graphic Design Suite",
+      "masked_text": "Certificate of Achievement Awarded to Johnathan Miller for successful participation in Advanced Cloud Systems Issued on: July 20, 2029 Created via Canva Online Graphic Design Suite",
+      "masked_preview_html": "<p class=\"masked-cert-line\">Certificate of Achievement Awarded to Johnathan Miller for successful participation in Advanced Cloud Systems Issued on: July 20, 2029 Created via Canva Online Graphic Design Suite</p>",
+      "redacted_fields": [],
+      "verdict": "FORGED",
+      "verdict_badge": "FORGED / TAMPERED CREDENTIAL",
+      "verdict_color": "#ef4444",
+      "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+      "model_confidence": 66.6,
+      "model_explanation": "The AI model determined this document is FORGED. Detected tampering: Unrecognized Issuer: Issuing body is not in the accredited institutional registry.; Graphic editor metadata detected: Document was generated or modified using Canva / Photoshop design suite..",
+      "class_probabilities": [
+        {
+          "category": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+          "probability": 66.6,
+          "cosine_similarity": 0.4877
+        },
+        {
+          "category": "Professional Software Engineering Course Specialization Certificate",
+          "probability": 12.1,
+          "cosine_similarity": 0.2828
+        },
+        {
+          "category": "Accredited University Degree, Academic Transcript or Diploma",
+          "probability": 8.7,
+          "cosine_similarity": 0.2437
+        },
+        {
+          "category": "Government Identification Document or Passport",
+          "probability": 5.1,
+          "cosine_similarity": 0.1791
+        },
+        {
+          "category": "Corporate Employment Verification or Experience Relieving Letter",
+          "probability": 5.0,
+          "cosine_similarity": 0.1765
+        },
+        {
+          "category": "Informal Personal Notes, Raw Keyword List, Or Non-Credential Paper Scribble",
+          "probability": 2.6,
+          "cosine_similarity": 0.0985
+        }
+      ],
+      "authenticity_indicators": [
+        "Candidate Identity Match: Recipient on document 'Johnathan Miller' matches 'Johnathan Miller'.",
+        "Standard Credential Container (No cryptographic serial hash)."
+      ],
+      "forgery_indicators": [
+        "Unrecognized Issuer: Issuing body is not in the accredited institutional registry.",
+        "Graphic editor metadata detected: Document was generated or modified using Canva / Photoshop design suite.",
+        "Impossible Future Date: Document indicates issue year 2029."
+      ],
+      "network_verification": {
+        "performed": false,
+        "target": null,
+        "status_badge": "Offline / Internal",
+        "message": "No external verification URL needed"
+      },
+      "web_verification": {
+        "performed": false,
+        "verified": false,
+        "source": "None",
+        "entity": null,
+        "detail": "No recognized issuing authority found on document to corroborate on the web."
+      },
+      "structure_verification": {
+        "is_valid_credential": true,
+        "marker_count": 2,
+        "markers": [
+          "certificat(?:e|ion)",
+          "awarded to"
+        ],
+        "word_count": 24,
+        "reason": "Valid credential structure confirmed with 2 institutional marker(s)."
+      },
+      "extracted_entities": {
+        "detected_issuer": null,
+        "issuer_category": null,
+        "issuer_domain": null,
+        "detected_candidate": "Johnathan Miller",
+        "credential_id": null,
+        "verification_url": null,
+        "issue_date": null,
+        "credential_title": null,
+        "hf_classification": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+        "hf_confidence": "66.6%",
+        "class_probabilities": [
+          {
+            "category": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+            "probability": 66.6,
+            "cosine_similarity": 0.4877
+          },
+          {
+            "category": "Professional Software Engineering Course Specialization Certificate",
+            "probability": 12.1,
+            "cosine_similarity": 0.2828
+          },
+          {
+            "category": "Accredited University Degree, Academic Transcript or Diploma",
+            "probability": 8.7,
+            "cosine_similarity": 0.2437
+          },
+          {
+            "category": "Government Identification Document or Passport",
+            "probability": 5.1,
+            "cosine_similarity": 0.1791
+          },
+          {
+            "category": "Corporate Employment Verification or Experience Relieving Letter",
+            "probability": 5.0,
+            "cosine_similarity": 0.1765
+          },
+          {
+            "category": "Informal Personal Notes, Raw Keyword List, Or Non-Credential Paper Scribble",
+            "probability": 2.6,
+            "cosine_similarity": 0.0985
+          }
+        ],
+        "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+        "model_type": "Hugging Face Neural Semantic Classifier"
+      },
+      "extracted_skills": [],
+      "metadata": {},
+      "uploaded_at": "2026-10-22T11:59:13.485213",
+      "_id": "6ad9fa91b1ae7c69f2a8f423"
+    },
+    {
+      "candidate_id": "cand_user_1",
+      "candidate_name": "Jane Smith",
+      "filename": "same-fingerprint.jpg",
+      "document_type": "Invalid / Non-Credential Document",
+      "raw_text": "'UHED STATES OF AMERICA  PERMAnent resldent\"\n~SPEULNEN\nSuroame\nSPECIMEN\nGiven Name\nTEST V\nUscis#\nCategory\n000-000-001\nRE8\ncolnte\nBinth\nUtopia\nof Blrth\n01 JAN\n920\n5/18\nCard Explres:\n008/21/01_\nResident Since:\n087ZTT07\nspecumnen",
+      "masked_text": "'UHED STATES OF AMERICA  PERMAnent resldent\"\n~SPEULNEN\nSuroame\nSPECIMEN\nGiven Name\nTEST V\nUscis#\nCategory\n000-000-001\nRE8\ncolnte\nBinth\nUtopia\nof Blrth\n01 JAN\n920\n5/18\nCard Explres:\n008/21/01_\nResident Since:\n087ZTT07\nspecumnen",
+      "masked_preview_html": "<p class=\"masked-cert-line\">'UHED STATES OF AMERICA  PERMAnent resldent\"</p>\n<p class=\"masked-cert-line\">~SPEULNEN</p>\n<p class=\"masked-cert-line\">Suroame</p>\n<p class=\"masked-cert-line\">SPECIMEN</p>\n<p class=\"masked-cert-line\">Given Name</p>\n<p class=\"masked-cert-line\">TEST V</p>\n<p class=\"masked-cert-line\">Uscis#</p>\n<p class=\"masked-cert-line\">Category</p>\n<p class=\"masked-cert-line\">000-000-001</p>\n<p class=\"masked-cert-line\">RE8</p>\n<p class=\"masked-cert-line\">colnte</p>\n<p class=\"masked-cert-line\">Binth</p>\n<p class=\"masked-cert-line\">Utopia</p>\n<p class=\"masked-cert-line\">of Blrth</p>\n<p class=\"masked-cert-line\">01 JAN</p>\n<p class=\"masked-cert-line\">920</p>\n<p class=\"masked-cert-line\">5/18</p>\n<p class=\"masked-cert-line\">Card Explres:</p>\n<p class=\"masked-cert-line\">008/21/01_</p>\n<p class=\"masked-cert-line\">Resident Since:</p>\n<p class=\"masked-cert-line\">087ZTT07</p>\n<p class=\"masked-cert-line\">specumnen</p>",
+      "redacted_fields": [],
+      "verdict": "INVALID_DOCUMENT",
+      "verdict_badge": "REJECTED / NOT A CREDENTIAL",
+      "verdict_color": "#f59e0b",
+      "model_name": "Credential Structure & Neural Intelligence Engine",
+      "model_confidence": 98.0,
+      "model_explanation": "Document lacks any official credential structure. Detected unstructured notes, keywords, or random paper scribble rather than a formal certificate, degree, or ID.",
+      "class_probabilities": [],
+      "authenticity_indicators": [],
+      "forgery_indicators": [
+        "Lacks official credential structure",
+        "Detected unstructured keyword text or informal notes on paper"
+      ],
+      "network_verification": {
+        "performed": false,
+        "verified": false
+      },
+      "web_verification": {
+        "performed": false,
+        "verified": false,
+        "detail": "Web search skipped for non-credential document."
+      },
+      "structure_verification": {
+        "is_valid_credential": false,
+        "marker_count": 0,
+        "markers": [],
+        "word_count": 25,
+        "reason": "Document lacks any official credential structure. Detected unstructured notes, keywords, or random paper scribble rather than a formal certificate, degree, or ID."
+      },
+      "extracted_entities": {
+        "detected_issuer": null,
+        "issuer_category": null,
+        "issuer_domain": null,
+        "detected_candidate": null,
+        "credential_id": null,
+        "verification_url": null,
+        "issue_date": null,
+        "credential_title": null,
+        "hf_classification": "Government Identification Document or Passport",
+        "hf_confidence": "42.7%",
+        "class_probabilities": [
+          {
+            "category": "Government Identification Document or Passport",
+            "probability": 42.7,
+            "cosine_similarity": 0.3167
+          },
+          {
+            "category": "Professional Software Engineering Course Specialization Certificate",
+            "probability": 13.5,
+            "cosine_similarity": 0.1785
+          },
+          {
+            "category": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+            "probability": 13.1,
+            "cosine_similarity": 0.1748
+          },
+          {
+            "category": "Accredited University Degree, Academic Transcript or Diploma",
+            "probability": 13.1,
+            "cosine_similarity": 0.1753
+          },
+          {
+            "category": "Corporate Employment Verification or Experience Relieving Letter",
+            "probability": 12.9,
+            "cosine_similarity": 0.1732
+          },
+          {
+            "category": "Informal Personal Notes, Raw Keyword List, Or Non-Credential Paper Scribble",
+            "probability": 4.6,
+            "cosine_similarity": 0.0505
+          }
+        ],
+        "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+        "model_type": "Hugging Face Neural Semantic Classifier"
+      },
+      "extracted_skills": [],
+      "metadata": {
+        "format": "JPEG",
+        "size": "550x255",
+        "mode": "RGB"
+      },
+      "uploaded_at": "2026-10-22T12:06:43.935194",
+      "_id": "6ad9fc53275b669bbdbb0c0e"
+    },
+    {
+      "candidate_id": "cand_user_1",
+      "candidate_name": "Jane Smith",
+      "filename": "1748616352821.jpg",
+      "document_type": "Professional Software Engineering Course Specialization Certificate",
+      "raw_text": "Infosys\"\nNavigate your next\nCOURSE COMPLETION CERTIFICATE\ncertificate is awarded to\nVatsal Chauhan\nfor successfully completing the course\nAl-first Software Engineering\non May 26,2025\nInfosys | Springbuard\nCongratulations! You make uS proud!\nThlrumala Arohi\nExecutive Vice President and Glabal Head\nIssucd on: Friday Kay J0,2025\nEoucatlog  Trainino\nAauletnt IMA\nventy scanthc Oacodeathitnv Wvcrity ncxino Danenn\nInlos$ Lmte di\nThe '\nAa-4",
+      "masked_text": "Infosys\"\nNavigate your next\nCOURSE COMPLETION CERTIFICATE\ncertificate is awarded to\nVatsal Chauhan\nfor successfully completing the course\nAl-first Software Engineering\non May 26,2025\nInfosys | Springbuard\nCongratulations! You make uS proud!\nThlrumala Arohi\nExecutive Vice President and Glabal Head\nIssucd on: Friday Kay J0,2025\nEoucatlog  Trainino\nAauletnt IMA\nventy scanthc Oacodeathitnv Wvcrity ncxino Danenn\nInlos$ Lmte di\nThe '\nAa-4",
+      "masked_preview_html": "<p class=\"masked-cert-line\">Infosys\"</p>\n<p class=\"masked-cert-line\">Navigate your next</p>\n<p class=\"masked-cert-line\">COURSE COMPLETION CERTIFICATE</p>\n<p class=\"masked-cert-line\">certificate is awarded to</p>\n<p class=\"masked-cert-line\">Vatsal Chauhan</p>\n<p class=\"masked-cert-line\">for successfully completing the course</p>\n<p class=\"masked-cert-line\">Al-first Software Engineering</p>\n<p class=\"masked-cert-line\">on May 26,2025</p>\n<p class=\"masked-cert-line\">Infosys | Springbuard</p>\n<p class=\"masked-cert-line\">Congratulations! You make uS proud!</p>\n<p class=\"masked-cert-line\">Thlrumala Arohi</p>\n<p class=\"masked-cert-line\">Executive Vice President and Glabal Head</p>\n<p class=\"masked-cert-line\">Issucd on: Friday Kay J0,2025</p>\n<p class=\"masked-cert-line\">Eoucatlog  Trainino</p>\n<p class=\"masked-cert-line\">Aauletnt IMA</p>\n<p class=\"masked-cert-line\">venty scanthc Oacodeathitnv Wvcrity ncxino Danenn</p>\n<p class=\"masked-cert-line\">Inlos$ Lmte di</p>\n<p class=\"masked-cert-line\">The '</p>\n<p class=\"masked-cert-line\">Aa-4</p>",
+      "redacted_fields": [],
+      "verdict": "REAL",
+      "verdict_badge": "REAL / AUTHENTIC CREDENTIAL",
+      "verdict_color": "#10b981",
+      "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+      "model_confidence": 62.4,
+      "model_explanation": "The AI model verified this document as REAL and authentic (Professional Software Engineering Course Specialization Certificate). Clean container integrity verified with zero tampering and valid official credential structure.",
+      "class_probabilities": [
+        {
+          "category": "Professional Software Engineering Course Specialization Certificate",
+          "probability": 62.4,
+          "cosine_similarity": 0.5133
+        },
+        {
+          "category": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+          "probability": 14.7,
+          "cosine_similarity": 0.3397
+        },
+        {
+          "category": "Accredited University Degree, Academic Transcript or Diploma",
+          "probability": 12.1,
+          "cosine_similarity": 0.3166
+        },
+        {
+          "category": "Informal Personal Notes, Raw Keyword List, Or Non-Credential Paper Scribble",
+          "probability": 4.8,
+          "cosine_similarity": 0.2048
+        },
+        {
+          "category": "Corporate Employment Verification or Experience Relieving Letter",
+          "probability": 3.8,
+          "cosine_similarity": 0.1774
+        },
+        {
+          "category": "Government Identification Document or Passport",
+          "probability": 2.2,
+          "cosine_similarity": 0.1094
+        }
+      ],
+      "authenticity_indicators": [
+        "Live Web Corroboration: Recognized accredited authority: Infosys / Infosys Springboard (infosys.com).",
+        "Official Accredited Issuer: Infosys / Infosys Springboard (infosys.com)",
+        "Active Online Registry: infosys.com returned HTTP 200 (SSL Secured)",
+        "Standard Credential Container (No cryptographic serial hash).",
+        "Container Integrity: Clean vector stream parsed via EasyOCR (Confidence: 57%)"
+      ],
+      "forgery_indicators": [],
+      "network_verification": {
+        "performed": true,
+        "target": "https://infosys.com",
+        "domain": "infosys.com",
+        "http_status": 200,
+        "is_live": true,
+        "ssl_secured": true,
+        "server": "Verified Cloud Infrastructure (Active)",
+        "status_badge": "Verified Live (HTTP 200)",
+        "message": "Online authority registry for infosys.com confirmed active."
+      },
+      "web_verification": {
+        "performed": true,
+        "verified": true,
+        "source": "Official Institutional Registry & DNS",
+        "entity": "Infosys / Infosys Springboard",
+        "reference_url": "https://infosys.com",
+        "detail": "Recognized accredited authority: Infosys / Infosys Springboard (infosys.com)."
+      },
+      "structure_verification": {
+        "is_valid_credential": true,
+        "marker_count": 4,
+        "markers": [
+          "certificat(?:e|ion)",
+          "awarded to",
+          "completion",
+          "course completion"
+        ],
+        "word_count": 58,
+        "reason": "Valid credential structure confirmed with 4 institutional marker(s)."
+      },
+      "extracted_entities": {
+        "detected_issuer": "Infosys / Infosys Springboard",
+        "issuer_category": "Corporate Enterprise Tech Certification",
+        "issuer_domain": "infosys.com",
+        "detected_candidate": "Vatsal Chauhan",
+        "credential_id": null,
+        "verification_url": "https://infosys.com",
+        "issue_date": null,
+        "credential_title": null,
+        "hf_classification": "Professional Software Engineering Course Specialization Certificate",
+        "hf_confidence": "62.4%",
+        "class_probabilities": [
+          {
+            "category": "Professional Software Engineering Course Specialization Certificate",
+            "probability": 62.4,
+            "cosine_similarity": 0.5133
+          },
+          {
+            "category": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+            "probability": 14.7,
+            "cosine_similarity": 0.3397
+          },
+          {
+            "category": "Accredited University Degree, Academic Transcript or Diploma",
+            "probability": 12.1,
+            "cosine_similarity": 0.3166
+          },
+          {
+            "category": "Informal Personal Notes, Raw Keyword List, Or Non-Credential Paper Scribble",
+            "probability": 4.8,
+            "cosine_similarity": 0.2048
+          },
+          {
+            "category": "Corporate Employment Verification or Experience Relieving Letter",
+            "probability": 3.8,
+            "cosine_similarity": 0.1774
+          },
+          {
+            "category": "Government Identification Document or Passport",
+            "probability": 2.2,
+            "cosine_similarity": 0.1094
+          }
+        ],
+        "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+        "model_type": "Hugging Face Neural Semantic Classifier"
+      },
+      "extracted_skills": [
+        "Computer Science",
+        "Java",
+        "Machine Learning & AI"
+      ],
+      "metadata": {
+        "format": "JPEG",
+        "size": "800x568",
+        "mode": "RGB"
+      },
+      "uploaded_at": "2026-10-22T12:08:08.660459",
+      "_id": "6ad9fca8275b669bbdbb0c0f"
+    },
+    {
+      "candidate_id": "cand_user_1",
+      "candidate_name": "Jane Smith",
+      "filename": "HIH26-Top500-BuilderPass-Vatsal.png",
+      "document_type": "Invalid / Non-Credential Document",
+      "raw_text": "Top 500\nHACK\n'26\nBUILDER PASS\nROUND\nQUALIFIED\nIN HILLS\nUPCOHING FINALS\n20-21\nNOv\n24\"N\n77 .19\"E\nAANALI\nHIAACHAL\nP R A D E SH\ns00]\nBase camp clearedl\nToP\n500\nHIH\n26\nBUILDER\nUPCOhING\nFINALS\nVATSAL\n20-21NOV 2026\nDESTINATION\nAI Builder\nDesign Engineer\nDevTools\nMANALI . 2,050 M\n\"Ship it before the snow sets in.\nPOwERED\nB Y\nS PonSORED\nORGANISED\nGoogle\nWeb3\n1?\nTinyFish\nDevelopers\nIndia\nbuilder bose\n'HILL\nTOP\nROUND\nQUALIFIED\nQUALIFIED",
+      "masked_text": "Top 500\nHACK\n'26\nBUILDER PASS\nROUND\nQUALIFIED\nIN HILLS\nUPCOHING FINALS\n20-21\nNOv\n24\"N\n77 .19\"E\nAANALI\nHIAACHAL\nP R A D E SH\ns00]\nBase camp clearedl\nToP\n500\nHIH\n26\nBUILDER\nUPCOhING\nFINALS\nVATSAL\n20-21NOV 2026\nDESTINATION\nAI Builder\nDesign Engineer\nDevTools\nMANALI . 2,050 M\n\"Ship it before the snow sets in.\nPOwERED\nB Y\nS PonSORED\nORGANISED\nGoogle\nWeb3\n1?\nTinyFish\nDevelopers\nIndia\nbuilder bose\n'HILL\nTOP\nROUND\nQUALIFIED\nQUALIFIED",
+      "masked_preview_html": "<p class=\"masked-cert-line\">Top 500</p>\n<p class=\"masked-cert-line\">HACK</p>\n<p class=\"masked-cert-line\">'26</p>\n<p class=\"masked-cert-line\">BUILDER PASS</p>\n<p class=\"masked-cert-line\">ROUND</p>\n<p class=\"masked-cert-line\">QUALIFIED</p>\n<p class=\"masked-cert-line\">IN HILLS</p>\n<p class=\"masked-cert-line\">UPCOHING FINALS</p>\n<p class=\"masked-cert-line\">20-21</p>\n<p class=\"masked-cert-line\">NOv</p>\n<p class=\"masked-cert-line\">24\"N</p>\n<p class=\"masked-cert-line\">77 .19\"E</p>\n<p class=\"masked-cert-line\">AANALI</p>\n<p class=\"masked-cert-line\">HIAACHAL</p>\n<p class=\"masked-cert-line\">P R A D E SH</p>\n<p class=\"masked-cert-line\">s00]</p>\n<p class=\"masked-cert-line\">Base camp clearedl</p>\n<p class=\"masked-cert-line\">ToP</p>\n<p class=\"masked-cert-line\">500</p>\n<p class=\"masked-cert-line\">HIH</p>\n<p class=\"masked-cert-line\">26</p>\n<p class=\"masked-cert-line\">BUILDER</p>\n<p class=\"masked-cert-line\">UPCOhING</p>\n<p class=\"masked-cert-line\">FINALS</p>\n<p class=\"masked-cert-line\">VATSAL</p>\n<p class=\"masked-cert-line\">20-21NOV 2026</p>\n<p class=\"masked-cert-line\">DESTINATION</p>\n<p class=\"masked-cert-line\">AI Builder</p>\n<p class=\"masked-cert-line\">Design Engineer</p>\n<p class=\"masked-cert-line\">DevTools</p>\n<p class=\"masked-cert-line\">MANALI . 2,050 M</p>\n<p class=\"masked-cert-line\">\"Ship it before the snow sets in.</p>\n<p class=\"masked-cert-line\">POwERED</p>\n<p class=\"masked-cert-line\">B Y</p>\n<p class=\"masked-cert-line\">S PonSORED</p>\n<p class=\"masked-cert-line\">ORGANISED</p>\n<p class=\"masked-cert-line\">Google</p>\n<p class=\"masked-cert-line\">Web3</p>\n<p class=\"masked-cert-line\">1?</p>\n<p class=\"masked-cert-line\">TinyFish</p>\n<p class=\"masked-cert-line\">Developers</p>\n<p class=\"masked-cert-line\">India</p>\n<p class=\"masked-cert-line\">builder bose</p>\n<p class=\"masked-cert-line\">'HILL</p>\n<p class=\"masked-cert-line\">TOP</p>\n<p class=\"masked-cert-line\">ROUND</p>\n<p class=\"masked-cert-line\">QUALIFIED</p>\n<p class=\"masked-cert-line\">QUALIFIED</p>",
+      "redacted_fields": [],
+      "verdict": "INVALID_DOCUMENT",
+      "verdict_badge": "REJECTED / NOT A CREDENTIAL",
+      "verdict_color": "#f59e0b",
+      "model_name": "Credential Structure & Neural Intelligence Engine",
+      "model_confidence": 98.0,
+      "model_explanation": "Document lacks any official credential structure. Detected unstructured notes, keywords, or random paper scribble rather than a formal certificate, degree, or ID.",
+      "class_probabilities": [],
+      "authenticity_indicators": [],
+      "forgery_indicators": [
+        "Lacks official credential structure",
+        "Detected unstructured keyword text or informal notes on paper"
+      ],
+      "network_verification": {
+        "performed": false,
+        "verified": false
+      },
+      "web_verification": {
+        "performed": false,
+        "verified": false,
+        "detail": "Web search skipped for non-credential document."
+      },
+      "structure_verification": {
+        "is_valid_credential": false,
+        "marker_count": 0,
+        "markers": [],
+        "word_count": 51,
+        "reason": "Document lacks any official credential structure. Detected unstructured notes, keywords, or random paper scribble rather than a formal certificate, degree, or ID."
+      },
+      "extracted_entities": {
+        "detected_issuer": "Google LLC / Alphabet",
+        "issuer_category": "Corporate Enterprise & Cloud Vendor",
+        "issuer_domain": "google.com",
+        "detected_candidate": null,
+        "credential_id": null,
+        "verification_url": "https://google.com",
+        "issue_date": null,
+        "credential_title": null,
+        "hf_classification": "Professional Software Engineering Course Specialization Certificate",
+        "hf_confidence": "39.8%",
+        "class_probabilities": [
+          {
+            "category": "Professional Software Engineering Course Specialization Certificate",
+            "probability": 39.8,
+            "cosine_similarity": 0.2099
+          },
+          {
+            "category": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+            "probability": 17.8,
+            "cosine_similarity": 0.1134
+          },
+          {
+            "category": "Corporate Employment Verification or Experience Relieving Letter",
+            "probability": 13.6,
+            "cosine_similarity": 0.0814
+          },
+          {
+            "category": "Informal Personal Notes, Raw Keyword List, Or Non-Credential Paper Scribble",
+            "probability": 12.3,
+            "cosine_similarity": 0.0685
+          },
+          {
+            "category": "Accredited University Degree, Academic Transcript or Diploma",
+            "probability": 11.1,
+            "cosine_similarity": 0.0564
+          },
+          {
+            "category": "Government Identification Document or Passport",
+            "probability": 5.4,
+            "cosine_similarity": -0.0296
+          }
+        ],
+        "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+        "model_type": "Hugging Face Neural Semantic Classifier"
+      },
+      "extracted_skills": [],
+      "metadata": {
+        "format": "PNG",
+        "size": "1080x1350",
+        "mode": "RGBA"
+      },
+      "uploaded_at": "2026-10-22T12:09:29.632973",
+      "_id": "6ad9fcf9275b669bbdbb0c10"
+    },
+    {
+      "candidate_id": "cand_user_1",
+      "candidate_name": "Jane Smith",
+      "filename": "Untitled - Visual 1.png",
+      "document_type": "Invalid / Non-Credential Document",
+      "raw_text": "Bayora: Secure Adversarial AI Safety Testing Pipeline\nRed Team\nSandbox\nPollcy Gateway\nAuthenicale request\nAtock Generator\nPoliy check\nSanitize\nAdversaral Prompt\nand rte Iinit .\nFonwand\nRepasitory\nTarget Llm\nEvaluator\nSs0sS\nSandbox\nAnatyze reaponse\nY\nDelect jaibreaklleak\nFresh gecsian per test\nVerdict (sale\nunaale)\nPer eegsian KV cache\ncleared\nReaponse\nBlue Team\nSandbox\nAudit Service\nReceive verdict and\nReceives signed event\nsanilized\nevery step\nDevelp defense -\nDeplay\ndelenee\nRecidual Rlsk\nReport\nCanary Secrets\nVerdict sumnmary\nkeak\nCanary token planted in\nteatresut\nouditkog\neach zone\nverfication\nMedowtth\nMiekhn\nfinding\nfrom",
+      "masked_text": "Bayora: Secure Adversarial AI Safety Testing Pipeline\nRed Team\nSandbox\nPollcy Gateway\nAuthenicale request\nAtock Generator\nPoliy check\nSanitize\nAdversaral Prompt\nand rte Iinit .\nFonwand\nRepasitory\nTarget Llm\nEvaluator\nSs0sS\nSandbox\nAnatyze reaponse\nY\nDelect jaibreaklleak\nFresh gecsian per test\nVerdict (sale\nunaale)\nPer eegsian KV cache\ncleared\nReaponse\nBlue Team\nSandbox\nAudit Service\nReceive verdict and\nReceives signed event\nsanilized\nevery step\nDevelp defense -\nDeplay\ndelenee\nRecidual Rlsk\nReport\nCanary Secrets\nVerdict sumnmary\nkeak\nCanary token planted in\nteatresut\nouditkog\neach zone\nverfication\nMedowtth\nMiekhn\nfinding\nfrom",
+      "masked_preview_html": "<p class=\"masked-cert-line\">Bayora: Secure Adversarial AI Safety Testing Pipeline</p>\n<p class=\"masked-cert-line\">Red Team</p>\n<p class=\"masked-cert-line\">Sandbox</p>\n<p class=\"masked-cert-line\">Pollcy Gateway</p>\n<p class=\"masked-cert-line\">Authenicale request</p>\n<p class=\"masked-cert-line\">Atock Generator</p>\n<p class=\"masked-cert-line\">Poliy check</p>\n<p class=\"masked-cert-line\">Sanitize</p>\n<p class=\"masked-cert-line\">Adversaral Prompt</p>\n<p class=\"masked-cert-line\">and rte Iinit .</p>\n<p class=\"masked-cert-line\">Fonwand</p>\n<p class=\"masked-cert-line\">Repasitory</p>\n<p class=\"masked-cert-line\">Target Llm</p>\n<p class=\"masked-cert-line\">Evaluator</p>\n<p class=\"masked-cert-line\">Ss0sS</p>\n<p class=\"masked-cert-line\">Sandbox</p>\n<p class=\"masked-cert-line\">Anatyze reaponse</p>\n<p class=\"masked-cert-line\">Y</p>\n<p class=\"masked-cert-line\">Delect jaibreaklleak</p>\n<p class=\"masked-cert-line\">Fresh gecsian per test</p>\n<p class=\"masked-cert-line\">Verdict (sale</p>\n<p class=\"masked-cert-line\">unaale)</p>\n<p class=\"masked-cert-line\">Per eegsian KV cache</p>\n<p class=\"masked-cert-line\">cleared</p>\n<p class=\"masked-cert-line\">Reaponse</p>\n<p class=\"masked-cert-line\">Blue Team</p>\n<p class=\"masked-cert-line\">Sandbox</p>\n<p class=\"masked-cert-line\">Audit Service</p>\n<p class=\"masked-cert-line\">Receive verdict and</p>\n<p class=\"masked-cert-line\">Receives signed event</p>\n<p class=\"masked-cert-line\">sanilized</p>\n<p class=\"masked-cert-line\">every step</p>\n<p class=\"masked-cert-line\">Develp defense -</p>\n<p class=\"masked-cert-line\">Deplay</p>\n<p class=\"masked-cert-line\">delenee</p>\n<p class=\"masked-cert-line\">Recidual Rlsk</p>\n<p class=\"masked-cert-line\">Report</p>\n<p class=\"masked-cert-line\">Canary Secrets</p>\n<p class=\"masked-cert-line\">Verdict sumnmary</p>\n<p class=\"masked-cert-line\">keak</p>\n<p class=\"masked-cert-line\">Canary token planted in</p>\n<p class=\"masked-cert-line\">teatresut</p>\n<p class=\"masked-cert-line\">ouditkog</p>\n<p class=\"masked-cert-line\">each zone</p>\n<p class=\"masked-cert-line\">verfication</p>\n<p class=\"masked-cert-line\">Medowtth</p>\n<p class=\"masked-cert-line\">Miekhn</p>\n<p class=\"masked-cert-line\">finding</p>\n<p class=\"masked-cert-line\">from</p>",
+      "redacted_fields": [],
+      "verdict": "INVALID_DOCUMENT",
+      "verdict_badge": "REJECTED / NOT A CREDENTIAL",
+      "verdict_color": "#f59e0b",
+      "model_name": "Credential Structure & Neural Intelligence Engine",
+      "model_confidence": 98.0,
+      "model_explanation": "Document lacks any official credential structure. Detected unstructured notes, keywords, or random paper scribble rather than a formal certificate, degree, or ID.",
+      "class_probabilities": [],
+      "authenticity_indicators": [],
+      "forgery_indicators": [
+        "Lacks official credential structure",
+        "Detected unstructured keyword text or informal notes on paper"
+      ],
+      "network_verification": {
+        "performed": false,
+        "verified": false
+      },
+      "web_verification": {
+        "performed": false,
+        "verified": false,
+        "detail": "Web search skipped for non-credential document."
+      },
+      "structure_verification": {
+        "is_valid_credential": false,
+        "marker_count": 0,
+        "markers": [],
+        "word_count": 86,
+        "reason": "Document lacks any official credential structure. Detected unstructured notes, keywords, or random paper scribble rather than a formal certificate, degree, or ID."
+      },
+      "extracted_entities": {
+        "detected_issuer": null,
+        "issuer_category": null,
+        "issuer_domain": null,
+        "detected_candidate": null,
+        "credential_id": null,
+        "verification_url": null,
+        "issue_date": null,
+        "credential_title": null,
+        "hf_classification": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+        "hf_confidence": "29.8%",
+        "class_probabilities": [
+          {
+            "category": "Official Cloud Vendor Certification (AWS, Azure, GCP)",
+            "probability": 29.8,
+            "cosine_similarity": 0.2266
+          },
+          {
+            "category": "Informal Personal Notes, Raw Keyword List, Or Non-Credential Paper Scribble",
+            "probability": 28.9,
+            "cosine_similarity": 0.2231
+          },
+          {
+            "category": "Professional Software Engineering Course Specialization Certificate",
+            "probability": 17.6,
+            "cosine_similarity": 0.1636
+          },
+          {
+            "category": "Corporate Employment Verification or Experience Relieving Letter",
+            "probability": 10.6,
+            "cosine_similarity": 0.1028
+          },
+          {
+            "category": "Government Identification Document or Passport",
+            "probability": 9.3,
+            "cosine_similarity": 0.0865
+          },
+          {
+            "category": "Accredited University Degree, Academic Transcript or Diploma",
+            "probability": 3.7,
+            "cosine_similarity": -0.0221
+          }
+        ],
+        "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+        "model_type": "Hugging Face Neural Semantic Classifier"
+      },
+      "extracted_skills": [],
+      "metadata": {
+        "format": "PNG",
+        "size": "852x696",
+        "mode": "RGBA"
+      },
+      "uploaded_at": "2026-10-22T12:12:02.514132",
+      "_id": "6ad9fd92275b669bbdbb0c11"
+    }
+  ]
+}

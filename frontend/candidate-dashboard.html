@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Candidate Dashboard — Résumé Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+Pro:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        .locker-grid {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 24px;
+            margin-top: 18px;
+        }
+        @media (max-width: 980px) {
+            .locker-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .locker-upload-box {
+            background: var(--paper-raised);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 22px;
+        }
+        .cred-card {
+            background: var(--paper-raised);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .cred-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+        .cred-verdict-real {
+            background: rgba(16, 185, 129, 0.12);
+            color: #065f46;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            font-size: 0.76rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+        .cred-verdict-invalid {
+            background: rgba(245, 158, 11, 0.12);
+            color: #92400e;
+            border: 1px solid rgba(245, 158, 11, 0.35);
+            font-size: 0.76rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+        .cred-verdict-forged {
+            background: rgba(239, 68, 68, 0.12);
+            color: #991b1b;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            font-size: 0.76rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+        .privacy-mask-pill {
+            background: rgba(139, 115, 85, 0.1);
+            color: var(--primary-dark);
+            font-size: 0.74rem;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .pii-mask-badge {
+            background: #111827;
+            color: #f9fafb;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+            font-weight: 700;
+            display: inline-block;
+            letter-spacing: 0.5px;
+        }
+        .serial-mask-badge {
+            background: rgba(139, 115, 85, 0.15);
+            color: #8B7355;
+            border: 1px dashed #8B7355;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: inline-block;
+        }
+        .masked-cert-line {
+            margin: 6px 0;
+            font-size: 0.94rem;
+            line-height: 1.6;
+        }
+        /* Masked Preview Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.65);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-card {
+            background: var(--paper);
+            border-radius: 14px;
+            max-width: 680px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid var(--line);
+            box-shadow: var(--shadow-lg);
+            padding: 26px;
+        }
+        .masked-cert-box {
+            background: #fdfbf7;
+            border: 2px solid #e2d9cc;
+            border-radius: 10px;
+            padding: 22px;
+            font-family: 'Playfair Display', Georgia, serif;
+            color: #2b2b2b;
+            margin: 16px 0;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.02);
+        }
+    </style>
+</head>
+<body>
+<div id="smooth-scroll">
+    <header class="topbar">
+        <div class="topbar-left">
+            <span class="wordmark">Résumé Intelligence</span>
+            <span class="case-tag">Candidate Dashboard</span>
+        </div>
+        <div class="topbar-right">
+            <div class="user-info">
+                <span id="userFullName">Candidate</span>
+            </div>
+            <button id="logoutBtn" class="btn-ghost">Logout</button>
+        </div>
+    </header>
+
+    <main class="shell">
+        <nav class="sidebar">
+            <ul class="nav-list">
+                <li class="nav-item active">
+                    <a href="candidate-dashboard.html">Overview</a>
+                </li>
+                <li class="nav-item">
+                    <a href="my-profile.html">My Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#credentialsLocker" onclick="document.getElementById('credentialsLocker').scrollIntoView({behavior: 'smooth'})">Verified Credentials</a>
+                </li>
+                <li class="nav-item">
+                    <a href="resume-checker.html">Resume Checker</a>
+                </li>
+                <li class="nav-item">
+                    <a href="job-search.html">Job Search</a>
+                </li>
+                <li class="nav-item">
+                    <a href="my-applications.html">My Applications</a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html">Settings</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="main-content">
+            <!-- Welcome Section -->
+            <section class="section welcome-section">
+                <div class="section-content">
+                    <h2>Welcome back, <span id="displayName">Candidate</span></h2>
+                    <p class="hero-subtitle">Candidate career portal — optimize your resume, verify authentic credentials, and explore matched positions.</p>
+                    <div class="quick-actions">
+                        <a href="resume-checker.html" class="btn-primary">Check Resume ATS</a>
+                        <a href="#credentialsLocker" class="btn-outline" onclick="document.getElementById('credentialsLocker').scrollIntoView({behavior: 'smooth'})">Upload Credentials</a>
+                        <a href="job-search.html" class="btn-outline">Find Jobs</a>
+                        <a href="my-profile.html" class="btn-outline">Update Profile</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stats Overview -->
+            <section class="section stats-overview">
+                <div class="section-header">
+                    <h2>Your Career Overview</h2>
+                    <p>Key metrics at a glance</p>
+                </div>
+                <div class="section-content">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="profileStrength">-</div>
+                            <div class="stat-label">Profile Strength</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="applicationsSent">-</div>
+                            <div class="stat-label">Applications Sent</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="interviewsBooked">-</div>
+                            <div class="stat-label">Interviews Booked</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="jobMatches">-</div>
+                            <div class="stat-label">Job Matches</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profile Summary -->
+            <section class="section">
+                <div class="section-header">
+                    <h2>Profile Summary</h2>
+                    <p>Quick view of your professional profile</p>
+                </div>
+                <div class="section-content">
+                    <div class="profile-summary">
+                        <div class="profile-field">
+                            <h3>Current Status</h3>
+                            <p id="profileStatus">-</p>
+                        </div>
+                        <div class="profile-field">
+                            <h3>Top Skills</h3>
+                            <p id="topSkills">-</p>
+                        </div>
+                        <div class="profile-field">
+                            <h3>Experience Level</h3>
+                            <p id="experienceLevel">-</p>
+                        </div>
+                        <div class="profile-field">
+                            <h3>Preferred Location</h3>
+                            <p id="preferredLocation">-</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Credentials & Verified Documents Locker Section -->
+            <section class="section" id="credentialsLocker">
+                <div class="section-header">
+                    <h2>Verify Resume Skills with Supporting Credentials</h2>
+                    <p>Upload your certificates, degrees, or experience letters to verify that the skills mentioned in your resume are authentic. Supporting documents are kept strictly confidential with you and are <strong>never sent to recruiters</strong>; recruiters only receive confirmation that your resume skills are pre-verified authentic.</p>
+                </div>
+                <div class="section-content">
+                    <div class="locker-grid">
+                        <!-- Upload Form -->
+                        <div class="locker-upload-box">
+                            <h3 style="margin-top: 0; font-size: 1.05rem; color: var(--ink);">Upload Credential to Verify Skills</h3>
+                            
+                            <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 8px; padding: 10px 14px; margin-top: 12px; font-size: 0.8rem; color: #065f46; line-height: 1.45;">
+                                <strong>Simple & Automated:</strong> Upload your credential (Degree, Vendor Cert, Relieving Letter). The AI model verifies authenticity (<strong>REAL</strong> vs <strong>FORGED</strong>) and connects verified skills directly to your resume.
+                            </div>
+
+                            <div class="dropzone-box" id="candidateDropzone" onclick="document.getElementById('candidateFileInput').click()" style="padding: 22px 14px; margin: 14px 0;">
+                                <input type="file" id="candidateFileInput" accept=".pdf,.png,.jpg,.jpeg" style="display: none;" onchange="handleCandidateFileSelected(event)" />
+                                <strong style="font-size: 0.92rem; color: var(--ink); display: block;" id="candidateFileLabel">Choose PDF or image credential</strong>
+                                <p style="font-size: 0.76rem; color: var(--slate); margin: 3px 0 0;">Degrees, Certifications, Relieving Letters & IDs (PDF, PNG, JPG)</p>
+                            </div>
+
+                            <button type="button" class="btn-primary" id="candidateUploadBtn" style="width: 100%; padding: 11px; font-weight: 600;" onclick="submitCandidateDocument()">
+                                Upload & Verify Credential
+                            </button>
+
+                            <!-- Quick 1-Click Samples -->
+                            <div style="margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--line);">
+                                <span style="font-size: 0.74rem; color: var(--slate); font-weight: 600; display: block; margin-bottom: 6px;">Sample Presets:</span>
+                                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                                    <button type="button" class="demo-chip-btn" onclick="testUploadSample('aws')">AWS Certificate</button>
+                                    <button type="button" class="demo-chip-btn" onclick="testUploadSample('infosys')">Infosys Springboard</button>
+                                    <button type="button" class="demo-chip-btn" onclick="testUploadSample('stanford')">Stanford Degree</button>
+                                    <button type="button" class="demo-chip-btn" onclick="testUploadSample('google')">Google Relieving</button>
+                                    <button type="button" class="demo-chip-btn" onclick="testUploadSample('id')">Gov ID</button>
+                                    <button type="button" class="demo-chip-btn" onclick="testUploadSample('canva')">Canva Template (Forged)</button>
+                                    <button type="button" class="demo-chip-btn" style="border-color: #f59e0b; color: #b45309;" onclick="testUploadSample('random_paper')">Random Paper (Rejected)</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Uploaded Documents List -->
+                        <div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                <h3 style="margin: 0; font-size: 1.05rem; color: var(--ink);">My Verified Credentials</h3>
+                                <button type="button" class="btn-ghost btn-small" onclick="loadCandidateDocuments()">Refresh</button>
+                            </div>
+                            <div id="candidateDocsContainer">
+                                <div style="text-align: center; padding: 40px; color: var(--slate);">Loading your credentials...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Masked Document Preview Modal -->
+            <div class="modal-overlay" id="maskedPreviewModal" onclick="closeMaskedPreview(event)">
+                <div class="modal-card" onclick="event.stopPropagation()">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                        <div>
+                            <h3 style="margin: 0; font-size: 1.15rem; color: var(--ink);">🔒 Privacy-Masked Credential View</h3>
+                            <span style="font-size: 0.78rem; color: var(--slate);">What recruiters see — your sensitive personal data is protected</span>
+                        </div>
+                        <button class="btn-ghost btn-small" onclick="closeMaskedPreview()">✕ Close</button>
+                    </div>
+
+                    <div style="background: rgba(139, 115, 85, 0.08); border: 1px solid rgba(139, 115, 85, 0.2); border-radius: 8px; padding: 10px 14px; font-size: 0.8rem; color: var(--primary-dark); margin-bottom: 14px;">
+                        🛡️ <strong>Privacy Protection Active:</strong> Personal phone numbers, emails, addresses, and ID numbers have been automatically redacted by the AI privacy engine. Recruiters cannot view the original unmasked document.
+                    </div>
+
+                    <div class="masked-cert-box" id="modalMaskedCertBody">
+                        <!-- Populated dynamically -->
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                        <span id="modalRedactedFieldsTag" style="font-size: 0.78rem; color: var(--slate); font-family: var(--font-mono);"></span>
+                        <button class="btn-primary" onclick="closeMaskedPreview()">Done</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <section class="section">
+                <div class="section-header">
+                    <h2>Recent Activity</h2>
+                    <p>Latest updates on your job search</p>
+                </div>
+                <div class="section-content">
+                    <div class="activity-list" id="activityList">
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <span>⏳</span>
+                            </div>
+                            <div class="activity-content">
+                                <h3>Loading recent activity...</h3>
+                                <p class="activity-time">Fetching latest updates</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            -- Job Recommendations -->
+            <section class="section">
+                <div class="section-header">
+                    <h2>Recommended Jobs</h2>
+                    <p>Positions matched to your skills and experience</p>
+                </div>
+                <div class="section-content">
+                    <div class="job-recommendations" id="jobRecommendations">
+                        <div class="loading-state">
+                            <p>Loading job recommendations...</p>
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<script src="script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Isolated Candidate Session
+    const user = Auth.getUser('candidate');
+    const userId = user ? user.userId : null;
+    const fullName = user ? user.fullName : 'Candidate';
+    const role = user ? user.role : 'candidate';
+
+    if (fullName) {
+        document.getElementById('userFullName').textContent = fullName;
+        document.getElementById('displayName').textContent = fullName;
+    }
+
+    // Handle logout (isolated to candidate)
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            Auth.logout('candidate');
+        });
+    }
+
+    // Load dashboard data
+    loadDashboardData();
+});
+
+async function loadDashboardData() {
+    try {
+        const user = Auth.getUser('candidate');
+        const userId = user ? user.userId : null;
+        let profileFilledCount = 0;
+        const totalChecks = 6;
+
+        if (userId) {
+            const response = await fetch(`/api/candidates/${userId}`);
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById('profileStatus').textContent = data.headline || (data.current_status ? (data.current_status.charAt(0).toUpperCase() + data.current_status.slice(1)) : 'Active Job Seeker');
+
+                // Top skills
+                if (data.skills && Array.isArray(data.skills) && data.skills.length > 0) {
+                    document.getElementById('topSkills').textContent = data.skills.slice(0, 4).join(', ');
+                    profileFilledCount++;
+                } else if (typeof data.skills === 'string' && data.skills.trim()) {
+                    document.getElementById('topSkills').textContent = data.skills;
+                    profileFilledCount++;
+                } else {
+                    document.getElementById('topSkills').textContent = 'Add skills in My Profile';
+                }
+
+                // Experience Level
+                if (data.experience_years) {
+                    document.getElementById('experienceLevel').textContent = data.experience_years;
+                    profileFilledCount++;
+                } else {
+                    document.getElementById('experienceLevel').textContent = 'Not specified';
+                }
+
+                // Preferred Location
+                if (data.location) {
+                    document.getElementById('preferredLocation').textContent = data.location;
+                    profileFilledCount++;
+                } else {
+                    document.getElementById('preferredLocation').textContent = 'Any / Remote';
+                }
+
+                if (data.headline) profileFilledCount++;
+                if (data.resume_text) profileFilledCount++;
+                if (data.email) profileFilledCount++;
+            }
+        }
+
+        // Profile Strength calculation
+        const pct = Math.min(Math.round((profileFilledCount / totalChecks) * 100), 100);
+        document.getElementById('profileStrength').textContent = `${Math.max(pct, 25)}%`;
+
+        // Load application stats
+        await loadApplicationStats();
+
+        // Load job matches/recommendations
+        await loadJobMatches();
+
+        // Load recent activity
+        await loadRecentActivity();
+
+    } catch (error) {
+        console.error('Failed to load dashboard data:', error);
+        document.getElementById('profileStrength').textContent = '35%';
+        document.getElementById('applicationsSent').textContent = '0';
+        document.getElementById('interviewsBooked').textContent = '0';
+        document.getElementById('jobMatches').textContent = '0';
+    }
+}
+
+// Load application statistics
+async function loadApplicationStats() {
+    try {
+        const user = Auth.getUser('candidate');
+        const userId = user ? user.userId : localStorage.getItem('userId');
+        if (!userId) return;
+
+        const response = await fetch(`/api/applications?candidate_id=${userId}`);
+        const data = await response.json();
+
+        const applicationsSent = data.total || 0;
+        document.getElementById('applicationsSent').textContent = applicationsSent;
+
+        const interviewsBooked = data.applications?.filter(app =>
+            app.status === 'interview' || app.status === 'accepted' || app.status === 'hired'
+        ).length || 0;
+        document.getElementById('interviewsBooked').textContent = interviewsBooked;
+
+    } catch (error) {
+        console.error('Failed to load application stats:', error);
+        document.getElementById('applicationsSent').textContent = '0';
+        document.getElementById('interviewsBooked').textContent = '0';
+    }
+}
+
+// Load job matches/recommendations from real API
+async function loadJobMatches() {
+    try {
+        const response = await fetch('/api/jobs?status=open&per_page=6');
+        if (!response.ok) throw new Error('Failed to fetch open jobs');
+
+        const data = await response.json();
+        const jobs = data.jobs || [];
+
+        document.getElementById('jobMatches').textContent = jobs.length;
+
+        const jobRecommendations = document.getElementById('jobRecommendations');
+        if (!jobRecommendations) return;
+
+        if (jobs.length === 0) {
+            jobRecommendations.innerHTML = `
+                <div class="empty-state">
+                    <p class="empty-sub">No open job postings available right now. Check back soon!</p>
+                </div>
+            `;
+            return;
+        }
+
+        jobRecommendations.innerHTML = jobs.slice(0, 3).map(job => {
+            const skills = typeof job.required_skills === 'string' ? job.required_skills.split(',') : (job.required_skills || []);
+            return `
+                <div class="job-recommendation-card">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <h4>${escapeHtml(job.title)}</h4>
+                            <p style="margin: 4px 0; color: var(--text-muted); font-size: 0.85rem;">
+                                ${job.location ? `📍 ${escapeHtml(job.location)} · ` : ''}
+                                ${job.employment_type ? `💼 ${escapeHtml(job.employment_type)}` : 'Full-time'}
+                            </p>
+                        </div>
+                    </div>
+                    ${skills.length > 0 ? `
+                        <div class="skill-tags-wrap" style="margin: 8px 0;">
+                            ${skills.slice(0, 3).map(s => `<span class="skill-tag">${escapeHtml(s.trim())}</span>`).join('')}
+                        </div>
+                    ` : ''}
+                    <div style="display: flex; gap: 8px; margin-top: 10px;">
+                        <a href="job-search.html" class="btn-ghost btn-small">View Details</a>
+                        <a href="resume-checker.html" class="btn-outline btn-small">Check Match</a>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+    } catch (error) {
+        console.error('Failed to load job matches:', error);
+        document.getElementById('jobMatches').textContent = '0';
+    }
+}
+
+// Load recent activity
+async function loadRecentActivity() {
+    try {
+        const user = Auth.getUser('candidate');
+        const userId = user ? user.userId : localStorage.getItem('userId');
+        if (!userId) return;
+
+        // Get recent applications as activity
+        const response = await fetch(`/api/applications?candidate_id=${userId}&limit=5&sort_by=applied_at&order=desc`);
+        const data = await response.json();
+
+        const activityList = document.getElementById('activityList');
+        if (!activityList) return;
+
+        if (data.applications && data.applications.length > 0) {
+            activityList.innerHTML = '';
+
+            data.applications.forEach(app => {
+                const activityItem = document.createElement('div');
+                activityItem.className = 'activity-item';
+
+                // Determine icon based on status
+                let icon = '📄';
+                let statusText = 'Applied';
+
+                if (app.status === 'interview') {
+                    icon = '👥';
+                    statusText = 'Interview Scheduled';
+                } else if (app.status === 'offered') {
+                    icon = '💼';
+                    statusText = 'Offer Extended';
+                } else if (app.status === 'hired') {
+                    icon = '✅';
+                    statusText = 'Hired!';
+                } else if (app.status === 'rejected') {
+                    icon = '❌';
+                    statusText = 'Application Update';
+                }
+
+                const timeAgo = formatTimeAgo(app.applied_at);
+
+                activityItem.innerHTML = `
+                    <div class="activity-icon">
+                        <span>${icon}</span>
+                    </div>
+                    <div class="activity-content">
+                        <h3>${statusText}</h3>
+                        <p class="activity-time">${timeAgo}</p>
+                    </div>
+                `;
+
+                activityList.appendChild(activityItem);
+            });
+        } else {
+            // No recent activity
+            activityList.innerHTML = `
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <span>📭</span>
+                    </div>
+                    <div class="activity-content">
+                        <h3>No recent activity</h3>
+                        <p class="activity-time">Complete your profile and start applying for jobs</p>
+                    </div>
+                </div>
+            `;
+        }
+    } catch (error) {
+        console.error('Failed to load recent activity:', error);
+        const activityList = document.getElementById('activityList');
+        if (activityList) {
+            activityList.innerHTML = `
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <span>⚠️</span>
+                    </div>
+                    <div class="activity-content">
+                        <h3>Unable to load activity</h3>
+                        <p class="activity-time">Please try again later</p>
+                    </div>
+                </div>
+            `;
+        }
+    }
+}
+
+// Helper function to format time ago
+function formatTimeAgo(dateString) {
+    if (!dateString) return 'Just now';
+
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffMins = Math.round(diffMs / 60000);
+    const diffHours = Math.round(diffMs / 3600000);
+    const diffDays = Math.round(diffMs / 86400000);
+
+    // Helper function to format time ago
+    if (diffDays > 0) {
+        return diffDays === 1 ? 'Yesterday' : `${diffDays} days ago`;
+    } else if (diffHours > 0) {
+        return diffHours === 1 ? 'An hour ago' : `${diffHours} hours ago`;
+    } else if (diffMins > 0) {
+        return diffMins === 1 ? 'A minute ago' : `${diffMins} minutes ago`;
+    } else {
+        return 'Just now';
+    }
+}
+
+// ==========================================
+// Candidate Verified Credentials Locker Logic
+// ==========================================
+let candidateSelectedFile = null;
+let candidateSelectedRawText = null;
+let currentCandidateDocs = [];
+
+// Hook into initial dashboard load
+const originalLoadDashboardData = window.loadDashboardData;
+window.loadDashboardData = async function() {
+    if (typeof originalLoadDashboardData === 'function') {
+        await originalLoadDashboardData();
+    }
+    await loadCandidateDocuments();
+};
+
+async function loadCandidateDocuments() {
+    try {
+        const user = Auth.getUser('candidate');
+        const userId = user ? user.userId : (localStorage.getItem('userId') || '');
+        const container = document.getElementById('candidateDocsContainer');
+        if (!container) return;
+
+        const res = await fetch(`/api/candidate/documents?candidate_id=${encodeURIComponent(userId)}`);
+        if (!res.ok) throw new Error('Failed to fetch credentials');
+        const data = await res.json();
+        const docs = data.documents || [];
+        currentCandidateDocs = docs;
+
+        if (docs.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state" style="padding: 30px; text-align: center; color: var(--slate); border: 1px dashed var(--line); border-radius: 8px;">
+                    <div style="font-size: 2rem; margin-bottom: 6px;">📂</div>
+                    <p style="margin: 0; font-weight: 600; color: var(--ink);">No credentials uploaded yet</p>
+                    <p style="margin: 4px 0 0; font-size: 0.82rem;">Upload your degrees, vendor certs, or test with the 1-click samples on the left.</p>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = docs.map(doc => {
+            const isReal = doc.verdict === 'REAL';
+            const isInvalid = doc.verdict === 'INVALID_DOCUMENT';
+            let badgeClass = 'cred-verdict-forged';
+            let badgeText = '🚨 FORGED / TAMPERED';
+            if (isReal) {
+                badgeClass = 'cred-verdict-real';
+                badgeText = '✅ REAL / AUTHENTIC';
+            } else if (isInvalid) {
+                badgeClass = 'cred-verdict-invalid';
+                badgeText = '⚠️ REJECTED / NOT A CREDENTIAL';
+            }
+            const timeStr = doc.uploaded_at ? new Date(doc.uploaded_at).toLocaleDateString() : 'Recently';
+            const docSkills = doc.extracted_skills || [];
+            const webVerified = doc.web_verification && doc.web_verification.verified;
+
+            return `
+                <div class="cred-card">
+                    <div style="flex: 1; min-width: 220px;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px; flex-wrap: wrap;">
+                            <span class="${badgeClass}">${badgeText}</span>
+                            ${webVerified ? `<span style="background: #e0f2fe; border: 1px solid #7dd3fc; color: #0369a1; font-size: 0.72rem; padding: 2px 7px; border-radius: 12px; font-weight: 600;">🌐 Web Verified Authority</span>` : ''}
+                            <span class="privacy-mask-pill">🔒 Document Kept Private</span>
+                        </div>
+                        <h4 style="margin: 4px 0 2px 0; font-size: 0.96rem; color: var(--ink);">${escapeHtml(doc.filename || 'Credential Document')}</h4>
+                        <p style="margin: 0; font-size: 0.78rem; color: var(--slate);">
+                            ${escapeHtml(doc.document_type || 'Official Credential')} &bull; Uploaded ${escapeHtml(timeStr)}
+                        </p>
+
+                        ${docSkills.length > 0 ? `
+                        <div style="margin: 8px 0 4px 0; display: flex; align-items: center; gap: 5px; flex-wrap: wrap;">
+                            <span style="font-size: 0.74rem; font-weight: 700; color: var(--slate);">Verified Resume Skills:</span>
+                            ${docSkills.map(s => `<span class="cred-skills-tag" style="background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; font-size: 0.74rem; padding: 2px 8px; border-radius: 12px; font-weight: 600;">✅ ${escapeHtml(s)}</span>`).join('')}
+                        </div>
+                        ` : ''}
+
+                        ${isInvalid ? `
+                        <div style="margin: 6px 0 0; background: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; padding: 6px 10px; font-size: 0.75rem; color: #92400e; line-height: 1.4;">
+                            ⚠️ <strong>Rejected:</strong> Detected unstructured notes or random paper scribble. Zero skills verified. Please upload a recognized official certificate, degree, or ID.
+                        </div>
+                        ` : ''}
+
+                        <p style="margin: 6px 0 0; font-size: 0.73rem; color: var(--slate); line-height: 1.4;">
+                            🔒 <em>This document stays private with you. Recruiters only receive the verified status confirming that your resume skills are valid.</em>
+                        </p>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 6px; align-items: flex-end; justify-content: center;">
+                        <button type="button" class="btn-ghost btn-small" style="font-size: 0.74rem;" onclick="showMaskedPreview('${escapeHtml(doc._id)}')">
+                            👁️ View Details
+                        </button>
+                        <button type="button" class="btn-ghost btn-small" style="color: #ef4444; font-size: 0.74rem;" onclick="deleteCandidateDocument('${escapeHtml(doc._id)}')">
+                            🗑️ Delete
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+    } catch (err) {
+        console.error('Error loading candidate credentials:', err);
+        const container = document.getElementById('candidateDocsContainer');
+        if (container) {
+            container.innerHTML = `<div style="color: #ef4444; padding: 12px; font-size: 0.82rem;">Failed to load credentials: ${escapeHtml(err.message)}</div>`;
+        }
+    }
+}
+
+function handleCandidateFileSelected(e) {
+    if (e.target.files && e.target.files.length > 0) {
+        candidateSelectedFile = e.target.files[0];
+        candidateSelectedRawText = null;
+        document.getElementById('candidateFileLabel').textContent = `📄 ${candidateSelectedFile.name} (${Math.round(candidateSelectedFile.size / 1024)} KB)`;
+    }
+}
+
+function testUploadSample(sampleType) {
+    candidateSelectedFile = null;
+    const user = Auth.getUser('candidate');
+    const candName = (user && user.fullName) ? user.fullName : (localStorage.getItem('fullName') || 'Alexander Vance');
+
+    if (sampleType === 'aws') {
+        document.getElementById('candidateFileLabel').textContent = '📄 AWS_Solutions_Architect_Certificate.pdf (Sample)';
+        candidateSelectedRawText = `
+Amazon Web Services (AWS)
+CERTIFICATE OF COMPLETION
+This is to certify that ${candName}
+Phone: +1 (555) 019-2834, Email: a.vance@cloudtech.com
+Address: 450 Serra Mall, Stanford, CA
+has successfully completed all requirements and is recognized as an
+AWS Certified Solutions Architect - Associate
+Credential ID: AWS-7894-3291-B7C9
+Issued on: October 14, 2025
+Verify at: https://aws.amazon.com/verification
+Authorized Signature: Vice President, AWS Global Training & Certification
+        `;
+    } else if (sampleType === 'stanford') {
+        document.getElementById('candidateFileLabel').textContent = '📄 Stanford_University_Diploma.pdf (Sample)';
+        candidateSelectedRawText = `
+Stanford University
+By the authority of the Board of Trustees
+conferred upon ${candName}
+Student ID: STU-99281-2024, Email: sarah.j@alumni.stanford.edu
+the degree of
+Bachelor of Science in Computer Science
+with all the rights, honors, and privileges thereunto appertaining.
+Given at Stanford, California on June 15, 2024
+Serial No: SU-CS-2024-99812
+Authenticity Verification: https://stanford.edu
+        `;
+    } else if (sampleType === 'google') {
+        document.getElementById('candidateFileLabel').textContent = '📄 Google_Experience_Relieving_Letter.pdf (Sample)';
+        candidateSelectedRawText = `
+Google LLC
+EMPLOYMENT VERIFICATION & RELIEVING LETTER
+This is to certify that ${candName}
+Phone: +1 650-253-0000, Email: alexander.vance@techcorp.io
+Address: 1600 Amphitheatre Pkwy, Mountain View, CA 94043
+has been employed at Google LLC as a Senior Staff Systems Architect from March 2021 to January 2026.
+Credential ID: GOOG-REL-8839-4412
+Verification Registry: https://google.com
+Authorized Signatory: Global Human Resources Director, Google LLC
+        `;
+    } else if (sampleType === 'id') {
+        document.getElementById('candidateFileLabel').textContent = '📄 Official_State_Government_ID.pdf (Sample)';
+        candidateSelectedRawText = `
+Department of Motor Vehicles - State Official Identification
+OFFICIAL IDENTITY CREDENTIAL
+Full Legal Name: ${candName}
+Date of Birth: May 14, 1994, SSN: 981-22-4419
+Residential Address: 450 Serra Mall, Stanford, CA 94305
+Serial Number: ID-CA-2025-99120
+Issued: January 10, 2025, Verification: https://state.gov
+        `;
+    } else if (sampleType === 'infosys') {
+        document.getElementById('candidateFileLabel').textContent = '📄 Infosys_Springboard_Certificate.pdf (Sample)';
+        candidateSelectedRawText = `
+Infosys Springboard
+COURSE COMPLETION CERTIFICATE
+This certificate is awarded to ${candName}
+for successfully completing the course AI-first Software Engineering
+on May 26, 2025.
+Executive Vice President: Thirumala Arohi
+Verification Base: https://infosys.com
+        `;
+    } else if (sampleType === 'random_paper') {
+        document.getElementById('candidateFileLabel').textContent = '📄 Random_Notes_With_Keywords.txt (Sample)';
+        candidateSelectedRawText = `
+Python, AWS, Java, Machine Learning, Docker, SQL
+Notes from meeting: review backend database architecture tomorrow morning.
+        `;
+    } else if (sampleType === 'canva') {
+        document.getElementById('candidateFileLabel').textContent = '📄 Suspect_Canva_Certificate.pdf (Sample)';
+        candidateSelectedRawText = `
+Certificate of Achievement
+Awarded to Johnathan Miller
+Phone: +1 555-432-1098
+for successful participation in Advanced Cloud Systems
+Issued on: July 20, 2029
+Created via Canva Online Graphic Design Suite
+        `;
+    }
+
+    submitCandidateDocument();
+}
+
+async function submitCandidateDocument() {
+    if (!candidateSelectedFile && !candidateSelectedRawText) {
+        alert('Please choose a credential file to upload or click one of the 1-click test samples.');
+        return;
+    }
+
+    const uploadBtn = document.getElementById('candidateUploadBtn');
+    uploadBtn.disabled = true;
+    uploadBtn.textContent = '⏳ Model Verifying Credential...';
+
+    const user = Auth.getUser('candidate');
+    const userId = user ? user.userId : (localStorage.getItem('userId') || 'cand_1');
+    const fullName = user ? user.fullName : (localStorage.getItem('fullName') || 'Candidate');
+
+    try {
+        let res;
+        if (candidateSelectedFile) {
+            const formData = new FormData();
+            formData.append('file', candidateSelectedFile);
+            formData.append('candidate_id', userId);
+            formData.append('candidate_name', fullName);
+
+            res = await fetch('/api/candidate/documents', {
+                method: 'POST',
+                body: formData
+            });
+        } else {
+            res = await fetch('/api/candidate/documents', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    candidate_id: userId,
+                    candidate_name: fullName,
+                    filename: document.getElementById('candidateFileLabel').textContent.replace('📄 ', '').replace(' (Sample)', ''),
+                    raw_text: candidateSelectedRawText
+                })
+            });
+        }
+
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.error || 'Upload failed');
+        }
+
+        const data = await res.json();
+        candidateSelectedFile = null;
+        candidateSelectedRawText = null;
+        document.getElementById('candidateFileLabel').textContent = 'Choose PDF or image certificate';
+        await loadCandidateDocuments();
+
+        const docObj = data.document || {};
+        const isReal = docObj.verdict === 'REAL';
+        const isInvalid = docObj.verdict === 'INVALID_DOCUMENT';
+        const docSkills = docObj.extracted_skills || [];
+        if (isReal) {
+            const skillsMsg = docSkills.length ? `Verified Resume Skills: ${docSkills.join(', ')}` : 'Authentic Credential Confirmed';
+            const webMsg = (docObj.web_verification && docObj.web_verification.verified) ? `\n🌐 Authority Verified: ${docObj.web_verification.detail}` : '';
+            alert(`🎉 Document Verified as REAL / AUTHENTIC!\n\n${skillsMsg}${webMsg}\n\n🔒 Your document is stored privately and is never sent to recruiters. Recruiters only see that your skills are pre-verified authentic.`);
+        } else if (isInvalid) {
+            alert(`⚠️ Document Rejected: Not a Recognized Credential!\n\n${docObj.model_explanation || 'The uploaded file appears to be a random piece of paper or informal notes with keywords, not an official certificate, degree, or ID.'}\n\nZero resume skills were verified.`);
+        } else {
+            alert(`🚨 Tampering Detected!\n\nThis document was identified as FORGED / TAMPERED (e.g. Canva/Photoshop editing or invalid dates).`);
+        }
+
+    } catch (err) {
+        alert('Credential upload failed: ' + err.message);
+    } finally {
+        uploadBtn.disabled = false;
+        uploadBtn.textContent = '⬆️ Upload & Verify Credential';
+    }
+}
+
+function showMaskedPreview(docId) {
+    const doc = currentCandidateDocs.find(d => String(d._id) === String(docId));
+    if (!doc) return;
+
+    const modal = document.getElementById('maskedPreviewModal');
+    const body = document.getElementById('modalMaskedCertBody');
+    const tag = document.getElementById('modalRedactedFieldsTag');
+
+    body.innerHTML = doc.masked_preview_html || `<pre style="font-family: var(--font-mono); font-size: 0.85rem;">${escapeHtml(doc.masked_text || 'No text')}</pre>`;
+    const fields = doc.redacted_fields || ["Phone", "Email", "Address", "Serial Hash"];
+    tag.textContent = `Redacted for Recruiter View: ${fields.join(', ')}`;
+
+    modal.style.display = 'flex';
+}
+
+function closeMaskedPreview(e) {
+    if (e && e.target && e.target.id !== 'maskedPreviewModal' && e.type === 'click' && e.target.tagName !== 'BUTTON') return;
+    document.getElementById('maskedPreviewModal').style.display = 'none';
+}
+
+async function deleteCandidateDocument(docId) {
+    if (!confirm('Are you sure you want to remove this credential from your locker?')) return;
+    try {
+        const res = await fetch(`/api/candidate/documents/${encodeURIComponent(docId)}`, { method: 'DELETE' });
+        if (res.ok) {
+            await loadCandidateDocuments();
+        } else {
+            alert('Failed to delete document');
+        }
+    } catch (e) {
+        alert('Error: ' + e.message);
+    }
+}
+</script>
+</body>
+</html>

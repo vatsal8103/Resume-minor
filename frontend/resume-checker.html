@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resume Checker & ATS Analyzer — Résumé Intelligence</title>
+    <meta name="description" content="Check your resume against real job postings, assess ATS compatibility, uncover skill gaps, and optimize for recruiter review.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+Pro:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="smooth-scroll">
+    <header class="topbar">
+        <div class="topbar-left">
+            <span class="wordmark">Résumé Intelligence</span>
+            <span class="case-tag">Candidate Portal</span>
+        </div>
+        <div class="topbar-right">
+            <div class="user-info">
+                <span id="userFullName">Candidate</span>
+            </div>
+            <button id="logoutBtn" class="btn-ghost">Logout</button>
+        </div>
+    </header>
+
+    <main class="shell">
+        <nav class="sidebar">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="candidate-dashboard.html">Overview</a>
+                </li>
+                <li class="nav-item">
+                    <a href="my-profile.html">My Profile</a>
+                </li>
+                <li class="nav-item active">
+                    <a href="resume-checker.html">Resume Checker</a>
+                </li>
+                <li class="nav-item">
+                    <a href="job-search.html">Job Search</a>
+                </li>
+                <li class="nav-item">
+                    <a href="my-applications.html">My Applications</a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html">Settings</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="main-content">
+            <section class="section">
+                <div class="section-header">
+                    <h2>AI Resume & ATS Performance Checker</h2>
+                    <p>Test your resume against real job postings to measure your ATS match score, detect missing skills, and optimize before applying.</p>
+                </div>
+
+                <div class="section-content">
+                    <!-- Checker Input Grid -->
+                    <div class="checker-grid">
+                        <!-- Column 1: Resume Source -->
+                        <div class="checker-card">
+                            <div class="checker-card-header">
+                                <span class="step-badge">1</span>
+                                <div>
+                                    <h3>Your Resume</h3>
+                                    <p class="card-sub">Select your profile resume or upload a new draft</p>
+                                </div>
+                            </div>
+
+                            <div class="resume-source-tabs">
+                                <button class="source-tab active" id="tabProfileResume">Profile Resume</button>
+                                <button class="source-tab" id="tabUploadResume">Upload New File</button>
+                                <button class="source-tab" id="tabPasteResume">Paste Text</button>
+                            </div>
+
+                            <!-- Source 1: Profile Resume Display -->
+                            <div id="profileResumeView" class="source-view">
+                                <div id="profileResumeStatus" class="resume-loaded-banner">
+                                    <span class="banner-icon">📄</span>
+                                    <div class="banner-text">
+                                        <strong id="loadedResumeTitle">Checking profile resume...</strong>
+                                        <span id="loadedResumeMeta">Fetching details...</span>
+                                    </div>
+                                </div>
+                                <div class="resume-preview-container">
+                                    <textarea id="activeResumeText" class="resume-text-view" placeholder="Your resume content will appear here..." rows="10"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Source 2: File Upload -->
+                            <div id="uploadResumeView" class="source-view" style="display:none;">
+                                <div id="checkerDropzone" class="dropzone">
+                                    <div class="dropzone-icon">📁</div>
+                                    <p>Drop your resume file here or click to browse</p>
+                                    <p class="dropzone-hint">Supports PDF, DOCX, and TXT files</p>
+                                    <input type="file" id="checkerFileInput" accept=".pdf,.docx,.txt" hidden />
+                                </div>
+                                <div id="checkerFileInfo" class="apply-file-info" style="display:none;">
+                                    <span class="file-name" id="checkerFileName"></span>
+                                    <button class="file-remove-btn" id="removeCheckerFile">&times;</button>
+                                </div>
+                            </div>
+
+                            <!-- Source 3: Paste Text -->
+                            <div id="pasteResumeView" class="source-view" style="display:none;">
+                                <textarea id="pastedResumeText" class="resume-text-view" placeholder="Paste your complete resume text here (experience, skills, education)..." rows="10"></textarea>
+                            </div>
+
+                            <div class="resume-stats-row">
+                                <span id="resumeWordCount">0 words</span>
+                                <span id="resumeCharCount">0 characters</span>
+                            </div>
+                        </div>
+
+                        <!-- Column 2: Job Description Source -->
+                        <div class="checker-card">
+                            <div class="checker-card-header">
+                                <span class="step-badge">2</span>
+                                <div>
+                                    <h3>Target Job Description</h3>
+                                    <p class="card-sub">Test against a real job in our database or paste a custom JD</p>
+                                </div>
+                            </div>
+
+                            <div class="resume-source-tabs">
+                                <button class="source-tab active" id="tabLiveJobs">Live Posted Jobs</button>
+                                <button class="source-tab" id="tabCustomJD">Custom Job Description</button>
+                            </div>
+
+                            <!-- Source A: Live Jobs Selector -->
+                            <div id="liveJobsView" class="source-view">
+                                <div class="form-group">
+                                    <label class="field-label" for="liveJobSelect">Select Open Position</label>
+                                    <select id="liveJobSelect" class="job-selector-dropdown">
+                                        <option value="">-- Choose a real job opening to test against --</option>
+                                    </select>
+                                </div>
+
+                                <div id="selectedJobPreviewCard" class="selected-job-card" style="display:none;">
+                                    <div class="selected-job-header">
+                                        <h4 id="previewJobTitle">Software Engineer</h4>
+                                        <div class="app-meta-tags" id="previewJobMeta">
+                                            <!-- Meta tags -->
+                                        </div>
+                                    </div>
+                                    <div class="selected-job-body">
+                                        <label class="field-label" style="font-size:0.75rem;">Required Skills:</label>
+                                        <div id="previewJobSkills" class="skill-tags-wrap" style="margin-bottom:8px;"></div>
+                                        <label class="field-label" style="font-size:0.75rem;">Job Description Summary:</label>
+                                        <p id="previewJobSummary" class="preview-job-summary"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Source B: Custom JD Paste -->
+                            <div id="customJDView" class="source-view" style="display:none;">
+                                <textarea id="customJDText" class="resume-text-view" placeholder="Paste the job description here (include responsibilities, required skills, and qualifications)..." rows="10"></textarea>
+                            </div>
+
+                            <div class="jd-stats-row">
+                                <span id="jdWordCount">0 words</span>
+                                <span id="jdStatusHint">Select or paste a job to begin analysis</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Bar -->
+                    <div class="checker-action-bar">
+                        <button class="btn-primary btn-large btn-animated" id="runAnalysisBtn">
+                            <span class="btn-icon">⚡</span> Run In-Depth AI Analysis
+                        </button>
+                    </div>
+
+                    <!-- Results Section -->
+                    <div id="analysisResultSection" class="analysis-results-wrap" style="display:none;">
+                        <div class="results-header-banner">
+                            <div class="score-dial-box">
+                                <div class="match-circle match-large" id="scoreDial">
+                                    <span class="match-pct" id="scoreValue">0%</span>
+                                </div>
+                                <div class="score-title-group">
+                                    <h3 id="scoreVerdict">ATS Compatibility Score</h3>
+                                    <p id="scoreSubtitle">Calculated using TF-IDF NLP semantic matching, skill overlap, and category classification.</p>
+                                </div>
+                            </div>
+                            <div class="action-buttons-group">
+                                <button class="btn-primary" id="applyDirectBtn" style="display:none;">
+                                    Apply for This Job
+                                </button>
+                                <a href="roadmap.html" class="btn-outline" id="viewRoadmapBtn">
+                                    Skill Roadmap
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Metrics Breakdown Cards -->
+                        <div class="metrics-grid">
+                            <div class="metric-card">
+                                <div class="metric-info">
+                                    <div class="metric-val" id="metricCategory">Unknown</div>
+                                    <div class="metric-lbl">Predicted Role Category</div>
+                                    <div class="metric-progress"><div class="progress-bar" id="categoryConfBar" style="width: 0%"></div></div>
+                                    <span class="metric-sub" id="categoryConfText">0% model confidence</span>
+                                </div>
+                            </div>
+
+                            <div class="metric-card">
+                                <div class="metric-info">
+                                    <div class="metric-val" id="metricJdSim">0%</div>
+                                    <div class="metric-lbl">Semantic JD Alignment</div>
+                                    <div class="metric-progress"><div class="progress-bar" id="jdSimBar" style="width: 0%"></div></div>
+                                    <span class="metric-sub">Keyword & contextual relevance</span>
+                                </div>
+                            </div>
+
+                            <div class="metric-card">
+                                <div class="metric-info">
+                                    <div class="metric-val" id="metricSkillOverlap">0%</div>
+                                    <div class="metric-lbl">Required Skill Coverage</div>
+                                    <div class="metric-progress"><div class="progress-bar" id="skillOverlapBar" style="width: 0%"></div></div>
+                                    <span class="metric-sub" id="skillCountRatio">0 of 0 matched</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Skills Diagnostics Breakdown -->
+                        <div class="skills-analysis-section">
+                            <div class="section-card">
+                                <div class="card-header-clean">
+                                    <h4>Matched Skills (<span id="matchedSkillsCount">0</span>)</h4>
+                                    <span class="card-badge-success">Found in your resume</span>
+                                </div>
+                                <div id="matchedSkillsList" class="skill-tags-wrap" style="padding: 12px 0;">
+                                    <p class="empty-skill-hint">Run an analysis to inspect matched skills.</p>
+                                </div>
+                            </div>
+
+                            <div class="section-card">
+                                <div class="card-header-clean">
+                                    <h4>Missing Critical Skills (<span id="missingSkillsCount">0</span>)</h4>
+                                    <span class="card-badge-warning">Requested in JD, missing in resume</span>
+                                </div>
+                                <div id="missingSkillsList" class="skill-tags-wrap" style="padding: 12px 0;">
+                                    <p class="empty-skill-hint">Run an analysis to inspect missing skills.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Extracted Profile Credentials (Education, Experience, Certifications, Projects) -->
+                        <div class="section-card" id="extractedCredentialsCard" style="margin-top: 24px;">
+                            <div class="card-header-clean">
+                                <div>
+                                    <h4>Extracted Resume Entities & Background</h4>
+                                    <p class="card-sub" style="margin: 4px 0 0 0;">Automatically parsed degrees, experience tenure, professional certifications, and technical projects.</p>
+                                </div>
+                                <span class="badge-neutral" id="extractionStatusBadge">NLP Entity Extraction</span>
+                            </div>
+
+                            <div class="intelligence-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 16px;">
+                                <!-- Education -->
+                                <div class="intel-subcard" style="background: var(--paper-raised); padding: 16px; border-radius: 8px; border: 1px solid var(--line);">
+                                    <h5 style="margin: 0 0 8px 0; font-size: 0.95rem; color: var(--ink);">Education & Academics</h5>
+                                    <div id="extractedEduContent" style="font-size: 0.88rem; color: var(--ink-light); line-height: 1.5;">
+                                        <em>No education details extracted yet.</em>
+                                    </div>
+                                </div>
+
+                                <!-- Experience -->
+                                <div class="intel-subcard" style="background: var(--paper-raised); padding: 16px; border-radius: 8px; border: 1px solid var(--line);">
+                                    <h5 style="margin: 0 0 8px 0; font-size: 0.95rem; color: var(--ink);">Professional Experience</h5>
+                                    <div id="extractedExpContent" style="font-size: 0.88rem; color: var(--ink-light); line-height: 1.5;">
+                                        <em>No experience history extracted yet.</em>
+                                    </div>
+                                </div>
+
+                                <!-- Certifications -->
+                                <div class="intel-subcard" style="background: var(--paper-raised); padding: 16px; border-radius: 8px; border: 1px solid var(--line);">
+                                    <h5 style="margin: 0 0 8px 0; font-size: 0.95rem; color: var(--ink);">Professional Certifications</h5>
+                                    <div id="extractedCertsContent" class="skill-tags-wrap" style="padding-top: 4px;">
+                                        <em style="font-size: 0.88rem; color: var(--ink-light);">No certifications detected.</em>
+                                    </div>
+                                </div>
+
+                                <!-- Technical Projects -->
+                                <div class="intel-subcard" style="background: var(--paper-raised); padding: 16px; border-radius: 8px; border: 1px solid var(--line);">
+                                    <h5 style="margin: 0 0 8px 0; font-size: 0.95rem; color: var(--ink);">Key Technical Projects</h5>
+                                    <div id="extractedProjectsContent" style="font-size: 0.88rem; color: var(--ink-light); line-height: 1.5;">
+                                        <em>No project sections detected.</em>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Multimodal AI Intelligence: Aptitude & Personality Insights -->
+                        <div class="multimodal-intel-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-top: 24px;">
+                            <!-- AI Aptitude Analysis -->
+                            <div class="section-card" id="aptitudeCard" style="margin-top: 0;">
+                                <div class="card-header-clean">
+                                    <div>
+                                        <h4>AI Aptitude Benchmark</h4>
+                                        <p class="card-sub" style="margin: 4px 0 0 0;">Evaluation of quantitative, logical, verbal, and technical problem-solving capabilities.</p>
+                                    </div>
+                                    <span class="status-badge status-accepted" id="aptitudePercentileBadge">88th Percentile</span>
+                                </div>
+                                <div style="margin-top: 16px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;">
+                                        <span style="font-size: 0.85rem; font-weight: 600; color: var(--ink);">Overall Aptitude Score</span>
+                                        <span style="font-size: 1.15rem; font-weight: 700; color: var(--ink);" id="overallAptScore">0%</span>
+                                    </div>
+                                    <div class="metric-progress" style="height: 8px; margin-bottom: 16px;">
+                                        <div class="progress-bar" id="overallAptBar" style="width: 0%; background: var(--primary);"></div>
+                                    </div>
+
+                                    <div class="sub-aptitude-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+                                        <div style="background: var(--paper-raised); padding: 10px; border-radius: 6px; border: 1px solid var(--line);">
+                                            <div style="font-size: 0.75rem; color: var(--slate); font-weight: 600; text-transform: uppercase;">Quantitative</div>
+                                            <div style="font-size: 1rem; font-weight: 700; color: var(--ink); margin-top: 2px;" id="aptQuantVal">0%</div>
+                                        </div>
+                                        <div style="background: var(--paper-raised); padding: 10px; border-radius: 6px; border: 1px solid var(--line);">
+                                            <div style="font-size: 0.75rem; color: var(--slate); font-weight: 600; text-transform: uppercase;">Logical Reasoning</div>
+                                            <div style="font-size: 1rem; font-weight: 700; color: var(--ink); margin-top: 2px;" id="aptLogicVal">0%</div>
+                                        </div>
+                                        <div style="background: var(--paper-raised); padding: 10px; border-radius: 6px; border: 1px solid var(--line);">
+                                            <div style="font-size: 0.75rem; color: var(--slate); font-weight: 600; text-transform: uppercase;">Verbal Communication</div>
+                                            <div style="font-size: 1rem; font-weight: 700; color: var(--ink); margin-top: 2px;" id="aptVerbalVal">0%</div>
+                                        </div>
+                                        <div style="background: var(--paper-raised); padding: 10px; border-radius: 6px; border: 1px solid var(--line);">
+                                            <div style="font-size: 0.75rem; color: var(--slate); font-weight: 600; text-transform: uppercase;">Technical Acumen</div>
+                                            <div style="font-size: 1rem; font-weight: 700; color: var(--ink); margin-top: 2px;" id="aptTechVal">0%</div>
+                                        </div>
+                                    </div>
+
+                                    <div id="aptitudeStrengthsBox" style="font-size: 0.82rem; color: var(--ink-light); line-height: 1.4;">
+                                        <!-- Populated dynamically -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- AI Personality & Work Style -->
+                            <div class="section-card" id="personalityCard" style="margin-top: 0;">
+                                <div class="card-header-clean">
+                                    <div>
+                                        <h4>AI Personality & Behavioral Insights</h4>
+                                        <p class="card-sub" style="margin: 4px 0 0 0;">Workplace behavioral dimensions based on candidate delivery and ownership cues.</p>
+                                    </div>
+                                    <span class="status-badge status-accepted" id="personalityStyleBadge">Strategic Innovator</span>
+                                </div>
+                                <div style="margin-top: 16px;">
+                                    <div id="personalitySummaryText" style="font-size: 0.88rem; color: var(--ink); line-height: 1.5; margin-bottom: 14px; padding: 10px 12px; background: var(--paper-raised); border-radius: 6px; border-left: 3px solid var(--primary);">
+                                        Candidate profile indicates a disciplined engineering mindset with strong collaborative and analytical problem-solving habits.
+                                    </div>
+                                    <div id="personalityTraitsList" style="display: flex; flex-direction: column; gap: 8px;">
+                                        <!-- Populated dynamically -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Optimization Advice -->
+                        <div class="section-card" id="recommendationsCard" style="margin-top: 24px;">
+                            <div class="card-header-clean">
+                                <h4>AI Optimization Recommendations</h4>
+                            </div>
+                            <div id="optimizationTipsList" class="tips-container">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<script src="script.js"></script>
+<script>
+let currentResume = '';
+let currentJD = '';
+let activeJobs = [];
+let selectedJob = null;
+
+document.addEventListener('DOMContentLoaded', async function() {
+    const user = Auth.getUser('candidate');
+    const userId = user ? user.userId : null;
+    const fullName = user ? user.fullName : 'Candidate';
+
+    if (fullName) {
+        document.getElementById('userFullName').textContent = fullName;
+    }
+
+    // Logout (isolated to candidate)
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            Auth.logout('candidate');
+        });
+    }
+
+    // Setup source tab switchers
+    setupSourceTabs();
+
+    // Word counters
+    document.getElementById('activeResumeText').addEventListener('input', updateResumeCounts);
+    document.getElementById('pastedResumeText').addEventListener('input', updateResumeCounts);
+    document.getElementById('customJDText').addEventListener('input', updateJDCounts);
+
+    // File upload
+    setupDropzone();
+
+    // Fetch candidate profile to get their active resume
+    await loadCandidateProfileResume();
+
+    // Fetch live jobs to populate the dropdown
+    await loadLiveJobs();
+
+    // Run Analysis click
+    document.getElementById('runAnalysisBtn').addEventListener('click', runAIAnalysis);
+});
+
+function setupSourceTabs() {
+    // Resume tabs
+    const tabProfile = document.getElementById('tabProfileResume');
+    const tabUpload = document.getElementById('tabUploadResume');
+    const tabPaste = document.getElementById('tabPasteResume');
+
+    const viewProfile = document.getElementById('profileResumeView');
+    const viewUpload = document.getElementById('uploadResumeView');
+    const viewPaste = document.getElementById('pasteResumeView');
+
+    tabProfile.addEventListener('click', () => {
+        [tabProfile, tabUpload, tabPaste].forEach(t => t.classList.remove('active'));
+        tabProfile.classList.add('active');
+        viewProfile.style.display = 'block';
+        viewUpload.style.display = 'none';
+        viewPaste.style.display = 'none';
+        updateResumeCounts();
+    });
+
+    tabUpload.addEventListener('click', () => {
+        [tabProfile, tabUpload, tabPaste].forEach(t => t.classList.remove('active'));
+        tabUpload.classList.add('active');
+        viewProfile.style.display = 'none';
+        viewUpload.style.display = 'block';
+        viewPaste.style.display = 'none';
+        updateResumeCounts();
+    });
+
+    tabPaste.addEventListener('click', () => {
+        [tabProfile, tabUpload, tabPaste].forEach(t => t.classList.remove('active'));
+        tabPaste.classList.add('active');
+        viewProfile.style.display = 'none';
+        viewUpload.style.display = 'none';
+        viewPaste.style.display = 'block';
+        updateResumeCounts();
+    });
+
+    // JD tabs
+    const tabLive = document.getElementById('tabLiveJobs');
+    const tabCustom = document.getElementById('tabCustomJD');
+    const viewLive = document.getElementById('liveJobsView');
+    const viewCustom = document.getElementById('customJDView');
+
+    tabLive.addEventListener('click', () => {
+        tabLive.classList.add('active');
+        tabCustom.classList.remove('active');
+        viewLive.style.display = 'block';
+        viewCustom.style.display = 'none';
+        if (selectedJob) currentJD = selectedJob.description || '';
+        updateJDCounts();
+    });
+
+    tabCustom.addEventListener('click', () => {
+        tabCustom.classList.add('active');
+        tabLive.classList.remove('active');
+        viewCustom.style.display = 'block';
+        viewLive.style.display = 'none';
+        currentJD = document.getElementById('customJDText').value;
+        updateJDCounts();
+    });
+
+    // Job dropdown change
+    document.getElementById('liveJobSelect').addEventListener('change', function(e) {
+        const jobId = e.target.value;
+        selectedJob = activeJobs.find(j => j.id === jobId) || null;
+        if (selectedJob) {
+            currentJD = selectedJob.description || '';
+            renderJobPreview(selectedJob);
+        } else {
+            currentJD = '';
+            document.getElementById('selectedJobPreviewCard').style.display = 'none';
+        }
+        updateJDCounts();
+    });
+}
+
+async function loadCandidateProfileResume() {
+    const user = Auth.getUser('candidate');
+    const userId = user ? user.userId : null;
+    const bannerTitle = document.getElementById('loadedResumeTitle');
+    const bannerMeta = document.getElementById('loadedResumeMeta');
+    const textarea = document.getElementById('activeResumeText');
+
+    if (!userId) {
+        bannerTitle.textContent = 'No Profile Session Found';
+        bannerMeta.textContent = 'Paste or upload your resume below.';
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/candidates/${userId}`);
+        if (response.ok) {
+            const data = await response.json();
+            if (data.resume_text && data.resume_text.trim()) {
+                currentResume = data.resume_text;
+                textarea.value = data.resume_text;
+                bannerTitle.textContent = `${data.full_name || 'Candidate'}'s Profile Resume`;
+                bannerMeta.textContent = `Loaded · ${data.resume_text.length} characters`;
+                updateResumeCounts();
+            } else {
+                bannerTitle.textContent = 'No Resume Found in Profile';
+                bannerMeta.textContent = 'Upload or paste your resume text to begin.';
+            }
+        } else {
+            bannerTitle.textContent = 'Ready for Resume Input';
+            bannerMeta.textContent = 'Upload a file or paste your resume.';
+        }
+    } catch (e) {
+        bannerTitle.textContent = 'Ready for Resume Input';
+        bannerMeta.textContent = 'Upload a file or paste your resume.';
+    }
+}
+
+async function loadLiveJobs() {
+    const select = document.getElementById('liveJobSelect');
+
+    try {
+        const response = await fetch('/api/jobs?status=open&per_page=100');
+        const data = await response.json();
+        activeJobs = data.jobs || [];
+
+        select.innerHTML = '<option value="">-- Choose a real job opening to test against --</option>';
+
+        activeJobs.forEach(job => {
+            const opt = document.createElement('option');
+            opt.value = job.id;
+            opt.textContent = `${job.title}${job.location ? ` (${job.location})` : ''}`;
+            select.appendChild(opt);
+        });
+
+        // If there are jobs, preselect the first one for instant convenience
+        if (activeJobs.length > 0) {
+            select.selectedIndex = 1;
+            selectedJob = activeJobs[0];
+            currentJD = selectedJob.description || '';
+            renderJobPreview(selectedJob);
+            updateJDCounts();
+        }
+
+    } catch (e) {
+        console.error('Failed to load open jobs:', e);
+    }
+}
+
+function renderJobPreview(job) {
+    const card = document.getElementById('selectedJobPreviewCard');
+    card.style.display = 'block';
+
+    document.getElementById('previewJobTitle').textContent = job.title;
+
+    const meta = document.getElementById('previewJobMeta');
+    meta.innerHTML = `
+        ${job.location ? `<span class="meta-tag">📍 ${escapeHtml(job.location)}</span>` : ''}
+        ${job.employment_type ? `<span class="meta-tag">💼 ${escapeHtml(job.employment_type)}</span>` : ''}
+        ${job.salary_range ? `<span class="meta-tag">💰 ${escapeHtml(job.salary_range)}</span>` : ''}
+    `;
+
+    const skillsWrap = document.getElementById('previewJobSkills');
+    if (job.required_skills) {
+        const skills = typeof job.required_skills === 'string' ? job.required_skills.split(',') : job.required_skills;
+        skillsWrap.innerHTML = skills.map(s => `<span class="skill-tag">${escapeHtml(s.trim())}</span>`).join('');
+    } else {
+        skillsWrap.innerHTML = '<span class="empty-sub">No explicit skill tags specified</span>';
+    }
+
+    const summary = document.getElementById('previewJobSummary');
+    summary.textContent = (job.description || '').substring(0, 250) + (job.description && job.description.length > 250 ? '...' : '');
+}
+
+function setupDropzone() {
+    const dropzone = document.getElementById('checkerDropzone');
+    const fileInput = document.getElementById('checkerFileInput');
+
+    dropzone.addEventListener('click', () => fileInput.click());
+    dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+    dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+        if (e.dataTransfer.files.length > 0) handleCheckerFileUpload(e.dataTransfer.files[0]);
+    });
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files.length > 0) handleCheckerFileUpload(fileInput.files[0]);
+    });
+    document.getElementById('removeCheckerFile').addEventListener('click', () => {
+        currentResume = '';
+        document.getElementById('checkerFileInfo').style.display = 'none';
+        dropzone.style.display = 'block';
+        fileInput.value = '';
+        updateResumeCounts();
+    });
+}
+
+async function handleCheckerFileUpload(file) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const dropzone = document.getElementById('checkerDropzone');
+    const fileInfo = document.getElementById('checkerFileInfo');
+    const fileName = document.getElementById('checkerFileName');
+
+    dropzone.style.display = 'none';
+    fileInfo.style.display = 'flex';
+    fileName.textContent = `${file.name} (parsing file...)`;
+
+    try {
+        const response = await fetch('/api/parse-file', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            currentResume = result.text;
+            fileName.textContent = `${file.name} ✅ Parsed (${result.text.length} chars)`;
+            // Also sync with textarea
+            document.getElementById('activeResumeText').value = result.text;
+            updateResumeCounts();
+            showToast('Resume uploaded and parsed successfully!', 'success');
+        } else {
+            fileName.textContent = `${file.name} ❌ ${result.error}`;
+            currentResume = '';
+        }
+    } catch (e) {
+        fileName.textContent = `${file.name} ❌ Upload failed`;
+        currentResume = '';
+    }
+}
+
+function updateResumeCounts() {
+    let text = '';
+    if (document.getElementById('tabProfileResume').classList.contains('active')) {
+        text = document.getElementById('activeResumeText').value;
+    } else if (document.getElementById('tabUploadResume').classList.contains('active')) {
+        text = currentResume;
+    } else {
+        text = document.getElementById('pastedResumeText').value;
+    }
+
+    currentResume = text;
+    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+    const chars = text.length;
+
+    document.getElementById('resumeWordCount').textContent = `${words} words`;
+    document.getElementById('resumeCharCount').textContent = `${chars} characters`;
+}
+
+function updateJDCounts() {
+    let text = '';
+    if (document.getElementById('tabLiveJobs').classList.contains('active')) {
+        text = selectedJob ? (selectedJob.description || '') : '';
+    } else {
+        text = document.getElementById('customJDText').value;
+    }
+
+    currentJD = text;
+    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+    document.getElementById('jdWordCount').textContent = `${words} words`;
+    document.getElementById('jdStatusHint').textContent = words > 20 ? 'Job description ready' : 'Provide more JD text for higher matching precision';
+}
+
+async function runAIAnalysis() {
+    updateResumeCounts();
+    updateJDCounts();
+
+    if (!currentResume || currentResume.trim().length < 30) {
+        showToast('Please provide a resume with at least 30 characters.', 'error');
+        return;
+    }
+
+    const btn = document.getElementById('runAnalysisBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="btn-icon">⏳</span> Analyzing ATS & Performance Metrics...';
+
+    try {
+        const response = await fetch('/api/analyze', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                resume_text: currentResume,
+                jd_text: currentJD
+            })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            renderAnalysisResults(result);
+            showToast('Resume analysis complete!', 'success');
+            // Scroll to results
+            document.getElementById('analysisResultSection').scrollIntoView({ behavior: 'smooth' });
+        } else {
+            showToast(result.error || 'Analysis failed.', 'error');
+        }
+    } catch (e) {
+        showToast('Network error during analysis.', 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span class="btn-icon">⚡</span> Run In-Depth AI Analysis';
+    }
+}
+
+function renderAnalysisResults(result) {
+    const section = document.getElementById('analysisResultSection');
+    section.style.display = 'block';
+
+    const score = Math.round(result.final_score || 0);
+    const scoreVal = document.getElementById('scoreValue');
+    const scoreDial = document.getElementById('scoreDial');
+    const scoreVerdict = document.getElementById('scoreVerdict');
+    const scoreSubtitle = document.getElementById('scoreSubtitle');
+
+    scoreVal.textContent = `${score}%`;
+
+    // Dial style
+    scoreDial.className = `match-circle match-large ${score >= 75 ? 'match-high' : score >= 45 ? 'match-mid' : 'match-low'}`;
+
+    if (score >= 75) {
+        scoreVerdict.textContent = 'High ATS Compatibility';
+        scoreSubtitle.textContent = 'Your resume aligns closely with the target role and demonstrates strong keyword coverage.';
+    } else if (score >= 45) {
+        scoreVerdict.textContent = 'Moderate ATS Alignment — Optimization Suggested';
+        scoreSubtitle.textContent = 'Your background covers core foundations. Incorporating the highlighted missing skills will improve your ATS ranking.';
+    } else {
+        scoreVerdict.textContent = 'Low ATS Alignment — Key Requirements Missing';
+        scoreSubtitle.textContent = 'Critical qualifications and domain keywords from the job description are missing from your resume draft.';
+    }
+
+    // Direct apply button if live job selected
+    const applyBtn = document.getElementById('applyDirectBtn');
+    if (selectedJob && selectedJob.id) {
+        applyBtn.style.display = 'inline-flex';
+        applyBtn.onclick = () => applyForSelectedJob(selectedJob.id, selectedJob.title);
+    } else {
+        applyBtn.style.display = 'none';
+    }
+
+    // Category
+    const category = result.predicted_category || 'General';
+    const confidence = Math.round((result.category_confidence || 0) * 100);
+    document.getElementById('metricCategory').textContent = category;
+    document.getElementById('categoryConfBar').style.width = `${confidence}%`;
+    document.getElementById('categoryConfText').textContent = `${confidence}% model confidence`;
+
+    // JD Similarity
+    const jdSim = Math.round((result.jd_similarity || 0) * 100);
+    document.getElementById('metricJdSim').textContent = `${jdSim}%`;
+    document.getElementById('jdSimBar').style.width = `${jdSim}%`;
+
+    // Skill Overlap
+    const skillOverlap = Math.round((result.skill_overlap || 0) * 100);
+    document.getElementById('metricSkillOverlap').textContent = `${skillOverlap}%`;
+    document.getElementById('skillOverlapBar').style.width = `${skillOverlap}%`;
+
+    const matched = result.matched_skills || [];
+    const missing = result.missing_skills || [];
+    const resumeSkills = result.resume_skills || [];
+
+    document.getElementById('skillCountRatio').textContent = `${matched.length} of ${matched.length + missing.length} target skills`;
+
+    // Matched skills tags
+    document.getElementById('matchedSkillsCount').textContent = matched.length;
+    const matchedContainer = document.getElementById('matchedSkillsList');
+    if (matched.length > 0) {
+        matchedContainer.innerHTML = matched.map(s => `<span class="skill-tag skill-matched">${escapeHtml(s)}</span>`).join('');
+    } else {
+        matchedContainer.innerHTML = '<p class="empty-sub">No exact skill overlaps identified.</p>';
+    }
+
+    // Missing skills tags
+    document.getElementById('missingSkillsCount').textContent = missing.length;
+    const missingContainer = document.getElementById('missingSkillsList');
+    if (missing.length > 0) {
+        missingContainer.innerHTML = missing.map(s => `
+            <span class="skill-tag skill-missing" title="Click to copy skill keyword" onclick="copySkill('${escapeHtml(s)}')">
+                ${escapeHtml(s)}
+            </span>
+        `).join('');
+    } else {
+        missingContainer.innerHTML = '<p class="empty-sub" style="color: #10b981;">Complete skill coverage achieved for this job description.</p>';
+    }
+
+    // Populate Extracted Profile Credentials
+    renderExtractedEntities(result);
+
+    // Populate AI Aptitude Benchmark
+    renderAptitudeInsights(result.aptitude);
+
+    // Populate AI Personality & Behavioral Insights
+    renderPersonalityInsights(result.personality);
+
+    // AI Recommendations
+    renderTips(result, score, matched, missing);
+}
+
+function renderExtractedEntities(result) {
+    // Education
+    const edu = result.education || {};
+    const eduBox = document.getElementById('extractedEduContent');
+    if (edu.degree || (edu.degrees && edu.degrees.length)) {
+        const deg = edu.degree || (edu.degrees || []).join(', ');
+        const inst = edu.institution || 'Recognized University / College';
+        const marks = edu.marks_or_gpa ? ` • ${edu.marks_or_gpa}` : '';
+        eduBox.innerHTML = `<strong>${escapeHtml(deg)}</strong><br><span style="color:var(--slate); font-size:0.84rem;">${escapeHtml(inst)}${marks}</span>`;
+    } else {
+        eduBox.innerHTML = '<span style="color:var(--slate);">Degree or academic background not explicitly parsed.</span>';
+    }
+
+    // Experience
+    const exp = result.experience || {};
+    const expBox = document.getElementById('extractedExpContent');
+    const yrs = exp.total_years_estimate || 0;
+    const level = exp.experience_level || 'Professional';
+    const roles = (exp.detected_roles && exp.detected_roles.length) ? exp.detected_roles.slice(0, 3).join(', ') : '';
+    expBox.innerHTML = `<strong>${yrs} Years Experience</strong> • <span class="badge-neutral" style="font-size:0.75rem; padding: 2px 6px;">${escapeHtml(level)}</span><br><span style="color:var(--slate); font-size:0.84rem;">${roles ? escapeHtml(roles) : 'Software & Technology Track'}</span>`;
+
+    // Certifications
+    const certs = result.certifications || [];
+    const certsBox = document.getElementById('extractedCertsContent');
+    if (certs.length > 0) {
+        certsBox.innerHTML = certs.map(c => `<span class="cred-skills-tag" style="background:var(--paper); border:1px solid var(--line); font-size:0.78rem;">${escapeHtml(c)}</span>`).join('');
+    } else {
+        certsBox.innerHTML = '<span style="color:var(--slate); font-size:0.84rem;">No standard cloud or professional certifications detected.</span>';
+    }
+
+    // Projects
+    const projs = result.projects || [];
+    const projsBox = document.getElementById('extractedProjectsContent');
+    if (projs.length > 0) {
+        projsBox.innerHTML = projs.slice(0, 3).map(p => `
+            <div style="margin-bottom: 8px;">
+                <strong style="color:var(--ink);">${escapeHtml(p.title || 'Technical Project')}</strong>
+                ${p.technologies && p.technologies.length ? `<span style="font-size:0.75rem; color:var(--primary); margin-left:6px;">(${p.technologies.slice(0, 3).join(', ')})</span>` : ''}
+                <div style="font-size:0.8rem; color:var(--slate);">${escapeHtml(p.description || '')}</div>
+            </div>
+        `).join('');
+    } else {
+        projsBox.innerHTML = '<span style="color:var(--slate); font-size:0.84rem;">Standard project section not detected in resume text.</span>';
+    }
+}
+
+function renderAptitudeInsights(apt) {
+    if (!apt) return;
+    const overall = apt.overall_aptitude_score || 82;
+    const pct = apt.percentile || 86;
+    const rating = apt.rating || 'Proficient';
+
+    document.getElementById('overallAptScore').textContent = `${overall}%`;
+    document.getElementById('overallAptBar').style.width = `${overall}%`;
+    document.getElementById('aptitudePercentileBadge').textContent = `${pct}th Percentile • ${rating}`;
+
+    document.getElementById('aptQuantVal').textContent = `${apt.quantitative_score || 80}%`;
+    document.getElementById('aptLogicVal').textContent = `${apt.logical_score || 84}%`;
+    document.getElementById('aptVerbalVal').textContent = `${apt.verbal_score || 78}%`;
+    document.getElementById('aptTechVal').textContent = `${apt.technical_score || 85}%`;
+
+    const strengths = apt.strengths || ['System Architecture', 'Algorithmic Problem Solving'];
+    const growth = apt.growth_areas || ['Executive Stakeholder Communication'];
+
+    document.getElementById('aptitudeStrengthsBox').innerHTML = `
+        <div style="margin-bottom: 4px;"><strong>Core Strengths:</strong> ${strengths.map(s => escapeHtml(s)).join(', ')}</div>
+        <div><strong>Key Development Focus:</strong> ${growth.map(g => escapeHtml(g)).join(', ')}</div>
+    `;
+}
+
+function renderPersonalityInsights(pers) {
+    if (!pers) return;
+    const style = pers.primary_work_style || 'Collaborative Technical Innovator';
+    document.getElementById('personalityStyleBadge').textContent = style;
+    document.getElementById('personalitySummaryText').textContent = pers.summary || 'Candidate demonstrates strong analytical execution, continuous learning adaptability, and disciplined delivery.';
+
+    const traits = pers.traits || {};
+    const traitsList = document.getElementById('personalityTraitsList');
+    traitsList.innerHTML = Object.entries(traits).map(([name, data]) => {
+        const score = typeof data === 'object' ? (data.score || 75) : data;
+        const desc = typeof data === 'object' ? (data.description || '') : '';
+        return `
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem;">
+                <span style="font-weight: 600; color: var(--ink);">${escapeHtml(name)}</span>
+                <span style="font-weight: 700; color: var(--slate);">${score}%</span>
+            </div>
+            <div class="metric-progress" style="height: 5px; margin-bottom: 6px;">
+                <div class="progress-bar" style="width: ${score}%; background: var(--primary);"></div>
+            </div>
+        `;
+    }).join('');
+}
+
+function renderTips(result, score, matched, missing) {
+    const list = document.getElementById('optimizationTipsList');
+    const tips = [];
+
+    if (missing.length > 0) {
+        tips.push({
+            title: 'Incorporate Target Keywords',
+            desc: `Highlight relevant accomplishments covering key requirements: <strong>${missing.slice(0, 5).join(', ')}</strong>.`
+        });
+    }
+
+    if (result.jd_similarity < 0.5) {
+        tips.push({
+            title: 'Align Role Terminology',
+            desc: 'The phrasing in your resume differs from the job description. Mirror terminology and industry keywords directly from the JD.'
+        });
+    }
+
+    if (matched.length >= 4) {
+        tips.push({
+            title: 'Prominently Feature Core Competencies',
+            desc: `Your demonstrated competencies in <strong>${matched.slice(0, 3).join(', ')}</strong> match the employer\'s primary focus. Emphasize these in your executive summary.`
+        });
+    }
+
+    tips.push({
+        title: 'Quantify Business Impact',
+        desc: 'Recruiters and hiring managers prioritize measurable achievements (e.g., latency reduction, throughput improvements, business revenue impact).'
+    });
+
+    list.innerHTML = tips.map(t => `
+        <div class="tip-row" style="padding: 12px 14px; background: var(--paper-raised); border-radius: 6px; border-left: 3px solid var(--primary); margin-bottom: 10px;">
+            <div class="tip-content">
+                <strong style="color: var(--ink); font-size: 0.92rem;">${t.title}</strong>
+                <p style="margin: 4px 0 0 0; font-size: 0.85rem; color: var(--slate); line-height: 1.45;">${t.desc}</p>
+            </div>
+        </div>
+    `).join('');
+}
+
+async function applyForSelectedJob(jobId, jobTitle) {
+    const user = Auth.getUser('candidate');
+    const userId = user ? user.userId : null;
+    const fullName = user ? user.fullName : 'Candidate';
+
+    if (!confirm(`Do you want to submit your application for "${jobTitle}" using this analyzed resume?`)) {
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/applications', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                candidate_id: userId,
+                job_id: jobId,
+                resume_text: currentResume,
+                status: 'applied'
+            })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            showToast('🎉 Application submitted! Your resume has been forwarded to the recruiter.', 'success');
+            setTimeout(() => {
+                window.location.href = 'my-applications.html';
+            }, 1200);
+        } else {
+            showToast(data.message || data.error || 'Failed to submit application.', 'error');
+        }
+    } catch (e) {
+        showToast('Network error submitting application.', 'error');
+    }
+}
+
+function copySkill(skill) {
+    navigator.clipboard.writeText(skill);
+    showToast(`Copied "${skill}" to clipboard!`, 'info');
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+function showToast(message, type = 'info') {
+    const existing = document.querySelector('.toast');
+    if (existing) existing.remove();
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.innerHTML = `<span class="toast-icon">${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span><span class="toast-message">${message}</span>`;
+    document.body.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add('toast-visible'));
+    setTimeout(() => { toast.classList.remove('toast-visible'); setTimeout(() => toast.remove(), 300); }, 4000);
+}
+</script>
+</body>
+</html>

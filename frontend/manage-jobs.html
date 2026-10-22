@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Jobs — Résumé Intelligence</title>
+    <meta name="description" content="Create and manage job postings. Define job descriptions and attract top talent through the Résumé Intelligence platform.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+Pro:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="smooth-scroll">
+    <header class="topbar">
+        <div class="topbar-left">
+            <span class="wordmark">Résumé Intelligence</span>
+            <span class="case-tag">Manage Jobs</span>
+        </div>
+        <div class="topbar-right">
+            <div class="user-info">
+                <span id="userFullName">Recruiter</span>
+            </div>
+            <button id="logoutBtn" class="btn-ghost">Logout</button>
+        </div>
+    </header>
+
+    <main class="shell">
+        <nav class="sidebar">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="recruiter-dashboard.html">Overview</a>
+                </li>
+                <li class="nav-item active">
+                    <a href="manage-jobs.html">Manage Jobs</a>
+                </li>
+                <li class="nav-item">
+                    <a href="manage-candidates.html">Candidates</a>
+                </li>
+                <li class="nav-item">
+                    <a href="analytics.html">Analytics</a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html">Settings</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="main-content">
+            <!-- Create New Job Section -->
+            <section class="section" id="createJobSection">
+                <div class="section-header">
+                    <h2>Create New Job Posting</h2>
+                    <p>Define job requirements and description to start attracting qualified candidates</p>
+                </div>
+                <div class="section-content">
+                    <div class="job-creation-form" id="jobCreationForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="field-label" for="jobTitle">Job Title *</label>
+                                <input type="text" id="jobTitle" placeholder="e.g. Senior Full Stack Developer" required />
+                            </div>
+                            <div class="form-group">
+                                <label class="field-label" for="jobLocation">Location</label>
+                                <input type="text" id="jobLocation" placeholder="e.g. New York, NY or Remote" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="field-label" for="jobDescription">Job Description / JD *</label>
+                            <textarea id="jobDescription" rows="8" placeholder="Provide a detailed job description. Include responsibilities, qualifications, and what makes this role exciting. This JD will be used to parse and match candidate resumes." required></textarea>
+                            <span class="field-hint">This description will be visible to all candidates and used for AI-powered resume matching.</span>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="field-label" for="requiredSkills">Required Skills</label>
+                                <input type="text" id="requiredSkills" placeholder="e.g. Python, React, AWS, Docker (comma-separated)" />
+                                <span class="field-hint">Comma-separated list of key skills</span>
+                            </div>
+                            <div class="form-group">
+                                <label class="field-label" for="experienceRequired">Experience Required</label>
+                                <input type="text" id="experienceRequired" placeholder="e.g. 3-5 years" />
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="field-label" for="employmentType">Employment Type</label>
+                                <select id="employmentType">
+                                    <option value="full-time">Full-time</option>
+                                    <option value="part-time">Part-time</option>
+                                    <option value="contract">Contract</option>
+                                    <option value="internship">Internship</option>
+                                    <option value="remote">Remote</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="field-label" for="educationRequired">Education Required</label>
+                                <input type="text" id="educationRequired" placeholder="e.g. Bachelor's in Computer Science" />
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="field-label" for="salaryMin">Salary Range (Min)</label>
+                                <input type="text" id="salaryMin" placeholder="e.g. 80000" />
+                            </div>
+                            <div class="form-group">
+                                <label class="field-label" for="salaryMax">Salary Range (Max)</label>
+                                <input type="text" id="salaryMax" placeholder="e.g. 120000" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="field-label" for="additionalRequirements">Additional Requirements</label>
+                            <textarea id="additionalRequirements" rows="3" placeholder="Any additional requirements, benefits, or notes about the position..."></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" id="publishJobBtn" class="btn-primary btn-wide btn-animated">
+                                <span class="btn-icon">📋</span> Publish Job Posting
+                            </button>
+                            <button type="button" id="clearFormBtn" class="btn-ghost">Clear Form</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Job Listings Section -->
+            <section class="section" id="jobListingsSection">
+                <div class="section-header">
+                    <h2>Your Job Postings</h2>
+                    <p>Manage all your active, paused, and closed job listings</p>
+                </div>
+                <div class="section-content">
+                    <!-- Filter bar -->
+                    <div class="jobs-filter-bar">
+                        <div class="filter-search">
+                            <input type="text" id="jobSearchFilter" placeholder="Search jobs by title..." />
+                        </div>
+                        <div class="filter-status">
+                            <select id="jobStatusFilter">
+                                <option value="">All Statuses</option>
+                                <option value="open">Open</option>
+                                <option value="paused">Paused</option>
+                                <option value="closed">Closed</option>
+                            </select>
+                        </div>
+                        <div class="filter-count">
+                            <span id="jobCount">0</span> jobs found
+                        </div>
+                    </div>
+
+                    <!-- Jobs list container -->
+                    <div class="jobs-list" id="jobsList">
+                        <div class="loading-state">
+                            <div class="spinner"></div>
+                            <p>Loading your job postings...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<!-- Edit Job Modal -->
+<div class="modal-overlay" id="editJobModal" style="display:none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Edit Job Posting</h3>
+            <button class="modal-close" id="closeEditModal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="editJobId" />
+            <div class="form-group">
+                <label class="field-label" for="editJobTitle">Job Title</label>
+                <input type="text" id="editJobTitle" />
+            </div>
+            <div class="form-group">
+                <label class="field-label" for="editJobDescription">Job Description</label>
+                <textarea id="editJobDescription" rows="6"></textarea>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="field-label" for="editJobLocation">Location</label>
+                    <input type="text" id="editJobLocation" />
+                </div>
+                <div class="form-group">
+                    <label class="field-label" for="editEmploymentType">Employment Type</label>
+                    <select id="editEmploymentType">
+                        <option value="full-time">Full-time</option>
+                        <option value="part-time">Part-time</option>
+                        <option value="contract">Contract</option>
+                        <option value="internship">Internship</option>
+                        <option value="remote">Remote</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="field-label" for="editRequiredSkills">Required Skills</label>
+                <input type="text" id="editRequiredSkills" />
+            </div>
+            <div class="form-group">
+                <label class="field-label" for="editJobStatus">Status</label>
+                <select id="editJobStatus">
+                    <option value="open">Open</option>
+                    <option value="paused">Paused</option>
+                    <option value="closed">Closed</option>
+                </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-primary" id="saveEditBtn">Save Changes</button>
+            <button class="btn-ghost" id="cancelEditBtn">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- View Job Detail Modal -->
+<div class="modal-overlay" id="viewJobModal" style="display:none;">
+    <div class="modal-content modal-large">
+        <div class="modal-header">
+            <h3 id="viewJobTitle">Job Details</h3>
+            <button class="modal-close" id="closeViewModal">&times;</button>
+        </div>
+        <div class="modal-body" id="viewJobBody">
+            <!-- Populated dynamically -->
+        </div>
+        <div class="modal-footer">
+            <button class="btn-ghost" id="closeViewBtn">Close</button>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const user = Auth.getUser('recruiter');
+    const userId = user ? user.userId : null;
+    const fullName = user ? user.fullName : 'Recruiter';
+    const role = user ? user.role : 'recruiter';
+
+    if (fullName) {
+        document.getElementById('userFullName').textContent = fullName;
+    }
+
+    // Handle logout (isolated to recruiter)
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            Auth.logout('recruiter');
+        });
+    }
+
+    // Load existing jobs
+    loadJobs();
+
+    // Publish job button
+    document.getElementById('publishJobBtn').addEventListener('click', publishJob);
+
+    // Clear form button
+    document.getElementById('clearFormBtn').addEventListener('click', clearForm);
+
+    // Filter events
+    document.getElementById('jobSearchFilter').addEventListener('input', debounce(loadJobs, 300));
+    document.getElementById('jobStatusFilter').addEventListener('change', loadJobs);
+
+    // Modal close events
+    document.getElementById('closeEditModal').addEventListener('click', () => {
+        document.getElementById('editJobModal').style.display = 'none';
+    });
+    document.getElementById('cancelEditBtn').addEventListener('click', () => {
+        document.getElementById('editJobModal').style.display = 'none';
+    });
+    document.getElementById('closeViewModal').addEventListener('click', () => {
+        document.getElementById('viewJobModal').style.display = 'none';
+    });
+    document.getElementById('closeViewBtn').addEventListener('click', () => {
+        document.getElementById('viewJobModal').style.display = 'none';
+    });
+    document.getElementById('saveEditBtn').addEventListener('click', saveJobEdit);
+
+    // Close modals on overlay click
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+        overlay.addEventListener('click', function(e) {
+            if (e.target === this) this.style.display = 'none';
+        });
+    });
+});
+
+// Debounce utility
+function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+}
+
+// Publish a new job
+async function publishJob() {
+    const title = document.getElementById('jobTitle').value.trim();
+    const description = document.getElementById('jobDescription').value.trim();
+
+    if (!title) {
+        showToast('Please enter a job title.', 'error');
+        document.getElementById('jobTitle').focus();
+        return;
+    }
+    if (!description) {
+        showToast('Please enter a job description.', 'error');
+        document.getElementById('jobDescription').focus();
+        return;
+    }
+
+    const jobData = {
+        title: title,
+        description: description,
+        required_skills: document.getElementById('requiredSkills').value.trim(),
+        experience_required: document.getElementById('experienceRequired').value.trim(),
+        education_required: document.getElementById('educationRequired').value.trim(),
+        location: document.getElementById('jobLocation').value.trim(),
+        employment_type: document.getElementById('employmentType').value,
+        salary_min: parseInt(document.getElementById('salaryMin').value) || null,
+        salary_max: parseInt(document.getElementById('salaryMax').value) || null,
+        requirements: document.getElementById('additionalRequirements').value.trim(),
+        status: 'open',
+        created_by: localStorage.getItem('userId') || 'recruiter'
+    };
+
+    const btn = document.getElementById('publishJobBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="btn-icon">⏳</span> Publishing...';
+
+    try {
+        const response = await fetch('/api/jobs', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(jobData)
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            showToast('Job posted successfully! It is now visible to all candidates.', 'success');
+            clearForm();
+            loadJobs();
+            // Scroll to job listings
+            document.getElementById('jobListingsSection').scrollIntoView({ behavior: 'smooth' });
+        } else {
+            showToast(result.error || 'Failed to publish job.', 'error');
+        }
+    } catch (error) {
+        console.error('Error publishing job:', error);
+        showToast('Network error. Please try again.', 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span class="btn-icon">📋</span> Publish Job Posting';
+    }
+}
+
+// Clear the form
+function clearForm() {
+    document.getElementById('jobTitle').value = '';
+    document.getElementById('jobDescription').value = '';
+    document.getElementById('requiredSkills').value = '';
+    document.getElementById('experienceRequired').value = '';
+    document.getElementById('educationRequired').value = '';
+    document.getElementById('jobLocation').value = '';
+    document.getElementById('employmentType').value = 'full-time';
+    document.getElementById('salaryMin').value = '';
+    document.getElementById('salaryMax').value = '';
+    document.getElementById('additionalRequirements').value = '';
+}
+
+// Load all jobs
+async function loadJobs() {
+    const searchQuery = document.getElementById('jobSearchFilter').value.trim();
+    const statusFilter = document.getElementById('jobStatusFilter').value;
+
+    let url = '/api/jobs?per_page=50';
+    if (searchQuery) url += `&search=${encodeURIComponent(searchQuery)}`;
+    if (statusFilter) url += `&status=${statusFilter}`;
+
+    const jobsList = document.getElementById('jobsList');
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        document.getElementById('jobCount').textContent = data.total || 0;
+
+        if (!data.jobs || data.jobs.length === 0) {
+            jobsList.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">📋</div>
+                    <p>No job postings yet</p>
+                    <p class="empty-sub">Create your first job posting above to start attracting candidates.</p>
+                </div>
+            `;
+            return;
+        }
+
+        jobsList.innerHTML = '';
+        data.jobs.forEach((job, index) => {
+            const card = createJobCard(job, index);
+            jobsList.appendChild(card);
+        });
+
+    } catch (error) {
+        console.error('Error loading jobs:', error);
+        jobsList.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">⚠️</div>
+                <p>Unable to load jobs</p>
+                <p class="empty-sub">Please check your connection and try again.</p>
+            </div>
+        `;
+    }
+}
+
+// Create a job card element
+function createJobCard(job, index) {
+    const card = document.createElement('div');
+    card.className = 'job-card animate-fade-in-up';
+    card.style.animationDelay = `${index * 0.05}s`;
+
+    const statusClass = job.status === 'open' ? 'status-open' :
+                        job.status === 'paused' ? 'status-paused' : 'status-closed';
+
+    const postedDate = job.created_at ? formatTimeAgo(job.created_at) : 'Recently';
+    const salaryRange = (job.salary_min && job.salary_max)
+        ? `$${(job.salary_min/1000).toFixed(0)}K – $${(job.salary_max/1000).toFixed(0)}K`
+        : (job.salary_min ? `From $${(job.salary_min/1000).toFixed(0)}K` : '');
+
+    const skillsHtml = job.required_skills
+        ? job.required_skills.split(',').slice(0, 5).map(s =>
+            `<span class="skill-tag">${s.trim()}</span>`
+        ).join('')
+        : '';
+
+    card.innerHTML = `
+        <div class="job-card-top">
+            <div class="job-card-title-row">
+                <h3 class="job-card-title">${escapeHtml(job.title)}</h3>
+                <span class="status-badge ${statusClass}">${capitalizeFirst(job.status || 'open')}</span>
+            </div>
+            <div class="job-card-meta">
+                ${job.location ? `<span class="meta-item">📍 ${escapeHtml(job.location)}</span>` : ''}
+                ${job.employment_type ? `<span class="meta-item">💼 ${capitalizeFirst(job.employment_type)}</span>` : ''}
+                ${salaryRange ? `<span class="meta-item">💰 ${salaryRange}</span>` : ''}
+                <span class="meta-item">📅 ${postedDate}</span>
+            </div>
+        </div>
+        <div class="job-card-body">
+            <p class="job-card-desc">${escapeHtml((job.description || '').substring(0, 200))}${(job.description || '').length > 200 ? '...' : ''}</p>
+            ${skillsHtml ? `<div class="job-card-skills">${skillsHtml}</div>` : ''}
+        </div>
+        <div class="job-card-bottom">
+            <div class="job-card-stats">
+                <span class="applicant-count">
+                    <span class="count-badge">${job.applicant_count || 0}</span> Applicants
+                </span>
+            </div>
+            <div class="job-card-actions">
+                <button class="btn-ghost btn-small" onclick="viewJobDetail('${job.id}')">View Details</button>
+                <button class="btn-ghost btn-small" onclick="editJob('${job.id}')">Edit</button>
+                <button class="btn-ghost btn-small btn-danger" onclick="deleteJob('${job.id}', '${escapeHtml(job.title)}')">Delete</button>
+            </div>
+        </div>
+    `;
+
+    return card;
+}
+
+// View job detail
+async function viewJobDetail(jobId) {
+    try {
+        const response = await fetch(`/api/jobs/${jobId}`);
+        const job = await response.json();
+
+        document.getElementById('viewJobTitle').textContent = job.title;
+
+        const salaryRange = (job.salary_min && job.salary_max)
+            ? `$${Number(job.salary_min).toLocaleString()} – $${Number(job.salary_max).toLocaleString()}`
+            : (job.salary_min ? `From $${Number(job.salary_min).toLocaleString()}` : 'Not specified');
+
+        document.getElementById('viewJobBody').innerHTML = `
+            <div class="job-detail-grid">
+                <div class="job-detail-main">
+                    <div class="detail-field">
+                        <h4>Job Description</h4>
+                        <p class="detail-jd">${escapeHtml(job.description || 'No description provided').replace(/\n/g, '<br>')}</p>
+                    </div>
+                    ${job.requirements ? `
+                    <div class="detail-field">
+                        <h4>Additional Requirements</h4>
+                        <p>${escapeHtml(job.requirements).replace(/\n/g, '<br>')}</p>
+                    </div>
+                    ` : ''}
+                </div>
+                <div class="job-detail-sidebar">
+                    <div class="detail-field">
+                        <h4>Location</h4>
+                        <p>${escapeHtml(job.location || 'Not specified')}</p>
+                    </div>
+                    <div class="detail-field">
+                        <h4>Employment Type</h4>
+                        <p>${capitalizeFirst(job.employment_type || 'Not specified')}</p>
+                    </div>
+                    <div class="detail-field">
+                        <h4>Required Skills</h4>
+                        <p>${escapeHtml(job.required_skills || 'Not specified')}</p>
+                    </div>
+                    <div class="detail-field">
+                        <h4>Experience</h4>
+                        <p>${escapeHtml(job.experience_required || 'Not specified')}</p>
+                    </div>
+                    <div class="detail-field">
+                        <h4>Education</h4>
+                        <p>${escapeHtml(job.education_required || 'Not specified')}</p>
+                    </div>
+                    <div class="detail-field">
+                        <h4>Salary Range</h4>
+                        <p>${salaryRange}</p>
+                    </div>
+                    <div class="detail-field">
+                        <h4>Status</h4>
+                        <span class="status-badge status-${job.status || 'open'}">${capitalizeFirst(job.status || 'open')}</span>
+                    </div>
+                    <div class="detail-field">
+                        <h4>Applicants</h4>
+                        <p><strong>${(job.applicants || []).length}</strong> candidates applied</p>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.getElementById('viewJobModal').style.display = 'flex';
+
+    } catch (error) {
+        console.error('Error viewing job:', error);
+        showToast('Failed to load job details.', 'error');
+    }
+}
+
+// Edit job
+async function editJob(jobId) {
+    try {
+        const response = await fetch(`/api/jobs/${jobId}`);
+        const job = await response.json();
+
+        document.getElementById('editJobId').value = jobId;
+        document.getElementById('editJobTitle').value = job.title || '';
+        document.getElementById('editJobDescription').value = job.description || '';
+        document.getElementById('editJobLocation').value = job.location || '';
+        document.getElementById('editEmploymentType').value = job.employment_type || 'full-time';
+        document.getElementById('editRequiredSkills').value = job.required_skills || '';
+        document.getElementById('editJobStatus').value = job.status || 'open';
+
+        document.getElementById('editJobModal').style.display = 'flex';
+
+    } catch (error) {
+        console.error('Error loading job for edit:', error);
+        showToast('Failed to load job for editing.', 'error');
+    }
+}
+
+// Save job edit
+async function saveJobEdit() {
+    const jobId = document.getElementById('editJobId').value;
+    const updateData = {
+        title: document.getElementById('editJobTitle').value.trim(),
+        description: document.getElementById('editJobDescription').value.trim(),
+        location: document.getElementById('editJobLocation').value.trim(),
+        employment_type: document.getElementById('editEmploymentType').value,
+        required_skills: document.getElementById('editRequiredSkills').value.trim(),
+        status: document.getElementById('editJobStatus').value
+    };
+
+    try {
+        const response = await fetch(`/api/jobs/${jobId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updateData)
+        });
+
+        if (response.ok) {
+            showToast('Job updated successfully!', 'success');
+            document.getElementById('editJobModal').style.display = 'none';
+            loadJobs();
+        } else {
+            const result = await response.json();
+            showToast(result.error || 'Failed to update job.', 'error');
+        }
+    } catch (error) {
+        console.error('Error saving job edit:', error);
+        showToast('Network error. Please try again.', 'error');
+    }
+}
+
+// Delete job
+async function deleteJob(jobId, title) {
+    if (!confirm(`Are you sure you want to delete "${title}"? This will also remove all associated applications.`)) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/jobs/${jobId}`, { method: 'DELETE' });
+
+        if (response.ok) {
+            showToast('Job deleted successfully.', 'success');
+            loadJobs();
+        } else {
+            showToast('Failed to delete job.', 'error');
+        }
+    } catch (error) {
+        console.error('Error deleting job:', error);
+        showToast('Network error. Please try again.', 'error');
+    }
+}
+
+// Toast notification
+function showToast(message, type = 'info') {
+    const existing = document.querySelector('.toast');
+    if (existing) existing.remove();
+
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.innerHTML = `
+        <span class="toast-icon">${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span>
+        <span class="toast-message">${message}</span>
+    `;
+    document.body.appendChild(toast);
+
+    requestAnimationFrame(() => toast.classList.add('toast-visible'));
+    setTimeout(() => {
+        toast.classList.remove('toast-visible');
+        setTimeout(() => toast.remove(), 300);
+    }, 4000);
+}
+
+// Utility functions
+function escapeHtml(str) {
+    if (!str) return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+function capitalizeFirst(str) {
+    if (!str) return '';
+    return str.charAt(0).toUpperCase() + str.slice(1).replace(/-/g, ' ');
+}
+
+function formatTimeAgo(dateString) {
+    if (!dateString) return 'Just now';
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffMins = Math.round(diffMs / 60000);
+    const diffHours = Math.round(diffMs / 3600000);
+    const diffDays = Math.round(diffMs / 86400000);
+
+    if (diffDays > 0) return diffDays === 1 ? 'Yesterday' : `${diffDays} days ago`;
+    if (diffHours > 0) return diffHours === 1 ? 'An hour ago' : `${diffHours} hours ago`;
+    if (diffMins > 0) return diffMins === 1 ? 'A minute ago' : `${diffMins} minutes ago`;
+    return 'Just now';
+}
+</script>
+</body>
+</html>

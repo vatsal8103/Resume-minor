@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Document Authenticator — Résumé Intelligence</title>
+    <meta name="description" content="AI & OCR-powered credential verification and live network document authentication engine for recruiters.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+Pro:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        .authenticator-grid {
+            display: grid;
+            grid-template-columns: 390px 1fr;
+            gap: 28px;
+            margin-top: 24px;
+        }
+        @media (max-width: 1100px) {
+            .authenticator-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .upload-card {
+            background: var(--paper);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+            height: fit-content;
+        }
+
+        /* Candidate Submissions Drawer */
+        .submissions-box {
+            background: var(--paper-raised);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+            max-height: 220px;
+            overflow-y: auto;
+        }
+        .submission-item {
+            padding: 10px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--line);
+            background: var(--paper);
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .submission-item:last-child {
+            margin-bottom: 0;
+        }
+        .submission-item:hover, .submission-item.active {
+            border-color: var(--primary);
+            background: rgba(139, 115, 85, 0.06);
+            transform: translateY(-1px);
+        }
+
+        .demo-samples-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px dashed var(--line);
+        }
+        .demo-chip-btn {
+            background: var(--paper-raised);
+            border: 1px solid var(--line);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            cursor: pointer;
+            color: var(--slate);
+            font-weight: 600;
+            transition: all 0.15s ease;
+        }
+        .demo-chip-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--paper);
+            transform: translateY(-1px);
+        }
+
+        /* Results Panel */
+        .verification-results-panel {
+            background: var(--paper);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 26px;
+            box-shadow: var(--shadow-sm);
+            min-height: 520px;
+        }
+
+        /* Real vs Forged Hero Banner */
+        .verdict-hero-card {
+            border-radius: 12px;
+            padding: 24px 26px;
+            margin-bottom: 22px;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid;
+            box-shadow: var(--shadow-sm);
+        }
+        .verdict-hero-card.verdict-real {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0.02) 100%);
+            border-color: #10b981;
+        }
+        .verdict-hero-card.verdict-forged {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(239, 68, 68, 0.02) 100%);
+            border-color: #ef4444;
+        }
+        .verdict-hero-card.verdict-invalid {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(245, 158, 11, 0.02) 100%);
+            border-color: #f59e0b;
+        }
+        .verdict-badge-big {
+            font-size: 1.45rem;
+            font-weight: 800;
+            font-family: var(--font-display);
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .verdict-real .verdict-badge-big { color: #065f46; }
+        .verdict-invalid .verdict-badge-big { color: #b45309; }
+        .verdict-forged .verdict-badge-big { color: #991b1b; }
+
+        .model-arch-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            background: rgba(0,0,0,0.06);
+            color: var(--slate);
+        }
+
+        /* Recruiter Privacy Notice Strip */
+        .privacy-shield-notice {
+            background: #111827;
+            color: #f3f4f6;
+            border-radius: 8px;
+            padding: 12px 18px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 0.82rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        /* Masked Certificate Preview Card */
+        .masked-cert-box {
+            background: #fdfbf7;
+            border: 2px solid #e2d9cc;
+            border-radius: 10px;
+            padding: 24px;
+            font-family: 'Playfair Display', Georgia, serif;
+            color: #2b2b2b;
+            margin-bottom: 22px;
+            box-shadow: inset 0 0 25px rgba(0,0,0,0.02);
+            position: relative;
+        }
+        .masked-cert-box::before {
+            content: "🔒 RECRUITER PRIVACY MASK ACTIVE • SENSITIVE PII REDACTED";
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #8B7355;
+            background: rgba(139, 115, 85, 0.1);
+            padding: 5px 12px;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        .pii-mask-badge {
+            background: #111827;
+            color: #f9fafb;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+            font-weight: 700;
+            display: inline-block;
+            letter-spacing: 0.5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .serial-mask-badge {
+            background: rgba(139, 115, 85, 0.15);
+            color: #8B7355;
+            border: 1px dashed #8B7355;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: inline-block;
+        }
+        .masked-cert-line {
+            margin: 6px 0;
+            font-size: 0.94rem;
+            line-height: 1.6;
+        }
+
+        /* Indicators Checklist Grid */
+        .indicators-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+        @media (max-width: 800px) {
+            .indicators-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .indicator-col {
+            background: var(--paper-raised);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 16px;
+        }
+        .indicator-item {
+            font-size: 0.84rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            line-height: 1.4;
+        }
+        .indicator-item:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Live Network Check Box */
+        .net-status-box {
+            background: var(--paper-raised);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .net-ping-indicator {
+            font-size: 0.82rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+        .net-ping-live {
+            background: rgba(16, 185, 129, 0.15);
+            color: #065f46;
+        }
+        .net-ping-fail {
+            background: rgba(239, 68, 68, 0.15);
+            color: #b91c1c;
+        }
+
+        .history-table-wrap {
+            margin-top: 36px;
+            background: var(--paper);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 24px;
+        }
+        .entities-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        .entities-table th, .entities-table td {
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--line);
+        }
+        .entities-table th {
+            background: var(--paper-raised);
+            color: var(--slate);
+            font-weight: 600;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+<div id="smooth-scroll">
+    <header class="topbar">
+        <div class="topbar-left">
+            <span class="wordmark">Résumé Intelligence</span>
+            <span class="case-tag">Document Authenticator</span>
+        </div>
+        <div class="topbar-right">
+            <div class="user-info">
+                <span id="userFullName">Recruiter</span>
+            </div>
+            <button id="logoutBtn" class="btn-ghost">Logout</button>
+        </div>
+    </header>
+
+    <main class="shell">
+        <nav class="sidebar">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="recruiter-dashboard.html">Overview</a>
+                </li>
+                <li class="nav-item">
+                    <a href="manage-jobs.html">Manage Jobs</a>
+                </li>
+                <li class="nav-item">
+                    <a href="manage-candidates.html">Candidates</a>
+                </li>
+                <li class="nav-item active">
+                    <a href="document-authenticator.html">Audit & Verification</a>
+                </li>
+                <li class="nav-item">
+                    <a href="analytics.html">Analytics</a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html">Settings</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="main-content">
+            <!-- Header Banner -->
+            <section class="section" style="padding-bottom: 0;">
+                <div class="section-header">
+                    <h2>Multi-Modal Document Authenticity & Credential Verification</h2>
+                    <p>
+                        Audit candidate-submitted credentials under strict privacy protection. Original documents are masked to protect candidate PII; the AI model evaluates whether the credential is <strong>REAL</strong> or <strong>FORGED</strong>.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Main Authenticator Grid -->
+            <div class="authenticator-grid">
+                <!-- Left Column: Candidate Submissions & Model Selector -->
+                <div class="upload-card">
+                    <h3 style="margin-top: 0; font-size: 1.15rem; color: var(--ink);">Select Candidate Credential</h3>
+                    <p style="font-size: 0.82rem; color: var(--slate); margin: 4px 0 14px;">
+                        Choose a candidate submission below to inspect its masked version.
+                    </p>
+
+                    <!-- Submissions Drawer -->
+                    <label style="font-weight: 600; font-size: 0.84rem; display: block; margin-bottom: 4px;">Candidate Submissions:</label>
+                    <div class="submissions-box" id="submissionsContainer">
+                        <div style="text-align: center; padding: 20px; color: var(--slate); font-size: 0.82rem;">Loading candidate credentials...</div>
+                    </div>
+
+                    <!-- AI Verification Engine Selection -->
+                    <div class="form-group" style="margin-top: 16px;">
+                        <label for="modelEngineSelect" style="font-weight: 600; font-size: 0.84rem; display: block; margin-bottom: 4px;">
+                            Model Architecture:
+                        </label>
+                        <select id="modelEngineSelect" onchange="handleEngineChange()" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--line); font-size: 0.84rem;">
+                            <option value="huggingface">Hugging Face MiniLM Neural Verification [Local / Fast]</option>
+                            <option value="gemini">Google Gemini Multimodal Verification [LLM Audit]</option>
+                        </select>
+                    </div>
+
+                    <!-- Optional Gemini API Key Field -->
+                    <div id="geminiApiKeyGroup" style="display: none; margin-top: 10px; background: rgba(139, 115, 85, 0.05); padding: 12px; border-radius: 8px; border: 1px dashed var(--line);">
+                        <label for="geminiApiKeyInput" style="font-weight: 600; font-size: 0.78rem; display: block; margin-bottom: 4px; color: var(--ink);">
+                            Gemini API Key (Optional):
+                        </label>
+                        <input type="password" id="geminiApiKeyInput" placeholder="AIzaSy... (or set GEMINI_API_KEY in env)" style="width: 100%; padding: 8px 10px; border-radius: 6px; border: 1px solid var(--line); font-family: var(--font-mono); font-size: 0.8rem;" oninput="saveApiKey(this.value)" />
+                        <span style="font-size: 0.72rem; color: var(--slate); display: block; margin-top: 4px;">Uses local model if blank. Saved in session only.</span>
+                    </div>
+
+                    <button class="btn-primary" id="auditBtn" style="width: 100%; padding: 12px; font-weight: 600; margin-top: 18px;" onclick="runAuditOnSelected()">
+                        Audit Masked Credential with Model
+                    </button>
+
+                    <!-- Quick Demo Samples -->
+                    <div class="demo-samples-row">
+                        <span style="font-size: 0.76rem; color: var(--slate); width: 100%; font-weight: 600;">Sample Submissions:</span>
+                        <button type="button" class="demo-chip-btn" onclick="selectSampleByName('Alexander Vance')">AWS Certificate (Real)</button>
+                        <button type="button" class="demo-chip-btn" onclick="selectSampleByName('Sarah Jenkins')">Stanford Degree (Real)</button>
+                        <button type="button" class="demo-chip-btn" onclick="selectSampleByName('Michael Stone')">Canva Template (Forged)</button>
+                    </div>
+                </div>
+
+                <!-- Right Column: Verification Results Panel -->
+                <div class="verification-results-panel" id="resultsPanel">
+                    <div id="resultsPlaceholder" style="text-align: center; padding: 110px 20px; color: var(--slate);">
+                        <div style="font-size: 3.2rem; margin-bottom: 12px; opacity: 0.7;">🛡️</div>
+                        <h3 style="margin: 0; color: var(--ink);">Select a Candidate Credential</h3>
+                        <p style="font-size: 0.88rem; max-width: 440px; margin: 8px auto 0;">
+                            Choose a candidate submission on the left to inspect the privacy-masked document and have the model answer whether it is <strong>REAL</strong> or <strong>FORGED</strong>.
+                        </p>
+                    </div>
+
+                    <div id="resultsLoading" style="display: none; text-align: center; padding: 110px 20px;">
+                        <div class="spinner" style="margin: 0 auto 16px;"></div>
+                        <h3 style="margin: 0; color: var(--ink);">Running Model Inspection...</h3>
+                        <p style="font-size: 0.88rem; color: var(--slate); margin-top: 8px;">
+                            Evaluating container forensics, issuer accreditation, and testing for forgery signatures...
+                        </p>
+                    </div>
+
+                    <div id="resultsContent" style="display: none;">
+                        <!-- Results populated dynamically by renderResults() -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Historical Audit Records Section -->
+            <div class="history-table-wrap">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h3 style="margin: 0; font-size: 1.15rem; color: var(--ink);">📜 Document Authentication Audit History</h3>
+                    <button class="btn-ghost btn-small" onclick="loadHistory()">🔄 Refresh History</button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="entities-table" id="historyTable">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Candidate</th>
+                                <th>Document</th>
+                                <th>Model Category</th>
+                                <th>Model Answer</th>
+                                <th>Confidence</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTbody">
+                            <tr>
+                                <td colspan="6" style="text-align: center; color: var(--slate); padding: 20px;">Loading verification history...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+let submittedDocs = [];
+let selectedDocId = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+    const user = Auth.getUser('recruiter');
+    const userName = (user && user.fullName) ? user.fullName : (localStorage.getItem('fullName') || 'Recruiter');
+    document.getElementById('userFullName').textContent = userName;
+
+    // Restore saved API key if exists
+    const savedKey = sessionStorage.getItem('gemini_api_key');
+    if (savedKey) {
+        const input = document.getElementById('geminiApiKeyInput');
+        if (input) input.value = savedKey;
+    }
+
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            Auth.logout('recruiter');
+        });
+    }
+
+    loadCandidateSubmissions();
+    loadHistory();
+});
+
+function handleEngineChange() {
+    const engine = document.getElementById('modelEngineSelect').value;
+    const group = document.getElementById('geminiApiKeyGroup');
+    if (group) {
+        group.style.display = (engine === 'gemini') ? 'block' : 'none';
+    }
+}
+
+function saveApiKey(val) {
+    if (val && val.trim()) {
+        sessionStorage.setItem('gemini_api_key', val.trim());
+    } else {
+        sessionStorage.removeItem('gemini_api_key');
+    }
+}
+
+async function loadCandidateSubmissions() {
+    try {
+        const res = await fetch('/api/recruiter/candidate-documents');
+        if (!res.ok) throw new Error('Failed to fetch candidate documents');
+        const data = await res.json();
+        submittedDocs = data.documents || [];
+        const container = document.getElementById('submissionsContainer');
+
+        if (submittedDocs.length === 0) {
+            container.innerHTML = `<div style="text-align: center; padding: 18px; color: var(--slate); font-size: 0.82rem;">No candidate credentials submitted yet.</div>`;
+            return;
+        }
+
+        container.innerHTML = submittedDocs.map((doc, idx) => {
+            const isReal = doc.verdict === 'REAL';
+            const badgeColor = isReal ? '#065f46' : '#991b1b';
+            const badgeBg = isReal ? 'rgba(16, 185, 129, 0.12)' : 'rgba(239, 68, 68, 0.12)';
+            const verdictText = isReal ? '✅ REAL' : '🚨 FORGED';
+
+            return `
+                <div class="submission-item ${idx === 0 ? 'active' : ''}" onclick="selectSubmission('${escapeHtml(doc._id)}', this)">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+                        <strong style="color: var(--ink); font-size: 0.9rem;">${escapeHtml(doc.candidate_name || 'Candidate')}</strong>
+                        <span style="font-size: 0.72rem; font-weight: 700; color: ${badgeColor}; background: ${badgeBg}; padding: 2px 8px; border-radius: 12px;">
+                            ${verdictText}
+                        </span>
+                    </div>
+                    <div style="font-size: 0.78rem; color: var(--slate); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        📄 ${escapeHtml(doc.filename || 'Document')}
+                    </div>
+                    <div style="font-size: 0.72rem; color: var(--primary-dark); font-weight: 600; margin-top: 2px;">
+                        ${escapeHtml(doc.document_type || 'Official Credential')}
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // Auto-select first submission
+        if (submittedDocs.length > 0) {
+            selectSubmission(submittedDocs[0]._id, container.firstElementChild);
+        }
+
+    } catch (e) {
+        console.error('Error loading submissions:', e);
+        document.getElementById('submissionsContainer').innerHTML = `<div style="color: #ef4444; padding: 10px; font-size: 0.8rem;">Error loading submissions</div>`;
+    }
+}
+
+function selectSubmission(docId, el) {
+    selectedDocId = docId;
+    document.querySelectorAll('.submission-item').forEach(item => item.classList.remove('active'));
+    if (el) el.classList.add('active');
+
+    const doc = submittedDocs.find(d => String(d._id) === String(docId));
+    if (doc) {
+        // Run audit on selected document
+        runAuditOnSelected();
+    }
+}
+
+function selectSampleByName(candidateName) {
+    const doc = submittedDocs.find(d => (d.candidate_name || '').toLowerCase().includes(candidateName.toLowerCase()));
+    if (doc) {
+        const items = document.querySelectorAll('.submission-item');
+        submittedDocs.forEach((d, idx) => {
+            if (String(d._id) === String(doc._id) && items[idx]) {
+                selectSubmission(doc._id, items[idx]);
+            }
+        });
+    }
+}
+
+async function runAuditOnSelected() {
+    if (!selectedDocId) {
+        alert('Please select a candidate submission to audit.');
+        return;
+    }
+
+    const doc = submittedDocs.find(d => String(d._id) === String(selectedDocId));
+    if (!doc) return;
+
+    const modelEngine = document.getElementById('modelEngineSelect') ? document.getElementById('modelEngineSelect').value : 'huggingface';
+    const apiKey = document.getElementById('geminiApiKeyInput') ? document.getElementById('geminiApiKeyInput').value.trim() : '';
+
+    document.getElementById('resultsPlaceholder').style.display = 'none';
+    document.getElementById('resultsContent').style.display = 'none';
+    document.getElementById('resultsLoading').style.display = 'block';
+
+    try {
+        const res = await fetch('/api/recruiter/audit-masked-document', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                document_id: selectedDocId,
+                model_engine: modelEngine,
+                api_key: apiKey
+            })
+        });
+
+        if (!res.ok) {
+            const errData = await res.json().catch(() => ({}));
+            throw new Error(errData.error || 'Audit request failed');
+        }
+
+        const data = await res.json();
+        renderAuditResults(data.report, data);
+        loadHistory();
+    } catch (err) {
+        document.getElementById('resultsLoading').style.display = 'none';
+        document.getElementById('resultsContent').style.display = 'block';
+        document.getElementById('resultsContent').innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">⚠️</div>
+                <h3>Audit Error</h3>
+                <p class="empty-sub">${escapeHtml(err.message)}</p>
+                <button class="btn-primary" onclick="runAuditOnSelected()">Retry</button>
+            </div>
+        `;
+    }
+}
+
+function renderAuditResults(report, docData) {
+    document.getElementById('resultsLoading').style.display = 'none';
+    const content = document.getElementById('resultsContent');
+    content.style.display = 'block';
+
+    const isReal = report.verdict === 'REAL';
+    const isInvalid = report.verdict === 'INVALID_DOCUMENT';
+    let verdictTitle = '🚨 FORGED / TAMPERED DOCUMENT';
+    let heroClass = 'verdict-forged';
+    let verdictHeadline = 'DOCUMENT IS FORGED (TAMPERED / UNVERIFIED)';
+    let verdictColor = '#991b1b';
+    let iconChar = '🚨';
+
+    if (isReal) {
+        verdictTitle = '✅ REAL / AUTHENTIC CREDENTIAL';
+        heroClass = 'verdict-real';
+        verdictHeadline = 'DOCUMENT IS REAL (AUTHENTIC CREDENTIAL)';
+        verdictColor = '#065f46';
+        iconChar = '🛡️';
+    } else if (isInvalid) {
+        verdictTitle = '⚠️ REJECTED / NOT A CREDENTIAL';
+        heroClass = 'verdict-invalid';
+        verdictHeadline = 'DOCUMENT IS REJECTED (RANDOM PAPER / UNSTRUCTURED NOTES)';
+        verdictColor = '#b45309';
+        iconChar = '⚠️';
+    }
+
+    const modelName = report.model_name || 'sentence-transformers/all-MiniLM-L6-v2';
+    const modelType = report.model_type || 'Hugging Face Neural Semantic Classifier';
+    const conf = report.model_confidence ? `${report.model_confidence}%` : 'High';
+    const explanation = report.model_reasoning || report.headline || (isReal ? 'Verified as authentic credential.' : 'Flagged as forged/tampered document.');
+    const authenticityList = report.authenticity_indicators || [];
+    const forgeryList = report.forgery_indicators || [];
+    const net = report.network_verification || {};
+    const webV = report.web_verification || {};
+    const maskedHtml = docData.masked_preview_html || `<pre style="font-family: var(--font-mono); font-size: 0.85rem;">${escapeHtml(docData.masked_text || 'No text')}</pre>`;
+    const redactedFields = docData.redacted_fields || ["Phone", "Email", "Address", "Serial Hash"];
+
+    let html = `
+        <!-- Recruiter Privacy Shield Banner -->
+        <div class="privacy-shield-notice">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 1.2rem;">🔒</span>
+                <span><strong>Candidate Privacy Shield Active:</strong> Recruiter Masked View Enforced. Original unmasked document is strictly protected.</span>
+            </div>
+            <span style="font-family: var(--font-mono); font-size: 0.72rem; color: #10b981; font-weight: 700;">PII REDACTED</span>
+        </div>
+
+        <!-- Big Real vs Forged Verdict Hero Card -->
+        <div class="verdict-hero-card ${heroClass}">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px;">
+                <div>
+                    <span class="model-arch-tag">
+                        🧠 ${escapeHtml(modelName)} &bull; ${escapeHtml(modelType)}
+                    </span>
+                    <div class="verdict-badge-big">
+                        ${verdictTitle}
+                    </div>
+                    <div style="font-size: 0.95rem; font-weight: 600; color: var(--ink); margin-top: 2px;">
+                        Candidate: <strong>${escapeHtml(docData.candidate_name || 'Candidate')}</strong> &bull; Document: <em>${escapeHtml(docData.filename || 'Credential')}</em>
+                    </div>
+                </div>
+
+                <div style="text-align: right;">
+                    <span style="font-size: 0.76rem; color: var(--slate); font-weight: 700; text-transform: uppercase; display: block;">Model Confidence</span>
+                    <span style="font-size: 1.6rem; font-weight: 800; font-family: var(--font-display); color: ${verdictColor};">
+                        ${conf}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Direct Model Answer Highlight Banner -->
+            <div style="background: ${isReal ? 'rgba(16, 185, 129, 0.14)' : (isInvalid ? 'rgba(245, 158, 11, 0.14)' : 'rgba(239, 68, 68, 0.14)')}; border: 1.5px solid ${isReal ? '#10b981' : (isInvalid ? '#f59e0b' : '#ef4444')}; border-radius: 8px; padding: 12px 16px; margin-top: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <span style="font-size: 1.8rem;">${iconChar}</span>
+                    <div>
+                        <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; color: ${verdictColor};">Direct Model Verdict</div>
+                        <div style="font-size: 1.25rem; font-weight: 800; font-family: var(--font-display); color: ${verdictColor};">
+                            ${verdictHeadline}
+                        </div>
+                    </div>
+                </div>
+                <span style="font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; padding: 4px 10px; border-radius: 6px; background: rgba(0,0,0,0.06); color: var(--ink);">
+                    Detected: ${escapeHtml(report.predicted_category || 'Official Credential')}
+                </span>
+            </div>
+
+            <div style="margin-top: 14px; padding-top: 12px; border-top: 1px dashed rgba(0,0,0,0.1); font-size: 0.88rem; line-height: 1.5; color: var(--ink);">
+                <strong>💡 Model Forensic Verdict Explanation:</strong> ${escapeHtml(explanation)}
+            </div>
+        </div>
+
+        <!-- Masked Document Certificate View (What Recruiters See) -->
+        <h4 style="margin: 0 0 10px 0; font-size: 0.88rem; color: var(--ink); text-transform: uppercase; letter-spacing: 0.5px;">
+            📄 Candidate Sanitized Masked Document (Recruiter View)
+        </h4>
+        <div class="masked-cert-box">
+            ${maskedHtml}
+            <div style="margin-top: 16px; padding-top: 10px; border-top: 1px dashed #d1c7b7; display: flex; justify-content: space-between; align-items: center; font-size: 0.76rem; color: var(--slate); font-family: var(--font-mono);">
+                <span>Redacted PII: ${escapeHtml(redactedFields.join(', '))}</span>
+                <span>Original Raw Document: <strong>Inaccessible to Recruiter</strong></span>
+            </div>
+        </div>
+
+        <!-- Authenticity vs Forgery Breakdown Grid -->
+        <h4 style="margin: 0 0 10px 0; font-size: 0.88rem; color: var(--ink); text-transform: uppercase; letter-spacing: 0.5px;">
+            🔍 Model Forensic Inspection Indicators
+        </h4>
+        <div class="indicators-grid">
+            <div class="indicator-col" style="border-left: 4px solid #10b981;">
+                <h5 style="margin: 0 0 10px 0; font-size: 0.84rem; color: #065f46; text-transform: uppercase;">
+                    ✅ Authenticity Indicators (${authenticityList.length})
+                </h5>
+                ${authenticityList.length > 0 ? authenticityList.map(item => `
+                    <div class="indicator-item">
+                        <span style="color: #10b981; font-weight: bold;">✔</span>
+                        <span>${escapeHtml(item)}</span>
+                    </div>
+                `).join('') : '<div style="font-size: 0.8rem; color: var(--slate);">No official authenticity markers verified.</div>'}
+            </div>
+
+            <div class="indicator-col" style="border-left: 4px solid #ef4444;">
+                <h5 style="margin: 0 0 10px 0; font-size: 0.84rem; color: #991b1b; text-transform: uppercase;">
+                    🚨 Forgery & Tamper Indicators (${forgeryList.length})
+                </h5>
+                ${forgeryList.length > 0 ? forgeryList.map(item => `
+                    <div class="indicator-item">
+                        <span style="color: #ef4444; font-weight: bold;">✘</span>
+                        <span>${escapeHtml(item)}</span>
+                    </div>
+                `).join('') : '<div style="font-size: 0.8rem; color: #065f46;">✅ Zero tampering or graphic editor forgery signatures detected.</div>'}
+            </div>
+        </div>
+    `;
+
+    // Live Network Online Check (Real-time DNS & HTTP probe)
+    if (net && net.performed) {
+        const isLive = net.is_live;
+        html += `
+            <div class="net-status-box">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <span style="font-size: 1.4rem;">🌐</span>
+                    <div>
+                        <div style="font-size: 0.76rem; font-weight: 700; color: var(--slate); text-transform: uppercase;">
+                            Authority Online Verification Endpoint
+                        </div>
+                        <a href="${escapeHtml(net.target)}" target="_blank" style="font-weight: 600; font-size: 0.88rem; color: var(--primary); text-decoration: underline;">
+                            ${escapeHtml(net.target)}
+                        </a>
+                        <span style="font-size: 0.75rem; color: var(--slate); display: block; margin-top: 2px;">
+                            ${escapeHtml(net.message || '')}
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <span class="net-ping-indicator ${isLive ? 'net-ping-live' : 'net-ping-fail'}">
+                        ${escapeHtml(net.status_badge || (isLive ? 'Verified Live' : 'Unreachable'))}
+                    </span>
+                </div>
+            </div>
+        `;
+    }
+
+    // Live Web External Search Corroboration (Wikipedia & Live Web Index)
+    if (webV && webV.performed) {
+        const isWebVerified = webV.verified;
+        html += `
+            <div class="net-status-box" style="margin-top: 10px; border-left: 4px solid ${isWebVerified ? '#0284c7' : '#f59e0b'};">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <span style="font-size: 1.4rem;">🔍</span>
+                    <div>
+                        <div style="font-size: 0.76rem; font-weight: 700; color: var(--slate); text-transform: uppercase;">
+                            Live Web Search & Institutional Corroboration (${escapeHtml(webV.source || 'Web Search')})
+                        </div>
+                        <span style="font-weight: 600; font-size: 0.88rem; color: var(--ink); display: block; margin-top: 2px;">
+                            ${escapeHtml(webV.detail || '')}
+                        </span>
+                        ${webV.reference_url ? `
+                            <a href="${escapeHtml(webV.reference_url)}" target="_blank" style="display: inline-block; font-size: 0.76rem; color: var(--primary); text-decoration: underline; margin-top: 3px;">
+                                🔗 Reference: ${escapeHtml(webV.reference_title || webV.reference_url)}
+                            </a>
+                        ` : ''}
+                    </div>
+                </div>
+                <div>
+                    <span class="net-ping-indicator" style="background: ${isWebVerified ? 'rgba(2, 132, 199, 0.12)' : 'rgba(245, 158, 11, 0.12)'}; color: ${isWebVerified ? '#0369a1' : '#b45309'}; border: 1px solid ${isWebVerified ? '#7dd3fc' : '#fde68a'};">
+                        ${isWebVerified ? '🌐 Live Web Verified' : '⚠️ Web Search Unverified'}
+                    </span>
+                </div>
+            </div>
+        `;
+    }
+
+    content.innerHTML = html;
+}
+
+async function loadHistory() {
+    try {
+        const res = await fetch('/api/document-verifications');
+        if (!res.ok) return;
+        const data = await res.json();
+        const records = data.records || [];
+        const tbody = document.getElementById('historyTbody');
+
+        if (records.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--slate); padding: 20px;">No document audits recorded yet.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = records.map(r => {
+            const time = r.timestamp ? new Date(r.timestamp).toLocaleDateString() + ' ' + new Date(r.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'Recent';
+            const cat = r.predicted_category || (r.extracted_entities && r.extracted_entities.hf_classification) || (r.document_type || 'Certificate').replace('_', ' ');
+            const conf = r.model_confidence ? `${r.model_confidence}%` : (r.trust_score ? `${r.trust_score}%` : 'N/A');
+            const isReal = (r.verdict === 'REAL' || r.verdict === 'VERIFIED_AUTHENTIC');
+            const verdictText = isReal ? 'REAL' : 'FORGED';
+            const scoreColor = isReal ? '#10b981' : '#ef4444';
+            const badgeClass = isReal ? 'check-pass' : 'check-fail';
+
+            return `
+                <tr>
+                    <td style="font-size: 0.82rem; color: var(--slate);">${escapeHtml(time)}</td>
+                    <td style="font-weight: 600; color: var(--ink);">${escapeHtml(r.candidate_name || 'Candidate')}</td>
+                    <td style="font-size: 0.85rem;">${escapeHtml(r.filename || 'Document')}</td>
+                    <td style="font-size: 0.82rem; color: var(--primary-dark); font-weight: 600;">${escapeHtml(cat)}</td>
+                    <td>
+                        <span class="${badgeClass}" style="padding: 3px 8px; border-radius: 12px; font-size: 0.76rem; font-weight: 700;">
+                            ${escapeHtml(verdictText)}
+                        </span>
+                    </td>
+                    <td style="font-family: var(--font-mono); font-weight: 700; color: ${scoreColor};">${escapeHtml(conf)}</td>
+                </tr>
+            `;
+        }).join('');
+    } catch (e) {
+        console.warn('Could not load verification history:', e);
+    }
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+</script>
+</body>
+</html>

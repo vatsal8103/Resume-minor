@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recruiter Dashboard — Résumé Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+Pro:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="smooth-scroll">
+    <header class="topbar">
+        <div class="topbar-left">
+            <span class="wordmark">Résumé Intelligence</span>
+            <span class="case-tag">Recruiter Dashboard</span>
+        </div>
+        <div class="topbar-right">
+            <div class="user-info">
+                <span id="userFullName">Recruiter</span>
+            </div>
+            <button id="logoutBtn" class="btn-ghost">Logout</button>
+        </div>
+    </header>
+
+    <main class="shell">
+        <nav class="sidebar">
+            <ul class="nav-list">
+                <li class="nav-item active">
+                    <a href="recruiter-dashboard.html">Overview</a>
+                </li>
+                <li class="nav-item">
+                    <a href="manage-jobs.html">Manage Jobs</a>
+                </li>
+                <li class="nav-item">
+                    <a href="manage-candidates.html">Candidates</a>
+                </li>
+                <li class="nav-item">
+                    <a href="document-authenticator.html">Audit & Verification</a>
+                </li>
+                <li class="nav-item">
+                    <a href="analytics.html">Analytics</a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html">Settings</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="main-content">
+            <!-- Welcome Section -->
+            <section class="section welcome-section">
+                <div class="section-content">
+                    <h2>Welcome back, <span id="displayName">Recruiter</span></h2>
+                    <p class="hero-subtitle">Recruitment operations console — oversee job postings, candidate evaluations, and credential audits.</p>
+                    <div class="quick-actions">
+                        <a href="manage-jobs.html" class="btn-primary">Create New Job</a>
+                        <a href="manage-candidates.html" class="btn-outline">Review Candidates</a>
+                        <a href="document-authenticator.html" class="btn-outline">Audit Credentials</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stats Overview -->
+            <section class="section stats-overview">
+                <div class="section-header">
+                    <h2>Recruitment Overview</h2>
+                    <p>Key metrics at a glance</p>
+                </div>
+                <div class="section-content">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalJobs">-</div>
+                            <div class="stat-label">Active Jobs</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalCandidates">-</div>
+                            <div class="stat-label">Total Candidates</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="interviewsScheduled">-</div>
+                            <div class="stat-label">Interviews Scheduled</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="hireRate">-</div>
+                            <div class="stat-label">Hire Rate</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Activity -->
+            <section class="section">
+                <div class="section-header">
+                    <h2>Recent Activity</h2>
+                    <p>Latest updates from your recruitment pipeline</p>
+                </div>
+                <div class="section-content">
+                    <div class="activity-list" id="activityList">
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <span>⏳</span>
+                            </div>
+                            <div class="activity-content">
+                                <h3>Loading recent activity...</h3>
+                                <p class="activity-time">Fetching latest updates</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="section">
+                <div class="section-header">
+                    <h2>Quick Actions</h2>
+                    <p>Common tasks you can perform right now</p>
+                </div>
+                <div class="section-content">
+                    <div class="action-grid">
+                        <div class="action-card">
+                            <div class="action-icon">📋</div>
+                            <h3>Create Job Posting</h3>
+                            <p>Define requirements and start attracting candidates</p>
+                            <a href="manage-jobs.html" class="btn-ghost">Create Job →</a>
+                        </div>
+                        <div class="action-card">
+                            <div class="action-icon">👥</div>
+                            <h3>Review Candidates</h3>
+                            <p>Screen and rank applicants for your open positions</p>
+                            <a href="manage-candidates.html" class="btn-ghost">Review Candidates →</a>
+                        </div>
+                        <div class="action-card">
+                            <div class="action-icon">📊</div>
+                            <h3>View Analytics</h3>
+                            <p>Track hiring metrics and recruitment performance</p>
+                            <a href="analytics.html" class="btn-ghost">View Analytics →</a>
+                        </div>
+                        <div class="action-card">
+                            <div class="action-icon">⚙️</div>
+                            <h3>Account Settings</h3>
+                            <p>Manage your profile and preferences</p>
+                            <a href="settings.html" class="btn-ghost">Settings →</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Resume Upload -->
+            <section class="section">
+                <div class="section-header">
+                    <h2>Upload Candidate Resumes</h2>
+                    <p>Upload and parse candidate resumes to build your talent pool</p>
+                </div>
+                <div class="section-content">
+                    <!-- Resume Upload -->
+                    <div class="form-group">
+                        <label class="field-label">Upload Candidate Resumes</label>
+                        <div id="dropzone" class="dropzone">
+                            <p>Drop .pdf, .docx, or .txt files here, or click to browse.</p>
+                            <p class="dropzone-hint">Supports PDF, DOCX, and TXT formats</p>
+                            <input type="file" id="fileInput" multiple accept=".pdf,.docx,.txt" hidden />
+                        </div>
+                        <ul id="fileList" class="file-list"></ul>
+                    </div>
+
+                    <!-- Manual Add -->
+                    <details class="manual-add">
+                        <summary>Or add a candidate manually</summary>
+                        <div class="manual-form">
+                            <input type="text" id="manualName" placeholder="Candidate name" />
+                            <textarea id="manualText" placeholder="Paste resume text…" rows="4"></textarea>
+                            <button type="button" id="addManualBtn" class="btn-ghost">Add Candidate</button>
+                        </div>
+                    </details>
+
+                    <!-- Action Button -->
+                    <button type="button" id="analyzeBtn" class="btn-primary btn-wide" disabled>
+                        Analyze Candidates →
+                    </button>
+                    <p class="hint" id="hint">Add a job description and at least one candidate to begin analysis.</p>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<script src="script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Isolated Recruiter Session
+    const user = Auth.getUser('recruiter');
+    const userId = user ? user.userId : null;
+    const fullName = user ? user.fullName : 'Recruiter';
+    const role = user ? user.role : 'recruiter';
+
+    if (fullName) {
+        document.getElementById('userFullName').textContent = fullName;
+        document.getElementById('displayName').textContent = fullName;
+    }
+
+    // Handle logout (isolated to recruiter)
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            Auth.logout('recruiter');
+        });
+    }
+
+    // Load dashboard data
+    loadDashboardData();
+});
+
+async function loadDashboardData() {
+    try {
+        // Fetch stats from API in parallel
+        const [jobsResponse, candidatesResponse, statsResponse, activityResponse] = await Promise.all([
+            fetch('/api/jobs'),
+            fetch('/api/candidates'),
+            fetch('/api/applications/stats'),
+            fetch('/api/activities/recent')
+        ]);
+
+        const jobsData = await jobsResponse.json();
+        const candidatesData = await candidatesResponse.json();
+        const statsData = await statsResponse.json();
+        let activityData = [];
+        try {
+            const aJson = await activityResponse.json();
+            activityData = aJson.activities || [];
+        } catch (e) {}
+
+        // Update stats
+        document.getElementById('totalJobs').textContent = jobsData.total || (jobsData.jobs ? jobsData.jobs.length : 0);
+        document.getElementById('totalCandidates').textContent = candidatesData.total || (candidatesData.candidates ? candidatesData.candidates.length : 0);
+
+        // Calculate interviews scheduled (applications with status interview or offered)
+        const dist = statsData.status_distribution || {};
+        const interviewsScheduled = (dist['interview'] || 0) + (dist['offered'] || 0);
+        document.getElementById('interviewsScheduled').textContent = interviewsScheduled;
+
+        // Calculate hire rate (percentage of applications that resulted in hire/offer)
+        const totalApplications = statsData.total_applications || 0;
+        const hires = (dist['hired'] || 0) + (dist['accepted'] || 0) + (dist['offered'] || 0);
+        const hireRate = totalApplications > 0 ? Math.round((hires / totalApplications) * 100) : 0;
+        document.getElementById('hireRate').textContent = hireRate + '%';
+
+        // Render recent activities
+        renderRecruiterActivities(activityData);
+
+    } catch (error) {
+        console.error('Failed to load dashboard data:', error);
+        document.getElementById('totalJobs').textContent = '0';
+        document.getElementById('totalCandidates').textContent = '0';
+        document.getElementById('interviewsScheduled').textContent = '0';
+        document.getElementById('hireRate').textContent = '0%';
+    }
+}
+
+function renderRecruiterActivities(activities) {
+    const activityList = document.getElementById('activityList');
+    if (!activityList) return;
+
+    if (activities && activities.length > 0) {
+        activityList.innerHTML = '';
+        activities.slice(0, 5).forEach(act => {
+            const item = document.createElement('div');
+            item.className = 'activity-item';
+            const icon = act.type === 'job' ? '💼' : (act.status === 'interview' ? '👥' : act.status === 'accepted' ? '🎉' : '📄');
+            item.innerHTML = `
+                <div class="activity-icon"><span>${icon}</span></div>
+                <div class="activity-content">
+                    <h3>${escapeHtml(act.title)}</h3>
+                    <p class="activity-time">${escapeHtml(act.description || '')}</p>
+                </div>
+            `;
+            activityList.appendChild(item);
+        });
+    } else {
+        activityList.innerHTML = `
+            <div class="activity-item">
+                <div class="activity-icon"><span>📭</span></div>
+                <div class="activity-content">
+                    <h3>No recent activity</h3>
+                    <p class="activity-time">Post a job or review incoming candidate resumes</p>
+                </div>
+            </div>
+        `;
+    }
+}
+
+// Load recent activity
+async function loadRecentActivity() {
+    try {
+        // Try to get recent applications as activity
+        const response = await fetch('/api/applications?limit=5&sort_by=applied_at&order=desc');
+        const data = await response.json();
+
+        const activityList = document.getElementById('activityList');
+        if (!activityList) return;
+
+        if (data.applications && data.applications.length > 0) {
+            activityList.innerHTML = '';
+
+            data.applications.forEach(app => {
+                const activityItem = document.createElement('div');
+                activityItem.className = 'activity-item';
+
+                // Determine icon based on status
+                let icon = '📄';
+                let statusText = 'Applied';
+
+                if (app.status === 'interview') {
+                    icon = '👥';
+                    statusText = 'Interview Scheduled';
+                } else if (app.status === 'offered') {
+                    icon = '💼';
+                    statusText = 'Offer Extended';
+                } else if (app.status === 'hired') {
+                    icon = '✅';
+                    statusText = 'Hired';
+                } else if (app.status === 'rejected') {
+                    icon = '❌';
+                    statusText = 'Application Updated';
+                }
+
+                const timeAgo = formatTimeAgo(app.applied_at);
+
+                activityItem.innerHTML = `
+                    <div class="activity-icon">
+                        <span>${icon}</span>
+                    </div>
+                    <div class="activity-content">
+                        <h3>${statusText}</h3>
+                        <p class="activity-time">${timeAgo}</p>
+                    </div>
+                `;
+
+                activityList.appendChild(activityItem);
+            });
+        } else {
+            // No recent activity
+            activityList.innerHTML = `
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <span>📭</span>
+                    </div>
+                    <div class="activity-content">
+                        <h3>No recent activity</h3>
+                        <p class="activity-time">All caught up!</p>
+                    </div>
+                </div>
+            `;
+        }
+    } catch (error) {
+        console.error('Failed to load recent activity:', error);
+        const activityList = document.getElementById('activityList');
+        if (activityList) {
+            activityList.innerHTML = `
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <span>⚠️</span>
+                    </div>
+                    <div class="activity-content">
+                        <h3>Unable to load activity</h3>
+                        <p class="activity-time">Please try again later</p>
+                    </div>
+                </div>
+            `;
+        }
+    }
+}
+
+// Helper function to format time ago
+function formatTimeAgo(dateString) {
+    if (!dateString) return 'Just now';
+
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffMins = Math.round(diffMs / 60000);
+    const diffHours = Math.round(diffMs / 3600000);
+    const diffDays = Math.round(diffMs / 86400000);
+
+    if (diffDays > 0) {
+        return diffDays === 1 ? 'Yesterday' : `${diffDays} days ago`;
+    } else if (diffHours > 0) {
+        return diffHours === 1 ? 'An hour ago' : `${diffHours} hours ago`;
+    } else if (diffMins > 0) {
+        return diffMins === 1 ? 'A minute ago' : `${diffMins} minutes ago`;
+    } else {
+        return 'Just now';
+    }
+}
+</script>
+</body>
+</html>

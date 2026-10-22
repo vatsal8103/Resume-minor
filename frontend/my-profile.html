@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Profile — Résumé Intelligence</title>
+    <meta name="description" content="Manage your professional candidate profile, upload your resume, and track your career qualifications.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+Pro:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="smooth-scroll">
+    <header class="topbar">
+        <div class="topbar-left">
+            <span class="wordmark">Résumé Intelligence</span>
+            <span class="case-tag">Candidate Portal</span>
+        </div>
+        <div class="topbar-right">
+            <div class="user-info">
+                <span id="userFullName">Candidate</span>
+            </div>
+            <button id="logoutBtn" class="btn-ghost">Logout</button>
+        </div>
+    </header>
+
+    <main class="shell">
+        <nav class="sidebar">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="candidate-dashboard.html">Overview</a>
+                </li>
+                <li class="nav-item active">
+                    <a href="my-profile.html">My Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a href="candidate-dashboard.html#credentialsLocker">🛡️ Verified Credentials</a>
+                </li>
+                <li class="nav-item">
+                    <a href="resume-checker.html">Resume Checker</a>
+                </li>
+                <li class="nav-item">
+                    <a href="job-search.html">Job Search</a>
+                </li>
+                <li class="nav-item">
+                    <a href="my-applications.html">My Applications</a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html">Settings</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="main-content">
+            <!-- Profile Header Card -->
+            <section class="section">
+                <div class="profile-header-banner">
+                    <div class="profile-avatar-block">
+                        <div class="profile-avatar-circle" id="profileAvatar">👤</div>
+                        <div class="profile-header-info">
+                            <h2 id="headerFullName">Candidate Profile</h2>
+                            <p id="headerHeadline" class="profile-headline-text">Add your professional headline below</p>
+                            <div class="profile-meta-tags" id="headerMetaTags">
+                                <span class="meta-tag" id="headerLocation">📍 Location not specified</span>
+                                <span class="meta-tag" id="headerEmail">✉️ email@example.com</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-strength-box">
+                        <div class="strength-dial-row">
+                            <span class="strength-label">Profile Completeness</span>
+                            <span class="strength-val" id="profileCompletenessVal">0%</span>
+                        </div>
+                        <div class="progress-bar-wrap">
+                            <div class="progress-bar" id="profileCompletenessBar" style="width: 0%;"></div>
+                        </div>
+                        <span class="strength-hint" id="profileCompletenessHint">Complete your profile to boost visibility</span>
+                    </div>
+                </div>
+
+                <div class="section-content">
+                    <div class="profile-edit-grid">
+                        <!-- Left Main Column: Profile Forms -->
+                        <div class="profile-main-col">
+                            <!-- Card 1: Basic Information -->
+                            <div class="panel-card">
+                                <div class="panel-header">
+                                    <h3>👤 Personal & Contact Information</h3>
+                                    <span class="edit-indicator" id="editIndicator" style="display:none;">Unsaved changes</span>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="field-label" for="firstName">First Name *</label>
+                                        <input type="text" id="firstName" placeholder="e.g. Alex" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="field-label" for="lastName">Last Name *</label>
+                                        <input type="text" id="lastName" placeholder="e.g. Morgan" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="field-label" for="headline">Professional Headline</label>
+                                    <input type="text" id="headline" placeholder="e.g. Senior Full-Stack Engineer | Python, React & Cloud" />
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="field-label" for="email">Email Address *</label>
+                                        <input type="email" id="email" placeholder="alex.morgan@example.com" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="field-label" for="phone">Phone Number</label>
+                                        <input type="tel" id="phone" placeholder="(555) 234-5678" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="field-label" for="location">Location / City & Country</label>
+                                    <input type="text" id="location" placeholder="e.g. San Francisco, CA or Remote" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="field-label" for="bio">Professional Summary / Bio</label>
+                                    <textarea id="bio" rows="4" placeholder="Brief summary of your background, key achievements, and career focus..."></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Card 2: Professional Details & Preferences -->
+                            <div class="panel-card">
+                                <div class="panel-header">
+                                    <h3>💼 Career Details & Preferences</h3>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="field-label" for="experienceYears">Years of Experience</label>
+                                        <input type="text" id="experienceYears" placeholder="e.g. 5+ years" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="field-label" for="desiredRole">Target Job Title</label>
+                                        <input type="text" id="desiredRole" placeholder="e.g. Senior Backend Engineer" />
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="field-label" for="targetSalary">Expected Salary ($/yr)</label>
+                                        <input type="text" id="targetSalary" placeholder="e.g. 130,000" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="field-label" for="education">Highest Education</label>
+                                        <input type="text" id="education" placeholder="e.g. B.S. in Computer Science" />
+                                    </div>
+                                </div>
+
+                                <!-- Skills Manager -->
+                                <div class="form-group">
+                                    <label class="field-label">Key Skills & Competencies</label>
+                                    <div class="skills-input-wrapper">
+                                        <input type="text" id="skillInput" placeholder="Type a skill and press Enter..." />
+                                        <button class="btn-outline btn-small" id="addSkillBtn" type="button">Add</button>
+                                    </div>
+                                    <div id="skillsPillsContainer" class="skill-tags-wrap" style="margin-top: 10px;">
+                                        <!-- Skill pills render here -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card 3: Social & Portfolio Links -->
+                            <div class="panel-card">
+                                <div class="panel-header">
+                                    <h3>🌐 Web & Social Presence</h3>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="field-label" for="linkedin">LinkedIn Profile URL</label>
+                                        <input type="url" id="linkedin" placeholder="https://linkedin.com/in/username" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="field-label" for="github">GitHub Profile URL</label>
+                                        <input type="url" id="github" placeholder="https://github.com/username" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="field-label" for="portfolio">Portfolio / Personal Website</label>
+                                    <input type="url" id="portfolio" placeholder="https://yourportfolio.dev" />
+                                </div>
+                            </div>
+
+                            <!-- Save Action Floating / Bar -->
+                            <div class="profile-action-bar">
+                                <button class="btn-primary btn-large btn-animated" id="saveProfileBtn">
+                                    <span class="btn-icon">💾</span> Save Profile Changes
+                                </button>
+                                <span id="saveStatusText" class="save-status-msg"></span>
+                            </div>
+                        </div>
+
+                        <!-- Right Sidebar Column: Resume File & Quick ATS -->
+                        <div class="profile-side-col">
+                            <!-- Resume Card -->
+                            <div class="panel-card">
+                                <div class="panel-header">
+                                    <h3>📄 Resume Document</h3>
+                                </div>
+
+                                <div id="resumeStatusBanner" class="resume-status-box">
+                                    <span class="status-icon" id="resumeStatusIcon">📭</span>
+                                    <div>
+                                        <strong id="resumeStatusText">No resume on file</strong>
+                                        <p id="resumeStatusSub" style="margin: 0; font-size: 0.8rem; color: var(--text-muted);">Upload your PDF, DOCX or TXT resume</p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" style="margin-top: 16px;">
+                                    <label class="field-label">Upload New Resume File</label>
+                                    <div id="profileDropzone" class="dropzone">
+                                        <div class="dropzone-icon">📁</div>
+                                        <p>Drop file here or click to browse</p>
+                                        <p class="dropzone-hint">Supports PDF, DOCX, TXT</p>
+                                        <input type="file" id="profileFileInput" accept=".pdf,.docx,.txt" hidden />
+                                    </div>
+                                    <div id="profileFileInfo" class="apply-file-info" style="display:none;">
+                                        <span class="file-name" id="profileFileName"></span>
+                                        <button class="file-remove-btn" id="removeProfileFile">&times;</button>
+                                    </div>
+                                </div>
+
+                                <details class="manual-add" style="margin-top: 12px;">
+                                    <summary>View / Edit Resume Text</summary>
+                                    <div class="manual-form" style="margin-top: 8px;">
+                                        <textarea id="profileResumeText" rows="10" placeholder="Your resume text content will appear here..."></textarea>
+                                        <button class="btn-outline btn-small" id="updateResumeTextBtn" style="margin-top: 8px;">Update Text</button>
+                                    </div>
+                                </details>
+
+                                <div class="quick-checker-cta" style="margin-top: 20px;">
+                                    <h4>⚡ Check Your Resume Score</h4>
+                                    <p>Want to see how your resume scores against real recruiter jobs?</p>
+                                    <a href="resume-checker.html" class="btn-primary btn-wide" style="text-align: center; margin-top: 8px;">
+                                        Launch Resume Checker
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<script src="script.js"></script>
+<script>
+let candidateData = {};
+let candidateSkills = [];
+
+document.addEventListener('DOMContentLoaded', async function() {
+    const user = Auth.getUser('candidate');
+    const userId = user ? user.userId : null;
+    const fullName = user ? user.fullName : 'Candidate';
+
+    if (fullName) {
+        document.getElementById('userFullName').textContent = fullName;
+    }
+
+    // Logout (isolated to candidate)
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            Auth.logout('candidate');
+        });
+    }
+
+    // Load candidate profile
+    await loadProfile();
+
+    // Attach save button
+    document.getElementById('saveProfileBtn').addEventListener('click', saveProfile);
+
+    // Track input edits
+    document.querySelectorAll('input, textarea').forEach(input => {
+        input.addEventListener('input', () => {
+            document.getElementById('editIndicator').style.display = 'inline-block';
+        });
+    });
+
+    // Skill inputs
+    const skillInput = document.getElementById('skillInput');
+    const addSkillBtn = document.getElementById('addSkillBtn');
+
+    addSkillBtn.addEventListener('click', () => addSkillFromInput());
+    skillInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            addSkillFromInput();
+        }
+    });
+
+    // Resume Dropzone
+    setupProfileDropzone();
+
+    // Update resume text button
+    document.getElementById('updateResumeTextBtn').addEventListener('click', () => {
+        const text = document.getElementById('profileResumeText').value.trim();
+        if (text) {
+            saveResumeOnly(text);
+        } else {
+            showToast('Resume text cannot be empty.', 'error');
+        }
+    });
+});
+
+async function loadProfile() {
+    const user = Auth.getUser('candidate');
+    const userId = user ? user.userId : null;
+    if (!userId) {
+        showToast('No active session found. Please log in.', 'error');
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/candidates/${userId}`);
+        if (response.ok) {
+            candidateData = await response.json();
+            populateForm(candidateData);
+            updateCompleteness();
+        } else {
+            console.warn('Profile not initialized yet, user can create one.');
+        }
+    } catch (e) {
+        console.error('Failed to load candidate profile:', e);
+    }
+}
+
+function populateForm(data) {
+    document.getElementById('firstName').value = data.first_name || '';
+    document.getElementById('lastName').value = data.last_name || '';
+    document.getElementById('headline').value = data.headline || '';
+    document.getElementById('email').value = data.email || '';
+    document.getElementById('phone').value = data.phone || '';
+    document.getElementById('location').value = data.location || '';
+    document.getElementById('bio').value = data.bio || '';
+    document.getElementById('experienceYears').value = data.experience_years || '';
+    document.getElementById('desiredRole').value = data.desired_role || '';
+    document.getElementById('targetSalary').value = data.target_salary || '';
+    document.getElementById('education').value = data.education || '';
+    document.getElementById('linkedin').value = data.linkedin || '';
+    document.getElementById('github').value = data.github || '';
+    document.getElementById('portfolio').value = data.portfolio || '';
+
+    // Skills
+    if (data.skills && Array.isArray(data.skills)) {
+        candidateSkills = [...data.skills];
+    } else if (typeof data.skills === 'string' && data.skills.trim()) {
+        candidateSkills = data.skills.split(',').map(s => s.trim()).filter(Boolean);
+    }
+    renderSkillsPills();
+
+    // Resume
+    if (data.resume_text && data.resume_text.trim()) {
+        document.getElementById('profileResumeText').value = data.resume_text;
+        document.getElementById('resumeStatusIcon').textContent = '✅';
+        document.getElementById('resumeStatusText').textContent = 'Resume active';
+        document.getElementById('resumeStatusSub').textContent = `${data.resume_text.length} characters parsed`;
+    }
+
+    // Update Header banner
+    const fullName = `${data.first_name || ''} ${data.last_name || ''}`.trim() || data.full_name || 'Candidate';
+    document.getElementById('headerFullName').textContent = fullName;
+    document.getElementById('headerHeadline').textContent = data.headline || 'Software Professional';
+    document.getElementById('headerLocation').textContent = data.location ? `📍 ${data.location}` : '📍 Location not specified';
+    document.getElementById('headerEmail').textContent = data.email ? `✉️ ${data.email}` : '✉️ email@example.com';
+
+    // Avatar initials
+    const initials = (data.first_name ? data.first_name[0] : '') + (data.last_name ? data.last_name[0] : '');
+    if (initials) {
+        document.getElementById('profileAvatar').textContent = initials.toUpperCase();
+    }
+}
+
+function addSkillFromInput() {
+    const input = document.getElementById('skillInput');
+    const val = input.value.trim();
+    if (val && !candidateSkills.includes(val)) {
+        candidateSkills.push(val);
+        input.value = '';
+        renderSkillsPills();
+        document.getElementById('editIndicator').style.display = 'inline-block';
+        updateCompleteness();
+    }
+}
+
+function removeSkill(skill) {
+    candidateSkills = candidateSkills.filter(s => s !== skill);
+    renderSkillsPills();
+    document.getElementById('editIndicator').style.display = 'inline-block';
+    updateCompleteness();
+}
+
+function renderSkillsPills() {
+    const container = document.getElementById('skillsPillsContainer');
+    if (candidateSkills.length === 0) {
+        container.innerHTML = '<span class="empty-sub">No skills added yet. Add Python, React, SQL, etc.</span>';
+        return;
+    }
+
+    container.innerHTML = candidateSkills.map(s => `
+        <span class="skill-tag skill-matched">
+            ${escapeHtml(s)}
+            <button class="skill-remove-x" type="button" onclick="removeSkill('${escapeHtml(s)}')">&times;</button>
+        </span>
+    `).join('');
+}
+
+function updateCompleteness() {
+    let score = 0;
+    const checks = [
+        Boolean(document.getElementById('firstName').value.trim()),
+        Boolean(document.getElementById('lastName').value.trim()),
+        Boolean(document.getElementById('email').value.trim()),
+        Boolean(document.getElementById('phone').value.trim()),
+        Boolean(document.getElementById('headline').value.trim()),
+        Boolean(document.getElementById('location').value.trim()),
+        Boolean(document.getElementById('bio').value.trim()),
+        Boolean(candidateSkills.length > 0),
+        Boolean(document.getElementById('profileResumeText').value.trim()),
+        Boolean(document.getElementById('linkedin').value.trim() || document.getElementById('github').value.trim())
+    ];
+
+    const filled = checks.filter(Boolean).length;
+    score = Math.round((filled / checks.length) * 100);
+
+    document.getElementById('profileCompletenessVal').textContent = `${score}%`;
+    document.getElementById('profileCompletenessBar').style.width = `${score}%`;
+
+    const hint = document.getElementById('profileCompletenessHint');
+    if (score >= 90) {
+        hint.textContent = '🌟 All-star profile! High recruiter visibility.';
+    } else if (score >= 60) {
+        hint.textContent = '⚡ Strong profile! Add remaining links and resume details.';
+    } else {
+        hint.textContent = 'Fill in more fields to complete your candidate profile.';
+    }
+}
+
+async function saveProfile() {
+    const user = Auth.getUser('candidate');
+    const userId = user ? user.userId : null;
+    if (!userId) {
+        showToast('No active session found.', 'error');
+        return;
+    }
+
+    const btn = document.getElementById('saveProfileBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="btn-icon">⏳</span> Saving...';
+
+    const payload = {
+        first_name: document.getElementById('firstName').value.trim(),
+        last_name: document.getElementById('lastName').value.trim(),
+        headline: document.getElementById('headline').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        location: document.getElementById('location').value.trim(),
+        bio: document.getElementById('bio').value.trim(),
+        experience_years: document.getElementById('experienceYears').value.trim(),
+        desired_role: document.getElementById('desiredRole').value.trim(),
+        target_salary: document.getElementById('targetSalary').value.trim(),
+        education: document.getElementById('education').value.trim(),
+        skills: candidateSkills,
+        linkedin: document.getElementById('linkedin').value.trim(),
+        github: document.getElementById('github').value.trim(),
+        portfolio: document.getElementById('portfolio').value.trim(),
+        resume_text: document.getElementById('profileResumeText').value.trim()
+    };
+
+    try {
+        const response = await fetch(`/api/candidates/${userId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+            showToast('🎉 Profile updated successfully!', 'success');
+            document.getElementById('editIndicator').style.display = 'none';
+
+            // Sync with role session
+            const fullName = `${payload.first_name} ${payload.last_name}`.trim();
+            if (fullName) {
+                Auth.saveSession({
+                    id: userId,
+                    userId: userId,
+                    username: user ? user.username : '',
+                    full_name: fullName,
+                    email: payload.email,
+                    role: 'candidate'
+                });
+                document.getElementById('userFullName').textContent = fullName;
+                document.getElementById('headerFullName').textContent = fullName;
+            }
+            if (payload.headline) document.getElementById('headerHeadline').textContent = payload.headline;
+            if (payload.location) document.getElementById('headerLocation').textContent = `📍 ${payload.location}`;
+            if (payload.email) document.getElementById('headerEmail').textContent = `✉️ ${payload.email}`;
+
+            updateCompleteness();
+        } else {
+            const err = await response.json();
+            showToast(err.error || 'Failed to update profile.', 'error');
+        }
+    } catch (e) {
+        showToast('Network error updating profile.', 'error');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span class="btn-icon">💾</span> Save Profile Changes';
+    }
+}
+
+async function saveResumeOnly(resumeText) {
+    const user = Auth.getUser('candidate');
+    const userId = user ? user.userId : null;
+    if (!userId) return;
+
+    try {
+        const res = await fetch(`/api/candidates/${userId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ resume_text: resumeText })
+        });
+        if (res.ok) {
+            showToast('Resume text updated in profile!', 'success');
+            document.getElementById('resumeStatusIcon').textContent = '✅';
+            document.getElementById('resumeStatusText').textContent = 'Resume active';
+            document.getElementById('resumeStatusSub').textContent = `${resumeText.length} characters parsed`;
+            updateCompleteness();
+        }
+    } catch (e) {
+        showToast('Failed to update resume text.', 'error');
+    }
+}
+
+function setupProfileDropzone() {
+    const dropzone = document.getElementById('profileDropzone');
+    const fileInput = document.getElementById('profileFileInput');
+    const fileInfo = document.getElementById('profileFileInfo');
+    const fileName = document.getElementById('profileFileName');
+    const removeBtn = document.getElementById('removeProfileFile');
+
+    dropzone.addEventListener('click', () => fileInput.click());
+    dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+    dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+        if (e.dataTransfer.files.length > 0) handleResumeFile(e.dataTransfer.files[0]);
+    });
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files.length > 0) handleResumeFile(fileInput.files[0]);
+    });
+    removeBtn.addEventListener('click', () => {
+        fileInfo.style.display = 'none';
+        dropzone.style.display = 'block';
+        fileInput.value = '';
+    });
+}
+
+async function handleResumeFile(file) {
+    const dropzone = document.getElementById('profileDropzone');
+    const fileInfo = document.getElementById('profileFileInfo');
+    const fileName = document.getElementById('profileFileName');
+
+    dropzone.style.display = 'none';
+    fileInfo.style.display = 'flex';
+    fileName.textContent = `${file.name} (parsing...)`;
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+        const response = await fetch('/api/parse-file', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            fileName.textContent = `${file.name} ✅ Parsed (${result.text.length} chars)`;
+            document.getElementById('profileResumeText').value = result.text;
+            // Auto save to profile
+            await saveResumeOnly(result.text);
+        } else {
+            fileName.textContent = `${file.name} ❌ ${result.error}`;
+        }
+    } catch (e) {
+        fileName.textContent = `${file.name} ❌ Upload error`;
+    }
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+function showToast(message, type = 'info') {
+    const existing = document.querySelector('.toast');
+    if (existing) existing.remove();
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.innerHTML = `<span class="toast-icon">${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span><span class="toast-message">${message}</span>`;
+    document.body.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add('toast-visible'));
+    setTimeout(() => { toast.classList.remove('toast-visible'); setTimeout(() => toast.remove(), 300); }, 4000);
+}
+</script>
+</body>
+</html>

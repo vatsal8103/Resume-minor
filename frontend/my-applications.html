@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Applications — Résumé Intelligence</title>
+    <meta name="description" content="Track your job applications, view status updates, and review recruiter feedback in real time.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+Pro:wght@400;500;600&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="smooth-scroll">
+    <header class="topbar">
+        <div class="topbar-left">
+            <span class="wordmark">Résumé Intelligence</span>
+            <span class="case-tag">Candidate Portal</span>
+        </div>
+        <div class="topbar-right">
+            <div class="user-info">
+                <span id="userFullName">Candidate</span>
+            </div>
+            <button id="logoutBtn" class="btn-ghost">Logout</button>
+        </div>
+    </header>
+
+    <main class="shell">
+        <nav class="sidebar">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="candidate-dashboard.html">Overview</a>
+                </li>
+                <li class="nav-item">
+                    <a href="my-profile.html">My Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a href="resume-checker.html">Resume Checker</a>
+                </li>
+                <li class="nav-item">
+                    <a href="job-search.html">Job Search</a>
+                </li>
+                <li class="nav-item active">
+                    <a href="my-applications.html">My Applications</a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html">Settings</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="main-content">
+            <!-- Header Section -->
+            <section class="section">
+                <div class="section-header-flex">
+                    <div>
+                        <h2>My Job Applications</h2>
+                        <p>Track the real-time status of your submitted applications and recruiter reviews</p>
+                    </div>
+                    <div>
+                        <a href="job-search.html" class="btn-primary">
+                            <span class="btn-icon">🔍</span> Explore Open Jobs
+                        </a>
+                    </div>
+                </div>
+
+                <div class="section-content">
+                    <!-- Live Application Statistics -->
+                    <div class="stats-grid" id="statsGrid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="statTotal">0</div>
+                            <div class="stat-label">Total Applied</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="statReview" style="color: var(--primary);">0</div>
+                            <div class="stat-label">Under Review</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="statInterview" style="color: #10b981;">0</div>
+                            <div class="stat-label">Interview / Selected</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="statHold" style="color: #f59e0b;">0</div>
+                            <div class="stat-label">On Hold</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="statRejected" style="color: #ef4444;">0</div>
+                            <div class="stat-label">Not Selected</div>
+                        </div>
+                    </div>
+
+                    <!-- Filter & Search Controls -->
+                    <div class="app-filter-bar">
+                        <div class="app-status-tabs">
+                            <button class="status-tab active" data-filter="all">All (<span id="countAll">0</span>)</button>
+                            <button class="status-tab" data-filter="applied">Under Review (<span id="countReview">0</span>)</button>
+                            <button class="status-tab" data-filter="interview">Interviews (<span id="countInterview">0</span>)</button>
+                            <button class="status-tab" data-filter="hold">On Hold (<span id="countHold">0</span>)</button>
+                            <button class="status-tab" data-filter="rejected">Archived (<span id="countRejected">0</span>)</button>
+                        </div>
+                        <div class="app-filter-actions">
+                            <div class="search-input-wrap">
+                                <input type="text" id="appSearchInput" placeholder="Filter by job title..." />
+                            </div>
+                            <select id="appSortSelect" class="filter-select">
+                                <option value="newest">Newest First</option>
+                                <option value="oldest">Oldest First</option>
+                                <option value="highest_score">Highest Match Score</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Applications List Container -->
+                    <div id="applicationsContainer" class="applications-container">
+                        <div class="loading-state">
+                            <div class="spinner"></div>
+                            <p>Loading your applications...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<!-- Application Details Modal -->
+<div class="modal-overlay" id="appDetailsModal" style="display:none;">
+    <div class="modal-content modal-large">
+        <div class="modal-header">
+            <h3 id="modalJobTitle">Application Details</h3>
+            <button class="modal-close" id="closeDetailsModal">&times;</button>
+        </div>
+        <div class="modal-body" id="modalDetailsBody">
+            <!-- Dynamically populated -->
+        </div>
+        <div class="modal-footer">
+            <button class="btn-ghost" id="modalCloseBtn">Close</button>
+            <button class="btn-outline" id="modalWithdrawBtn" style="color: #ef4444; border-color: #ef4444;">Withdraw Application</button>
+        </div>
+    </div>
+</div>
+
+<!-- Withdraw Confirmation Modal -->
+<div class="modal-overlay" id="withdrawConfirmModal" style="display:none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Withdraw Application</h3>
+            <button class="modal-close" id="closeWithdrawModal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure you want to withdraw your application for <strong id="withdrawJobTitle">this position</strong>?</p>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 8px;">
+                Your resume and application details will be removed from the recruiter's active pipeline. You can re-apply in the future if the job remains open.
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-ghost" id="cancelWithdrawBtn">Cancel</button>
+            <button class="btn-primary" id="confirmWithdrawBtn" style="background: #ef4444; border-color: #ef4444;">Yes, Withdraw</button>
+        </div>
+    </div>
+</div>
+
+<!-- Personalized Preparation Roadmap Modal -->
+<div class="modal-overlay" id="roadmapModal" style="display:none;">
+    <div class="modal-content modal-large roadmap-modal-content">
+        <div class="modal-header">
+            <div>
+                <h3 id="roadmapModalTitle">Skill Preparation Roadmap</h3>
+                <p id="roadmapModalSubtitle" style="color: var(--text-muted); font-size: 0.88rem; margin: 4px 0 0 0;">
+                    Tailored learning path based on ATS scanning analysis
+                </p>
+            </div>
+            <button class="modal-close" id="closeRoadmapModal">&times;</button>
+        </div>
+        <div class="modal-body" id="roadmapModalBody" style="max-height: 72vh; overflow-y: auto;">
+            <!-- Populated dynamically -->
+        </div>
+        <div class="modal-footer" id="roadmapModalFooter">
+            <button class="btn-ghost" id="roadmapModalCloseBtn">Close</button>
+            <a href="#" id="roadmapModalFullPageBtn" target="_blank" class="btn-primary">
+                Open Dedicated Page ↗
+            </a>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+let allApplications = [];
+let currentFilter = 'all';
+let currentSearch = '';
+let currentSort = 'newest';
+let selectedAppId = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+    const user = Auth.getUser('candidate');
+    const userId = user ? user.userId : null;
+    const fullName = user ? user.fullName : 'Candidate';
+
+    if (fullName) {
+        document.getElementById('userFullName').textContent = fullName;
+    }
+
+    // Logout (isolated to candidate)
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            Auth.logout('candidate');
+        });
+    }
+
+    // Tab filtering
+    document.querySelectorAll('.status-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+            document.querySelectorAll('.status-tab').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            currentFilter = this.getAttribute('data-filter');
+            renderApplications();
+        });
+    });
+
+    // Search filter
+    document.getElementById('appSearchInput').addEventListener('input', function(e) {
+        currentSearch = e.target.value.toLowerCase().trim();
+        renderApplications();
+    });
+
+    // Sort
+    document.getElementById('appSortSelect').addEventListener('change', function(e) {
+        currentSort = e.target.value;
+        renderApplications();
+    });
+
+    // Modal close listeners
+    document.getElementById('closeDetailsModal').addEventListener('click', () => {
+        document.getElementById('appDetailsModal').style.display = 'none';
+    });
+    document.getElementById('modalCloseBtn').addEventListener('click', () => {
+        document.getElementById('appDetailsModal').style.display = 'none';
+    });
+    document.getElementById('closeWithdrawModal').addEventListener('click', () => {
+        document.getElementById('withdrawConfirmModal').style.display = 'none';
+    });
+    document.getElementById('cancelWithdrawBtn').addEventListener('click', () => {
+        document.getElementById('withdrawConfirmModal').style.display = 'none';
+    });
+    document.getElementById('confirmWithdrawBtn').addEventListener('click', executeWithdraw);
+
+    // Roadmap modal listeners
+    document.getElementById('closeRoadmapModal').addEventListener('click', () => {
+        document.getElementById('roadmapModal').style.display = 'none';
+    });
+    document.getElementById('roadmapModalCloseBtn').addEventListener('click', () => {
+        document.getElementById('roadmapModal').style.display = 'none';
+    });
+
+    // Modal background click
+    document.querySelectorAll('.modal-overlay').forEach(modal => {
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) this.style.display = 'none';
+        });
+    });
+
+    // Load applications
+    loadApplications();
+});
+
+async function loadApplications() {
+    const user = Auth.getUser('candidate');
+    const userId = user ? user.userId : null;
+    const container = document.getElementById('applicationsContainer');
+
+    try {
+        let url = '/api/applications?per_page=100';
+        if (userId) {
+            url += `&candidate_id=${encodeURIComponent(userId)}`;
+        }
+
+        const response = await fetch(url);
+        const data = await response.json();
+
+        allApplications = data.applications || [];
+
+        // If filtering by userId returned empty, try fetching to find by candidate name
+        if (allApplications.length === 0 && userId) {
+            const allRes = await fetch('/api/applications?per_page=100');
+            const allData = await allRes.json();
+            const fullName = user ? user.fullName : localStorage.getItem('fullName');
+
+            if (allData.applications && allData.applications.length > 0) {
+                // Check if any applications match candidate ID or name
+                const matched = allData.applications.filter(a =>
+                    a.candidate_id === userId ||
+                    (fullName && a.candidate_name && a.candidate_name.toLowerCase() === fullName.toLowerCase())
+                );
+                if (matched.length > 0) {
+                    allApplications = matched;
+                }
+            }
+        }
+
+        updateStats();
+        renderApplications();
+
+    } catch (error) {
+        console.error('Failed to load applications:', error);
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">⚠️</div>
+                <h3>Unable to Load Applications</h3>
+                <p class="empty-sub">Failed to retrieve your applications. Please make sure the backend server is running.</p>
+                <button class="btn-primary" onclick="loadApplications()">Retry</button>
+            </div>
+        `;
+    }
+}
+
+function updateStats() {
+    const total = allApplications.length;
+    const review = allApplications.filter(a => a.status === 'applied' || a.status === 'screening' || a.status === 'new').length;
+    const interview = allApplications.filter(a => a.status === 'interview' || a.status === 'accepted' || a.status === 'hired').length;
+    const hold = allApplications.filter(a => a.status === 'hold').length;
+    const rejected = allApplications.filter(a => a.status === 'rejected').length;
+
+    document.getElementById('statTotal').textContent = total;
+    document.getElementById('statReview').textContent = review;
+    document.getElementById('statInterview').textContent = interview;
+    document.getElementById('statHold').textContent = hold;
+    document.getElementById('statRejected').textContent = rejected;
+
+    document.getElementById('countAll').textContent = total;
+    document.getElementById('countReview').textContent = review;
+    document.getElementById('countInterview').textContent = interview;
+    document.getElementById('countHold').textContent = hold;
+    document.getElementById('countRejected').textContent = rejected;
+}
+
+function renderApplications() {
+    const container = document.getElementById('applicationsContainer');
+
+    let filtered = allApplications.filter(app => {
+        // Tab filter
+        if (currentFilter === 'applied') {
+            if (app.status !== 'applied' && app.status !== 'screening' && app.status !== 'new') return false;
+        } else if (currentFilter === 'interview') {
+            if (app.status !== 'interview' && app.status !== 'accepted' && app.status !== 'hired') return false;
+        } else if (currentFilter === 'hold') {
+            if (app.status !== 'hold') return false;
+        } else if (currentFilter === 'rejected') {
+            if (app.status !== 'rejected') return false;
+        }
+
+        // Search text
+        if (currentSearch) {
+            const title = (app.job_title || '').toLowerCase();
+            const location = (app.job_location || '').toLowerCase();
+            const desc = (app.job_description || '').toLowerCase();
+            if (!title.includes(currentSearch) && !location.includes(currentSearch) && !desc.includes(currentSearch)) {
+                return false;
+            }
+        }
+        return true;
+    });
+
+    // Sorting
+    if (currentSort === 'newest') {
+        filtered.sort((a, b) => new Date(b.applied_at || 0) - new Date(a.applied_at || 0));
+    } else if (currentSort === 'oldest') {
+        filtered.sort((a, b) => new Date(a.applied_at || 0) - new Date(b.applied_at || 0));
+    } else if (currentSort === 'highest_score') {
+        filtered.sort((a, b) => (b.match_score || 0) - (a.match_score || 0));
+    }
+
+    if (filtered.length === 0) {
+        if (allApplications.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <h3>No Applications Yet</h3>
+                    <p class="empty-sub">You haven't submitted any job applications yet. Explore active job openings and apply with your parsed resume.</p>
+                    <a href="job-search.html" class="btn-primary" style="margin-top: 16px;">
+                        <span class="btn-icon">🔍</span> Browse Available Jobs
+                    </a>
+                </div>
+            `;
+        } else {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">🔍</div>
+                    <h3>No Matching Applications</h3>
+                    <p class="empty-sub">No applications found matching the selected filter or search keyword.</p>
+                </div>
+            `;
+        }
+        return;
+    }
+
+    container.innerHTML = `
+        <div class="applications-grid">
+            ${filtered.map(app => renderApplicationCard(app)).join('')}
+        </div>
+    `;
+
+    // Attach card event listeners
+    filtered.forEach(app => {
+        const viewBtn = document.getElementById(`viewAppBtn_${app.id}`);
+        if (viewBtn) {
+            viewBtn.addEventListener('click', () => openAppDetails(app.id));
+        }
+
+        const roadmapBtn = document.getElementById(`roadmapAppBtn_${app.id}`);
+        if (roadmapBtn) {
+            roadmapBtn.addEventListener('click', () => openAppRoadmap(app.id));
+        }
+
+        const roadmapCardBtn = document.getElementById(`roadmapCardBtn_${app.id}`);
+        if (roadmapCardBtn) {
+            roadmapCardBtn.addEventListener('click', () => openAppRoadmap(app.id));
+        }
+
+        const withdrawBtn = document.getElementById(`withdrawBtn_${app.id}`);
+        if (withdrawBtn) {
+            withdrawBtn.addEventListener('click', () => confirmWithdraw(app.id, app.job_title));
+        }
+    });
+}
+
+function renderApplicationCard(app) {
+    const statusMeta = getStatusMeta(app.status);
+    const score = Math.round(app.match_score || 0);
+    const scoreClass = score >= 70 ? 'badge-score-high' : score >= 40 ? 'badge-score-mid' : 'badge-score-low';
+    const dateStr = formatDateTime(app.applied_at);
+    const isRejected = app.status === 'rejected';
+
+    return `
+        <div class="app-card ${isRejected ? 'app-card-rejected' : ''}" id="appCard_${app.id}">
+            <div class="app-card-header">
+                <div class="app-card-title-group">
+                    <h3 class="app-job-title">${escapeHtml(app.job_title || 'Position')}</h3>
+                    <div class="app-meta-tags">
+                        ${app.job_location ? `<span class="meta-tag">📍 ${escapeHtml(app.job_location)}</span>` : ''}
+                        ${app.job_type ? `<span class="meta-tag">💼 ${escapeHtml(capitalizeFirst(app.job_type))}</span>` : ''}
+                        ${app.salary_range ? `<span class="meta-tag">💰 ${escapeHtml(app.salary_range)}</span>` : ''}
+                    </div>
+                </div>
+                <div class="app-score-badge ${scoreClass}">
+                    <span class="score-num">${score}%</span>
+                    <span class="score-sub">ATS Match</span>
+                </div>
+            </div>
+
+            <div class="app-status-row">
+                <div class="app-status-pill ${statusMeta.cssClass}">
+                    <span class="status-dot"></span>
+                    <span class="status-label">${statusMeta.label}</span>
+                </div>
+                <span class="app-date">Submitted: ${dateStr}</span>
+            </div>
+
+            <p class="app-status-desc">${statusMeta.description}</p>
+
+            ${isRejected ? `
+                <!-- ATS Scanning Shared Report & Skill Gap Roadmap for Candidate -->
+                <div class="app-rejected-ats-box">
+                    <div class="ats-box-header">
+                        <span class="ats-box-title">📊 ATS Scanning Report & Skill Gap</span>
+                        <span class="ats-box-match">${score}% Match</span>
+                    </div>
+
+                    ${app.matched_skills && app.matched_skills.length > 0 ? `
+                        <div class="app-matched-skills-preview" style="margin-top: 0;">
+                            <span class="skills-label" style="font-size: 0.8rem; font-weight: 600; color: #065f46;">
+                                ✅ Skills Matched in Resume (${app.matched_skills.length}):
+                            </span>
+                            <div class="skill-pills-row">
+                                ${app.matched_skills.slice(0, 4).map(s => `<span class="skill-tag skill-matched">✅ ${escapeHtml(s)}</span>`).join('')}
+                                ${app.matched_skills.length > 4 ? `<span class="skill-more">+${app.matched_skills.length - 4} more</span>` : ''}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    ${app.missing_skills && app.missing_skills.length > 0 ? `
+                        <div class="ats-missing-skills-section">
+                            <span class="skills-label-danger">
+                                ⚠️ Points / Skills Missing According to Job Description (${app.missing_skills.length}):
+                            </span>
+                            <div class="skill-pills-row">
+                                ${app.missing_skills.slice(0, 5).map(s => `<span class="skill-tag skill-missing">⚠️ ${escapeHtml(s)}</span>`).join('')}
+                                ${app.missing_skills.length > 5 ? `<span class="skill-more">+${app.missing_skills.length - 5} more</span>` : ''}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    ${(app.rejection_feedback || app.ats_feedback || app.notes) ? `
+                        <div class="ats-feedback-text">
+                            <strong>Recruiter ATS Feedback:</strong> ${escapeHtml(app.rejection_feedback || app.ats_feedback || app.notes)}
+                        </div>
+                    ` : ''}
+
+                    <div class="roadmap-callout">
+                        <div class="roadmap-callout-text">
+                            <span>🚀 <strong>Want to crack this job?</strong> A complete preparation roadmap is ready for all ${app.missing_skills ? app.missing_skills.length : 'missing'} skills.</span>
+                        </div>
+                        <button class="btn-primary btn-small btn-roadmap-pulse" id="roadmapCardBtn_${app.id}">
+                            🗺️ View Preparation Roadmap
+                        </button>
+                    </div>
+                </div>
+            ` : `
+                ${app.matched_skills && app.matched_skills.length > 0 ? `
+                    <div class="app-matched-skills-preview">
+                        <span class="skills-label">Matched Skills:</span>
+                        <div class="skill-pills-row">
+                            ${app.matched_skills.slice(0, 4).map(s => `<span class="skill-tag skill-matched">${escapeHtml(s)}</span>`).join('')}
+                            ${app.matched_skills.length > 4 ? `<span class="skill-more">+${app.matched_skills.length - 4} more</span>` : ''}
+                        </div>
+                    </div>
+                ` : ''}
+
+                ${app.notes ? `
+                    <div class="app-recruiter-notes">
+                        <strong>Recruiter Feedback:</strong> ${escapeHtml(app.notes)}
+                    </div>
+                ` : ''}
+            `}
+
+            <div class="app-card-actions">
+                ${isRejected ? `
+                    <button class="btn-primary btn-small btn-roadmap-pulse" id="roadmapAppBtn_${app.id}">
+                        🗺️ Preparation Roadmap
+                    </button>
+                    <button class="btn-outline btn-small" id="viewAppBtn_${app.id}">ATS Report</button>
+                ` : `
+                    <button class="btn-outline btn-small" id="viewAppBtn_${app.id}">View Details</button>
+                `}
+                <button class="btn-ghost btn-small text-danger" id="withdrawBtn_${app.id}">Withdraw</button>
+            </div>
+        </div>
+    `;
+}
+
+function getStatusMeta(status) {
+    switch (status) {
+        case 'applied':
+        case 'new':
+            return {
+                label: 'Under Review',
+                cssClass: 'status-applied',
+                description: 'Your application has been received and forwarded to the recruiter. Waiting for screening.'
+            };
+        case 'screening':
+            return {
+                label: 'In Screening',
+                cssClass: 'status-screening',
+                description: 'Your profile and resume are actively being evaluated against the job specifications.'
+            };
+        case 'hold':
+            return {
+                label: 'On Hold',
+                cssClass: 'status-hold',
+                description: 'The recruiter has saved your application on hold for upcoming evaluation or future openings.'
+            };
+        case 'interview':
+            return {
+                label: 'Interview Scheduled',
+                cssClass: 'status-interview',
+                description: 'Great news! The recruiter has shortlisted your profile for an interview.'
+            };
+        case 'accepted':
+        case 'hired':
+            return {
+                label: 'Selected / Offer',
+                cssClass: 'status-accepted',
+                description: 'Congratulations! Your application has been selected for an offer.'
+            };
+        case 'rejected':
+            return {
+                label: 'Not Selected',
+                cssClass: 'status-rejected',
+                description: 'The recruiter has decided to move forward with other candidates at this time.'
+            };
+        default:
+            return {
+                label: capitalizeFirst(status || 'Applied'),
+                cssClass: 'status-applied',
+                description: 'Application received and recorded in the recruitment portal.'
+            };
+    }
+}
+
+function openAppDetails(appId) {
+    const app = allApplications.find(a => a.id === appId);
+    if (!app) return;
+
+    selectedAppId = appId;
+    const statusMeta = getStatusMeta(app.status);
+    const score = Math.round(app.match_score || 0);
+    const isRejected = app.status === 'rejected';
+
+    document.getElementById('modalJobTitle').textContent = app.job_title || 'Application Details';
+
+    const body = document.getElementById('modalDetailsBody');
+    body.innerHTML = `
+        <div class="app-detail-summary">
+            ${isRejected ? `
+                <!-- Dedicated ATS Scanning Transparency Report -->
+                <div class="ats-report-card">
+                    <div class="ats-report-header">
+                        <div class="ats-badge-rejected">
+                            <span class="status-dot-red"></span> Not Selected · ATS Scan Shared by Recruiter
+                        </div>
+                        <div class="ats-score-display">
+                            <span class="score-large">${score}%</span>
+                            <span class="score-subtext">ATS Match Score</span>
+                        </div>
+                    </div>
+
+                    <div class="ats-feedback-note">
+                        <h4>📢 Recruiter & ATS Assessment Feedback</h4>
+                        <p>${escapeHtml(app.rejection_feedback || app.ats_feedback || app.notes || 'The application was screened against the job requirements. Key competencies needed for the role were not detected in your resume.')}</p>
+                    </div>
+
+                    <div class="ats-skills-grid">
+                        <div class="ats-skill-col">
+                            <h4>✅ Matched Skills in Resume (${(app.matched_skills || []).length})</h4>
+                            <div class="skill-tags-wrap" style="display:flex; flex-wrap:wrap; gap:6px;">
+                                ${(app.matched_skills && app.matched_skills.length > 0) ?
+                                    app.matched_skills.map(s => `<span class="skill-tag skill-matched">✅ ${escapeHtml(s)}</span>`).join('') :
+                                    '<span style="color:var(--text-muted); font-size:0.85rem;">None detected</span>'}
+                            </div>
+                        </div>
+
+                        <div class="ats-skill-col">
+                            <h4>⚠️ Points / Skills Missing from Resume (${(app.missing_skills || []).length})</h4>
+                            <div class="skill-tags-wrap" style="display:flex; flex-wrap:wrap; gap:6px;">
+                                ${(app.missing_skills && app.missing_skills.length > 0) ?
+                                    app.missing_skills.map(s => `<span class="skill-tag skill-missing">⚠️ ${escapeHtml(s)}</span>`).join('') :
+                                    '<span style="color:var(--text-muted); font-size:0.85rem;">None</span>'}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Roadmap CTA Callout inside details modal -->
+                    <div style="margin-top: 20px; padding: 16px; background: rgba(139, 115, 85, 0.08); border: 1px dashed var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                        <div>
+                            <strong style="color: var(--ink); display: block; font-size: 0.95rem;">🎯 Want to crack this job in the future?</strong>
+                            <span style="color: var(--slate); font-size: 0.85rem;">A step-by-step preparation roadmap is available covering every missing skill.</span>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn-primary btn-roadmap-pulse" onclick="document.getElementById('appDetailsModal').style.display='none'; openAppRoadmap('${app.id}');">
+                                🗺️ View Preparation Roadmap
+                            </button>
+                            <a href="roadmap.html?application_id=${app.id}" target="_blank" class="btn-outline">
+                                Full Page ↗
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            ` : ''}
+
+            <div class="detail-top-grid">
+                <div>
+                    <h4 style="margin: 0 0 6px 0; font-size: 1.2rem;">${escapeHtml(app.job_title)}</h4>
+                    <div class="app-meta-tags" style="margin-bottom: 12px;">
+                        ${app.job_location ? `<span class="meta-tag">📍 ${escapeHtml(app.job_location)}</span>` : ''}
+                        ${app.job_type ? `<span class="meta-tag">💼 ${escapeHtml(capitalizeFirst(app.job_type))}</span>` : ''}
+                        ${app.salary_range ? `<span class="meta-tag">💰 ${escapeHtml(app.salary_range)}</span>` : ''}
+                    </div>
+                    <div class="app-status-pill ${statusMeta.cssClass}">
+                        <span class="status-dot"></span>
+                        <span class="status-label">${statusMeta.label}</span>
+                    </div>
+                </div>
+                <div class="detail-score-box">
+                    <div class="match-circle ${score >= 70 ? 'match-high' : score >= 40 ? 'match-mid' : 'match-low'}">
+                        <span class="match-pct">${score}%</span>
+                    </div>
+                    <span class="score-label">Overall Match</span>
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <h4>Application Status & Timeline</h4>
+                <p style="margin: 4px 0 12px; color: var(--text-muted);">${statusMeta.description}</p>
+                <div class="timeline-box">
+                    <div class="timeline-point">
+                        <span class="point-dot active"></span>
+                        <span class="point-title">Applied</span>
+                        <span class="point-time">${formatDateTime(app.applied_at)}</span>
+                    </div>
+                    <div class="timeline-point">
+                        <span class="point-dot ${app.status !== 'applied' ? 'active' : ''}"></span>
+                        <span class="point-title">Screening</span>
+                        <span class="point-time">${app.status !== 'applied' ? 'Completed' : 'In Progress'}</span>
+                    </div>
+                    <div class="timeline-point">
+                        <span class="point-dot ${app.status === 'interview' || app.status === 'accepted' || app.status === 'hired' ? 'active' : ''}"></span>
+                        <span class="point-title">Interview</span>
+                        <span class="point-time">${app.status === 'interview' ? 'Scheduled' : (app.status === 'accepted' ? 'Passed' : (app.status === 'rejected' ? 'Not Selected' : 'Pending'))}</span>
+                    </div>
+                </div>
+            </div>
+
+            ${!isRejected && app.matched_skills && app.matched_skills.length > 0 ? `
+                <div class="detail-section">
+                    <h4>Matched Skills (${app.matched_skills.length})</h4>
+                    <div class="skill-tags-wrap" style="margin-top: 8px;">
+                        ${app.matched_skills.map(s => `<span class="skill-tag skill-matched">✅ ${escapeHtml(s)}</span>`).join('')}
+                    </div>
+                </div>
+            ` : ''}
+
+            ${!isRejected && app.missing_skills && app.missing_skills.length > 0 ? `
+                <div class="detail-section">
+                    <h4>Missing Skills from Job Description (${app.missing_skills.length})</h4>
+                    <div class="skill-tags-wrap" style="margin-top: 8px;">
+                        ${app.missing_skills.map(s => `<span class="skill-tag skill-missing">⚠️ ${escapeHtml(s)}</span>`).join('')}
+                    </div>
+                </div>
+            ` : ''}
+
+            ${app.job_description ? `
+                <div class="detail-section">
+                    <h4>Job Description</h4>
+                    <div class="job-desc-box">${escapeHtml(app.job_description)}</div>
+                </div>
+            ` : ''}
+
+            ${!isRejected && app.notes ? `
+                <div class="detail-section">
+                    <h4>Recruiter Notes</h4>
+                    <div class="notes-box">${escapeHtml(app.notes)}</div>
+                </div>
+            ` : ''}
+        </div>
+    `;
+
+    document.getElementById('modalWithdrawBtn').onclick = () => {
+        document.getElementById('appDetailsModal').style.display = 'none';
+        confirmWithdraw(app.id, app.job_title);
+    };
+
+    document.getElementById('appDetailsModal').style.display = 'flex';
+}
+
+// Open Personalized Preparation Roadmap for Rejected Applications
+async function openAppRoadmap(appId) {
+    const app = allApplications.find(a => a.id === appId);
+    const modal = document.getElementById('roadmapModal');
+    const titleEl = document.getElementById('roadmapModalTitle');
+    const subEl = document.getElementById('roadmapModalSubtitle');
+    const bodyEl = document.getElementById('roadmapModalBody');
+    const fullPageBtn = document.getElementById('roadmapModalFullPageBtn');
+
+    titleEl.textContent = `Preparation Roadmap: ${app ? app.job_title : 'Position'}`;
+    subEl.textContent = `Targeted skill learning path generated to help you crack this job`;
+    fullPageBtn.href = `roadmap.html?application_id=${appId}`;
+
+    bodyEl.innerHTML = `
+        <div class="loading-state" style="padding: 40px 0;">
+            <div class="spinner"></div>
+            <p>Loading ATS report and compiling preparation roadmap for missing skills...</p>
+        </div>
+    `;
+
+    modal.style.display = 'flex';
+
+    try {
+        const response = await fetch(`/api/applications/${appId}/roadmap`);
+        if (!response.ok) throw new Error('Failed to retrieve preparation roadmap');
+        const data = await response.json();
+
+        const roadmap = data.roadmap || {};
+        const missingSkills = data.missing_skills || roadmap.skill_gaps || [];
+        const matchedSkills = data.matched_skills || [];
+        const score = Math.round(data.match_score || (app ? app.match_score : 0) || 0);
+
+        let html = `
+            <div class="roadmap-summary-banner">
+                <div>
+                    <div class="stat-num">${score}%</div>
+                    <div class="stat-lbl">ATS Match Score</div>
+                </div>
+                <div>
+                    <div class="stat-num" style="color: #ef4444;">${missingSkills.length}</div>
+                    <div class="stat-lbl">Skills to Prepare</div>
+                </div>
+                <div>
+                    <div class="stat-num" style="color: #10b981;">${roadmap.total_estimated_hours || (missingSkills.length * 80)} hrs</div>
+                    <div class="stat-lbl">Total Estimated Study</div>
+                </div>
+            </div>
+
+            <div class="ats-feedback-note" style="margin-bottom: 20px;">
+                <h4>📢 Recruiter ATS Feedback & Job Alignment</h4>
+                <p>${escapeHtml(data.ats_feedback || data.rejection_feedback || (app ? app.notes : '') || 'This roadmap prepares you for every skill missing from your resume that is required by the job description.')}</p>
+            </div>
+        `;
+
+        // Priority skills
+        const prioritySkills = roadmap.priority_skills || missingSkills;
+        if (prioritySkills && prioritySkills.length > 0) {
+            html += `
+                <div style="margin-bottom: 20px;">
+                    <h4 style="margin: 0 0 8px 0; font-size: 0.95rem; color: var(--ink);">🔥 High-Priority Skills to Master First</h4>
+                    <div class="skill-pills-row">
+                        ${prioritySkills.slice(0, 6).map(s => `<span class="skill-tag priority">${escapeHtml(s)}</span>`).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Learning path for each missing skill
+        const learningPath = roadmap.learning_path || {};
+        const skillKeys = Object.keys(learningPath).length > 0 ? Object.keys(learningPath) : missingSkills;
+
+        if (skillKeys.length > 0) {
+            html += `
+                <!-- Interactive Skill Switcher Navigation -->
+                <div class="roadmap-skill-nav-container" style="margin-top: 10px;">
+                    <div class="roadmap-skill-nav-title">
+                        <span>⚡ Select Skill to View Learning Path (${skillKeys.length} available):</span>
+                    </div>
+                    <div class="roadmap-skill-pills" id="modalRoadmapSkillPills">
+                        ${skillKeys.map((skill, index) => {
+                            const plan = learningPath[skill] || {};
+                            const domain = plan.domain || 'Engineering';
+                            const safeId = skill.replace(/[^a-zA-Z0-9]/g, '_');
+                            return `
+                                <button class="skill-nav-btn ${index === 0 ? 'active' : ''}" data-target-modal-skill="${safeId}">
+                                    <span>${escapeHtml(skill)}</span>
+                                    <span class="pill-badge">${escapeHtml(domain.split(' ')[0])}</span>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+
+                <!-- Detailed Dynamic Skill Pathways -->
+                <div id="modalSkillDetailsWrapper">
+                    ${skillKeys.map((skill, index) => {
+                        const plan = learningPath[skill] || {};
+                        const safeId = skill.replace(/[^a-zA-Z0-9]/g, '_');
+                        const domain = plan.domain || 'Software Engineering';
+                        const diff = plan.difficulty || 'Intermediate';
+                        const weeks = plan.timeline_weeks || (roadmap.timeline_weeks && roadmap.timeline_weeks[skill]) || 4;
+                        const hours = plan.estimated_hours || (weeks * 10);
+                        const summary = plan.summary || `Master ${escapeHtml(skill)} to satisfy the technical requirements of this position.`;
+
+                        const beginnerTopics = plan.beginner_topics || ["Foundational concepts & syntax", "Development environment setup", "Core principles"];
+                        const intermediateTopics = plan.intermediate_topics || ["Idiomatic patterns", "Asynchronous operations", "Unit testing & debugging"];
+                        const advancedTopics = plan.advanced_topics || ["Performance profiling", "Production optimization", "Security & scaling"];
+                        const practice = plan.practice_activities || ["Hands-on proof of concept", "Refactor and optimize workflow", "Write automated tests"];
+                        const projects = plan.mini_projects || [];
+                        const assessments = plan.assessments || [];
+                        const resources = plan.resources || [
+                            {"title": `Official ${skill} Documentation`, "type": "Documentation"},
+                            {"title": `${skill} Best Practices & Architecture`, "type": "Guide"}
+                        ];
+
+                        return `
+                            <div class="skill-detail-container ${index === 0 ? 'active' : ''}" id="modalSkillDetail_${safeId}">
+                                <div class="skill-header-card">
+                                    <div class="skill-header-top">
+                                        <div class="skill-header-title-group">
+                                            <h3>${escapeHtml(skill)} Mastery Path</h3>
+                                            <div class="skill-meta-chips">
+                                                <span class="meta-chip domain-chip">📁 ${escapeHtml(domain)}</span>
+                                                <span class="meta-chip diff-chip">⚡ ${escapeHtml(diff)}</span>
+                                                <span class="meta-chip time-chip">⏱️ ${weeks} Weeks (~${hours} Hours)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="skill-summary-text">${escapeHtml(summary)}</p>
+
+                                    <!-- Progress Tracker -->
+                                    <div class="roadmap-progress-wrap">
+                                        <div class="progress-label-row">
+                                            <span>Interactive Study Checklist Progress</span>
+                                            <span class="progress-pct-text" id="modalPctText_${safeId}">0% Completed</span>
+                                        </div>
+                                        <div class="progress-track">
+                                            <div class="progress-fill" id="modalProgressFill_${safeId}"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 5-Phase Visual Pathway Stepper -->
+                                <div class="roadmap-pathway-timeline">
+                                    <!-- Phase 1 -->
+                                    <div class="pathway-phase-card">
+                                        <div class="phase-node-bullet">1</div>
+                                        <div class="phase-content-box">
+                                            <div class="phase-box-header">
+                                                <div class="phase-title-group">
+                                                    <h4>Phase 1: Foundations & Architecture</h4>
+                                                </div>
+                                                <span class="phase-milestone-badge">Week 1 · Core Syntax</span>
+                                            </div>
+                                            <div class="phase-checklist">
+                                                ${beginnerTopics.map((topic, i) => `
+                                                    <div class="checklist-item" data-modal-skill="${safeId}" data-idx="b_${i}">
+                                                        <input type="checkbox" id="mchk_${safeId}_b_${i}" onchange="toggleModalCheck('${safeId}')" />
+                                                        <label for="mchk_${safeId}_b_${i}">${escapeHtml(topic)}</label>
+                                                    </div>
+                                                `).join('')}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Phase 2 -->
+                                    <div class="pathway-phase-card">
+                                        <div class="phase-node-bullet">2</div>
+                                        <div class="phase-content-box">
+                                            <div class="phase-box-header">
+                                                <div class="phase-title-group">
+                                                    <h4>Phase 2: Production Engineering</h4>
+                                                </div>
+                                                <span class="phase-milestone-badge">Week 2 · Patterns & Integration</span>
+                                            </div>
+                                            <div class="phase-checklist">
+                                                ${intermediateTopics.map((topic, i) => `
+                                                    <div class="checklist-item" data-modal-skill="${safeId}" data-idx="i_${i}">
+                                                        <input type="checkbox" id="mchk_${safeId}_i_${i}" onchange="toggleModalCheck('${safeId}')" />
+                                                        <label for="mchk_${safeId}_i_${i}">${escapeHtml(topic)}</label>
+                                                    </div>
+                                                `).join('')}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Phase 3 -->
+                                    <div class="pathway-phase-card">
+                                        <div class="phase-node-bullet">3</div>
+                                        <div class="phase-content-box">
+                                            <div class="phase-box-header">
+                                                <div class="phase-title-group">
+                                                    <h4>Phase 3: Advanced Optimization & Scaling</h4>
+                                                </div>
+                                                <span class="phase-milestone-badge">Week 3 · Performance & Security</span>
+                                            </div>
+                                            <div class="phase-checklist">
+                                                ${advancedTopics.map((topic, i) => `
+                                                    <div class="checklist-item" data-modal-skill="${safeId}" data-idx="a_${i}">
+                                                        <input type="checkbox" id="mchk_${safeId}_a_${i}" onchange="toggleModalCheck('${safeId}')" />
+                                                        <label for="mchk_${safeId}_a_${i}">${escapeHtml(topic)}</label>
+                                                    </div>
+                                                `).join('')}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Phase 4 -->
+                                    <div class="pathway-phase-card">
+                                        <div class="phase-node-bullet">4</div>
+                                        <div class="phase-content-box">
+                                            <div class="phase-box-header">
+                                                <div class="phase-title-group">
+                                                    <h4>Phase 4: Hands-On Practice & Portfolio Projects</h4>
+                                                </div>
+                                                <span class="phase-milestone-badge">Week 4 · Capstone</span>
+                                            </div>
+                                            <div style="margin-bottom: 12px;">
+                                                <span style="font-size:0.85rem; font-weight:700; color:var(--ink);">🛠️ Practice Challenges:</span>
+                                                <div class="phase-checklist" style="margin-top: 8px;">
+                                                    ${practice.map((item, i) => `
+                                                        <div class="checklist-item" data-modal-skill="${safeId}" data-idx="p_${i}">
+                                                            <input type="checkbox" id="mchk_${safeId}_p_${i}" onchange="toggleModalCheck('${safeId}')" />
+                                                            <label for="mchk_${safeId}_p_${i}">${escapeHtml(item)}</label>
+                                                        </div>
+                                                    `).join('')}
+                                                </div>
+                                            </div>
+                                            ${projects.length > 0 ? `
+                                                <div class="roadmap-projects-grid">
+                                                    ${projects.map(proj => {
+                                                        const title = typeof proj === 'object' ? proj.title : proj;
+                                                        const desc = typeof proj === 'object' ? proj.description : 'Build and deploy a functional project.';
+                                                        const deliv = typeof proj === 'object' ? proj.deliverables : 'GitHub repository with tests and demo.';
+                                                        return `
+                                                            <div class="project-box">
+                                                                <h5>💡 ${escapeHtml(title)}</h5>
+                                                                <p>${escapeHtml(desc)}</p>
+                                                                <span class="project-deliverable">📦 ${escapeHtml(deliv)}</span>
+                                                            </div>
+                                                        `;
+                                                    }).join('')}
+                                                </div>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+
+                                    <!-- Phase 5 -->
+                                    <div class="pathway-phase-card">
+                                        <div class="phase-node-bullet">5</div>
+                                        <div class="phase-content-box">
+                                            <div class="phase-box-header">
+                                                <div class="phase-title-group">
+                                                    <h4>Phase 5: Technical Interview & Validation</h4>
+                                                </div>
+                                                <span class="phase-milestone-badge">Hiring Readiness</span>
+                                            </div>
+                                            <div class="interview-accordion-group">
+                                                ${assessments.map((item, i) => {
+                                                    const q = typeof item === 'object' ? item.question : item;
+                                                    const keyPoints = typeof item === 'object' ? item.key_points : 'Demonstrate hands-on experience, architecture patterns, and practical trade-offs.';
+                                                    return `
+                                                        <div class="interview-qa-item" id="mqa_${safeId}_${i}">
+                                                            <div class="qa-question-header" onclick="toggleModalQA('${safeId}', ${i})">
+                                                                <span class="qa-question-text">❓ ${escapeHtml(q)}</span>
+                                                                <span class="qa-toggle-btn">Reveal Key Points ▾</span>
+                                                            </div>
+                                                            <div class="qa-answer-body">
+                                                                <strong>💡 What Recruiters Want to Hear:</strong>
+                                                                <p style="margin: 6px 0 0;">${escapeHtml(keyPoints)}</p>
+                                                            </div>
+                                                        </div>
+                                                    `;
+                                                }).join('')}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Resources -->
+                                <div style="background: var(--paper-raised); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; margin-top: 16px;">
+                                    <strong style="font-size: 0.88rem; color: var(--ink);">📚 Curated Official Learning Resources:</strong>
+                                    <div class="resources-row">
+                                        ${resources.map(res => {
+                                            const rTitle = typeof res === 'object' ? res.title : res;
+                                            const rType = typeof res === 'object' ? res.type : 'Resource';
+                                            return `<span class="resource-chip">📖 [${escapeHtml(rType)}] ${escapeHtml(rTitle)}</span>`;
+                                        }).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        // Category recommendations
+        if (roadmap.category_recommendations) {
+            const recs = Array.isArray(roadmap.category_recommendations) ? roadmap.category_recommendations : [roadmap.category_recommendations];
+            html += `
+                <div style="margin-top: 20px; background: var(--paper); border: 1px solid var(--line); padding: 16px; border-radius: 8px;">
+                    <h4 style="margin: 0 0 8px 0; font-size: 0.95rem; color: var(--ink);">💡 Industry & Role Preparation Advice</h4>
+                    <ul class="roadmap-recs-list" style="margin: 0; padding-left: 20px;">
+                        ${recs.map(r => `<li>${escapeHtml(r)}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
+        bodyEl.innerHTML = html;
+        initModalRoadmapInteractions();
+
+    } catch (err) {
+        bodyEl.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">⚠️</div>
+                <h3>Unable to Load Roadmap</h3>
+                <p class="empty-sub">${err.message || 'Please check that the server is running.'}</p>
+                <button class="btn-primary" onclick="openAppRoadmap('${appId}')">Retry</button>
+            </div>
+        `;
+    }
+}
+
+function initModalRoadmapInteractions() {
+    const navBtns = document.querySelectorAll('#modalRoadmapSkillPills .skill-nav-btn');
+    navBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            navBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+
+            const targetId = this.getAttribute('data-target-modal-skill');
+            document.querySelectorAll('#modalSkillDetailsWrapper .skill-detail-container').forEach(c => c.classList.remove('active'));
+            const targetContainer = document.getElementById(`modalSkillDetail_${targetId}`);
+            if (targetContainer) targetContainer.classList.add('active');
+        });
+    });
+
+    // Restore checkboxes from localStorage
+    document.querySelectorAll('#modalSkillDetailsWrapper .checklist-item').forEach(item => {
+        const skill = item.getAttribute('data-modal-skill');
+        const idx = item.getAttribute('data-idx');
+        const key = `roadmap_chk_${skill}_${idx}`;
+        const isChecked = localStorage.getItem(key) === 'true';
+        const checkbox = item.querySelector('input[type="checkbox"]');
+        if (checkbox && isChecked) {
+            checkbox.checked = true;
+            item.classList.add('checked');
+        }
+    });
+
+    // Update progress bars
+    document.querySelectorAll('#modalSkillDetailsWrapper .skill-detail-container').forEach(c => {
+        const safeId = c.id.replace('modalSkillDetail_', '');
+        updateModalSkillProgress(safeId);
+    });
+}
+
+window.toggleModalCheck = function(safeId) {
+    const container = document.getElementById(`modalSkillDetail_${safeId}`);
+    if (!container) return;
+
+    container.querySelectorAll('.checklist-item').forEach(item => {
+        const skill = item.getAttribute('data-modal-skill');
+        const idx = item.getAttribute('data-idx');
+        const checkbox = item.querySelector('input[type="checkbox"]');
+        if (checkbox) {
+            if (checkbox.checked) {
+                item.classList.add('checked');
+                localStorage.setItem(`roadmap_chk_${skill}_${idx}`, 'true');
+            } else {
+                item.classList.remove('checked');
+                localStorage.removeItem(`roadmap_chk_${skill}_${idx}`);
+            }
+        }
+    });
+
+    updateModalSkillProgress(safeId);
+};
+
+function updateModalSkillProgress(safeId) {
+    const container = document.getElementById(`modalSkillDetail_${safeId}`);
+    if (!container) return;
+
+    const checkboxes = container.querySelectorAll('.checklist-item input[type="checkbox"]');
+    const checked = container.querySelectorAll('.checklist-item input[type="checkbox"]:checked');
+    const total = checkboxes.length;
+    const count = checked.length;
+    const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+
+    const fill = document.getElementById(`modalProgressFill_${safeId}`);
+    const text = document.getElementById(`modalPctText_${safeId}`);
+
+    if (fill) fill.style.width = `${pct}%`;
+    if (text) text.textContent = `${count} of ${total} checkpoints done (${pct}%)`;
+}
+
+window.toggleModalQA = function(safeId, index) {
+    const item = document.getElementById(`mqa_${safeId}_${index}`);
+    if (!item) return;
+    const isExp = item.classList.contains('expanded');
+    item.classList.toggle('expanded');
+    const btn = item.querySelector('.qa-toggle-btn');
+    if (btn) {
+        btn.textContent = isExp ? 'Reveal Key Points ▾' : 'Hide Key Points ▴';
+    }
+}
+
+function confirmWithdraw(appId, jobTitle) {
+    selectedAppId = appId;
+    document.getElementById('withdrawJobTitle').textContent = jobTitle || 'this position';
+    document.getElementById('withdrawConfirmModal').style.display = 'flex';
+}
+
+async function executeWithdraw() {
+    if (!selectedAppId) return;
+
+    const btn = document.getElementById('confirmWithdrawBtn');
+    btn.disabled = true;
+    btn.textContent = 'Withdrawing...';
+
+    try {
+        const response = await fetch(`/api/applications/${selectedAppId}`, {
+            method: 'DELETE'
+        });
+
+        if (response.ok) {
+            showToast('Application withdrawn successfully.', 'info');
+            document.getElementById('withdrawConfirmModal').style.display = 'none';
+            // Remove from local list
+            allApplications = allApplications.filter(a => a.id !== selectedAppId);
+            updateStats();
+            renderApplications();
+        } else {
+            const err = await response.json();
+            showToast(err.error || 'Failed to withdraw application.', 'error');
+        }
+    } catch (e) {
+        showToast('Network error withdrawing application.', 'error');
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Yes, Withdraw';
+    }
+}
+
+function formatDateTime(dateStr) {
+    if (!dateStr) return 'Recently';
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return 'Recently';
+
+    const now = new Date();
+    const diffHours = Math.floor((now - d) / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffHours / 24);
+
+    let relative = '';
+    if (diffDays > 0) {
+        relative = diffDays === 1 ? '1 day ago' : `${diffDays} days ago`;
+    } else if (diffHours > 0) {
+        relative = diffHours === 1 ? '1 hr ago' : `${diffHours} hrs ago`;
+    } else {
+        relative = 'Just now';
+    }
+
+    const options = { month: 'short', day: 'numeric', year: 'numeric' };
+    return `${d.toLocaleDateString(undefined, options)} · ${relative}`;
+}
+
+function capitalizeFirst(str) {
+    if (!str) return '';
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+function showToast(message, type = 'info') {
+    const existing = document.querySelector('.toast');
+    if (existing) existing.remove();
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.innerHTML = `<span class="toast-icon">${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span><span class="toast-message">${message}</span>`;
+    document.body.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add('toast-visible'));
+    setTimeout(() => { toast.classList.remove('toast-visible'); setTimeout(() => toast.remove(), 300); }, 4000);
+}
+</script>
+</body>
+</html>
